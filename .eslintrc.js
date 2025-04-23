@@ -28,7 +28,7 @@ module.exports = {
 
     // 可依照團隊習慣開關的：
     "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "react/prop-types": "off", // 如果你沒用 PropTypes，可以先關掉
+    "react/prop-types": "warn",
   },
   settings: {
     react: {
