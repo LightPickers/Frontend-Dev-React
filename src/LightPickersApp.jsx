@@ -1,6 +1,6 @@
 import React from "react";
 
-function App() {
+function LightPickersApp() {
   return (
     <div>
       <h1 className="text-primary">這是拾光堂前台頁面</h1>
@@ -8,4 +8,4 @@ function App() {
   );
 }
 
-export default App;
+export default LightPickersApp;
