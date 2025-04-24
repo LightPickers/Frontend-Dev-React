@@ -26,7 +26,7 @@ module.exports = {
     "react-hooks/exhaustive-deps": "warn",
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 
-    // 可依照團隊習慣開關的：
+    // optional：
     "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "react/prop-types": "warn",
   },
