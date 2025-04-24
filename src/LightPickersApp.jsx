@@ -1,10 +1,15 @@
 import React from "react";
+import Header from "./layouts/Header";
+import Footer from "./layouts/Footer";
+import { Outlet } from "react-router-dom";
 
 function LightPickersApp() {
   return (
-    <div>
-      <h1 className="text-primary">這是拾光堂前台頁面</h1>
-    </div>
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
   );
 }
 
