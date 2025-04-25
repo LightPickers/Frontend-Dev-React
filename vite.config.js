@@ -2,8 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import eslintImport from "vite-plugin-eslint";
 import path from "path";
+import { fileURLToPath, URL } from "url";
 
 const eslint = eslintImport.default || eslintImport;
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
   base: process.env.NODE_ENV === "production" ? "/Frontend-Dev-React/" : "/",
