@@ -1,6 +1,10 @@
 @import "bootstrap/scss/functions";
 
 // custom style
-$primary: lightgreen;
-@import "./variables";
+@import "./stylesheets/colors";
+@import "./stylesheets/spacers";
+@import "./stylesheets/grid-system";
+// border
+
+@import "./refs/variables";
 @import "bootstrap/scss/bootstrap";
