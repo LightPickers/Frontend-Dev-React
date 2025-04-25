@@ -1,5 +1,4 @@
 import { createHashRouter } from "react-router-dom";
-import LightPickersApp from "@/LightPickersApp";
 import {
   HomePage,
   RegisterPage,
@@ -20,6 +19,8 @@ import {
   SellApplyStatusPage,
   ErrorPage,
 } from "@pages"; // @pages/index.js
+
+import LightPickersApp from "@/LightPickersApp";
 
 const ROUTES = {
   HOME: "/",
@@ -110,12 +111,10 @@ const checkoutRoutes = [
   {
     path: ROUTES.CHECKOUT.CONFIRMATION,
     element: <OrderConfirmationPage />,
-    meta: { requiresAuth: true },
   },
   {
     path: ROUTES.CHECKOUT.STATUS,
     element: <OrderStatusPage />,
-    meta: { requiresAuth: true },
   },
 ];
 

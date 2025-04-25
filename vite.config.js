@@ -1,10 +1,18 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import eslintImport from "vite-plugin-eslint";
 import path from "path";
+
+const eslint = eslintImport.default || eslintImport;
 
 export default defineConfig({
   base: process.env.NODE_ENV === "production" ? "/Frontend-Dev-React/" : "/",
-  plugins: [react()],
+  plugins: [
+    react(),
+    eslint({
+      include: ["src/**/*.js", "src/**/*.jsx"],
+    }),
+  ],
   resolve: {
     alias: {
       // 定義別名 => 實際路徑的映射
