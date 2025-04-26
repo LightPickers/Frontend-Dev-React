@@ -1,29 +1,28 @@
-import { defineConfig } from "vite";
+/* eslint-env node */
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
-import eslintImport from "vite-plugin-eslint";
+import eslint from "vite-plugin-eslint";
 import path from "path";
-import { fileURLToPath, URL } from "url";
 
-const eslint = eslintImport.default || eslintImport;
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
-
-export default defineConfig({
-  base: process.env.NODE_ENV === "production" ? "/Frontend-Dev-React/" : "/",
-  plugins: [
-    react(),
-    eslint({
-      include: ["src/**/*.js", "src/**/*.jsx"],
-    }),
-  ],
-  resolve: {
-    alias: {
-      // 定義別名 => 實際路徑的映射
-      "@": path.resolve(__dirname, "./src"),
-      "@pages": path.resolve(__dirname, "./src/pages"),
-      "@components": path.resolve(__dirname, "./src/components"),
-      "@layouts": path.resolve(__dirname, "./src/layouts"),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  return {
+    base: env.VITE_APP_BASE,
+    plugins: [
+      react(),
+      eslint({
+        include: ["src/**/*.{js,jsx}"],
+      }),
+    ],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+        "@pages": path.resolve(__dirname, "./src/pages"),
+        "@components": path.resolve(__dirname, "./src/components"),
+        "@layouts": path.resolve(__dirname, "./src/layouts"),
+      },
     },
-  },
+  };
 });
 
 /* 

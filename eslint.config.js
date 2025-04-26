@@ -63,4 +63,12 @@ export default [
       ],
     },
   },
+  {
+    files: ["*.config.js", "*.config.mjs", "*.config.cjs"],
+    languageOptions: {
+      env: {
+        node: true,
+      },
+    },
+  },
 ];
