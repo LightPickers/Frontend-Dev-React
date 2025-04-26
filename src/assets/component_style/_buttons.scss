@@ -1,0 +1,51 @@
+@import "../stylesheets/colors";
+@import "../stylesheets/typography";
+@import "../stylesheets/border";
+
+.btn-custom {
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-bold;
+  border-radius: $border-radius-xxl;
+  line-height: $line-height-base;
+  transition: all 0.3s ease;
+  padding: 1rem 1.5rem;
+  border: 0.125rem solid $gray-500;
+  background-color: transparent;
+  color: $gray-500;
+
+  &:hover {
+    background-color: $gray-800;
+    color: $white;
+    border-color: $gray-800;
+  }
+
+  &:focus {
+    border: 0.1875rem solid $gray-500;
+  }
+
+  &:disabled {
+    background-color: $gray-200;
+    color: $gray-400;
+    border-color: $gray-200;
+  }
+
+  &.cta {
+    font-size: $h5-font-size;
+    padding: 1rem 2rem;
+  }
+
+  &.large {
+    font-size: $h5-font-size;
+    padding: 0.75rem 1.75rem;
+  }
+
+  &.medium {
+    font-size: $font-size-base;
+    padding: 0.75rem 1.75rem;
+  }
+
+  &.small {
+    font-size: $small-font-size;
+    padding: 0.75rem 1.5rem;
+  }
+}
