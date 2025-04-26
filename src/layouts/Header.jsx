@@ -7,7 +7,10 @@ function Header() {
       <button className="btn-custom cta" type="button">
         我是按鈕
       </button>
-      <Button text={"註冊/登入"} size="large" className="text-danger" />
+      <Button text={"cta"} size="cta" />
+      <Button text={"large"} size="large" />
+      <Button text={"medium"} size="medium" />
+      <Button text={"small"} size="small" />
     </>
   );
 }
