@@ -1,0 +1,14 @@
+@import "bootstrap/scss/functions";
+
+// custom style
+@import "./stylesheets/colors";
+@import "./stylesheets/spacers";
+@import "./stylesheets/grid-system";
+@import "./stylesheets/typography";
+@import "./stylesheets/border";
+
+// custom components
+@import "./component_style/buttons";
+
+@import "./refs/variables";
+@import "bootstrap/scss/bootstrap";
