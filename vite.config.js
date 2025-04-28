@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       eslint({
-        include: ["src/**/*.{js,jsx}"],
+        include: ["src/**/*.{js,jsx,ts,tsx}"],
       }),
     ],
     resolve: {
@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
         "@pages": path.resolve(__dirname, "./src/pages"),
         "@components": path.resolve(__dirname, "./src/components"),
         "@layouts": path.resolve(__dirname, "./src/layouts"),
+        "@stylesheets": path.resolve(__dirname, "./src/assets/stylesheets"),
       },
     },
   };
