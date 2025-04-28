@@ -1,0 +1,85 @@
+@use "@stylesheets/fonts" as fonts;
+@use "@stylesheets/sizes" as sizes;
+@use "@stylesheets/colors" as colors;
+@use "@stylesheets/line-height" as lh;
+
+body {
+  font-family: fonts.$font-family-sans-serif;
+  font-weight: fonts.$font-weight-normal;
+  line-height: lh.$line-height-base;
+  color: colors.$gray-1000;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: fonts.$headings-font-family;
+  font-weight: fonts.$headings-font-weight;
+  line-height: lh.$line-height-sm;
+}
+
+h1 {
+  font-size: sizes.$h1-font-size;
+  letter-spacing: 0.16em;
+}
+
+h2 {
+  font-size: sizes.$h2-font-size;
+  letter-spacing: 0.14em;
+}
+
+h3 {
+  font-size: sizes.$h3-font-size;
+  letter-spacing: 0.13em;
+}
+
+h4 {
+  font-size: sizes.$h4-font-size;
+  letter-spacing: 0.12em;
+}
+
+h5 {
+  font-size: sizes.$h5-font-size;
+  font-weight: fonts.$font-weight-normal;
+  letter-spacing: 0.1em;
+}
+
+.button-l,
+.button-m,
+.button-s,
+.button-label {
+  font-weight: fonts.$font-weight-bold;
+  color: colors.$gray-500;
+}
+
+.button-l {
+  font-size: sizes.$h5-font-size;
+  letter-spacing: 0.1em;
+}
+
+.button-m {
+  font-size: sizes.$h6-font-size;
+  letter-spacing: 0.09em;
+}
+
+.button-s {
+  font-size: sizes.$small-font-size;
+  letter-spacing: 0.07em;
+}
+
+.button-label {
+  font-size: sizes.$label-font-size;
+  letter-spacing: 0.12em;
+}
+
+.required::after {
+  content: "*";
+  color: colors.$danger;
+  margin-left: 4px;
+}
