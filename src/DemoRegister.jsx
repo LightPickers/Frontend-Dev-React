@@ -66,6 +66,7 @@ const DemoRegister = () => {
       address_zipcode: formData.addressZipcode,
       address_district: formData.addressDistrict,
       address_detail: formData.addressDetail,
+      photo: formData.photo,
     };
 
     // if (formData.photo) {
@@ -257,7 +258,14 @@ const DemoRegister = () => {
               <label htmlFor="photo" className="form-label">
                 上傳照片
               </label>
-              <input type="text" className="text" id="photo" name="photo" onChange={handleChange} />
+              <input
+                type="text"
+                className="form-control"
+                id="photo"
+                name="photo"
+                value={formData.photo}
+                onChange={handleChange}
+              />
             </div>
 
             <button type="submit" className="btn btn-primary w-100">
