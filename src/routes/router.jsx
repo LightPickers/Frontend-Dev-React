@@ -1,4 +1,5 @@
 import { createHashRouter } from "react-router-dom";
+
 import {
   HomePage,
   RegisterPage,
@@ -19,7 +20,6 @@ import {
   SellApplyStatusPage,
   ErrorPage,
 } from "@pages"; // @pages/index.js
-
 import LightPickersApp from "@/LightPickersApp";
 
 const ROUTES = {

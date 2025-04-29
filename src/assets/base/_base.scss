@@ -1,7 +1,7 @@
-@use "@stylesheets/fonts" as fonts;
-@use "@stylesheets/sizes" as sizes;
-@use "@stylesheets/colors" as colors;
-@use "@stylesheets/line-height" as lh;
+@use "@assets/stylesheets/fonts" as fonts;
+@use "@assets/stylesheets/sizes" as sizes;
+@use "@assets/stylesheets/colors" as colors;
+@use "@assets/stylesheets/line-height" as lh;
 
 body {
   font-family: fonts.$font-family-sans-serif;

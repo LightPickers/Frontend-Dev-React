@@ -44,6 +44,20 @@ export default [
       react: {
         version: "detect",
       },
+      "import/resolver": {
+        alias: {
+          map: [
+            ["@", "./src"],
+            ["@pages", "./src/pages"],
+            ["@components", "./src/components"],
+            ["@layouts", "./src/layouts"],
+            ["@routes", "./src/routes"],
+            ["@assets", "./src/assets"],
+            ["@stylesheets", "./src/assets/stylesheets"],
+          ],
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+        },
+      },
     },
     rules: {
       quotes: ["error", "double"],
@@ -54,6 +68,7 @@ export default [
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "react/prop-types": "error",
       "no-unused-vars": ["warn", { varsIgnorePattern: ".*", argsIgnorePattern: ".*" }],
+      "import/no-unresolved": "error",
       "import/order": [
         "warn",
         {
