@@ -40,7 +40,7 @@ function StyleSettings() {
       <H5Primary isBold={false}>H5Primary</H5Primary>
       <H6Primary isBold={false}>H6Primary</H6Primary>
       <hr />
-      <H3Primary>按鈕</H3Primary>
+      <H3Primary>按鈕：BtnPrimary</H3Primary>
       <div className="d-flex gap-2">
         <BtnPrimary size="cta">size="cta"</BtnPrimary>
         <BtnPrimary size="large">size="large"</BtnPrimary>
