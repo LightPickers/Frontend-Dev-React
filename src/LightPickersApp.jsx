@@ -9,9 +9,9 @@ function LightPickersApp() {
   return (
     <>
       <Header />
+      <Outlet />
       <StyleSettings />
       <DemoRegister />
-      <Outlet />
       <Footer />
     </>
   );
