@@ -2,7 +2,11 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import eslint from "vite-plugin-eslint";
-import path from "path";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -11,15 +15,24 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       eslint({
-        include: ["src/**/*.{js,jsx}"],
+        include: ["src/**/*.{js,jsx,ts,tsx}"],
       }),
     ],
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
-        "@pages": path.resolve(__dirname, "./src/pages"),
-        "@components": path.resolve(__dirname, "./src/components"),
-        "@layouts": path.resolve(__dirname, "./src/layouts"),
+        "@": resolve(__dirname, "./src"),
+        "@pages": resolve(__dirname, "./src/pages"),
+        "@components": resolve(__dirname, "./src/components"),
+        "@layouts": resolve(__dirname, "./src/layouts"),
+        "@routes": resolve(__dirname, "./src/routes"),
+        "@assets": resolve(__dirname, "./src/assets"),
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          includePaths: [resolve(__dirname, "src/assets")],
+        },
       },
     },
   };

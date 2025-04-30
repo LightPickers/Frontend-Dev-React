@@ -1,0 +1,115 @@
+@use "../stylesheets/fonts" as fonts;
+@use "../stylesheets/sizes" as sizes;
+@use "../stylesheets/colors" as colors;
+@use "../stylesheets/line-height" as lh;
+
+body {
+  font-family: fonts.$font-family-sans-serif;
+  font-weight: fonts.$font-weight-normal;
+  line-height: lh.$line-height-base;
+  color: colors.$gray-1000;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.h1 {
+  font-size: sizes.$h1-font-size;
+  letter-spacing: 0.16em;
+  @include media-breakpoint-down(md) {
+    font-size: sizes.$h2-font-size;
+    letter-spacing: 0.14em;
+  }
+  @include media-breakpoint-down(xs) {
+    font-size: sizes.$h3-font-size;
+    letter-spacing: 0.13em;
+  }
+}
+.h2 {
+  font-size: sizes.$h2-font-size;
+  letter-spacing: 0.14em;
+  @include media-breakpoint-down(xs) {
+    font-size: sizes.$h3-font-size;
+    letter-spacing: 0.13em;
+  }
+}
+.h3 {
+  font-size: sizes.$h3-font-size;
+  letter-spacing: 0.13em;
+  @include media-breakpoint-down(md) {
+    font-size: sizes.$h4-font-size;
+    letter-spacing: 0.12em;
+  }
+  @include media-breakpoint-down(xs) {
+    font-size: sizes.$h5-font-size;
+    letter-spacing: 0.1em;
+  }
+}
+.h4 {
+  font-size: sizes.$h4-font-size;
+  letter-spacing: 0.12em;
+  @include media-breakpoint-down(md) {
+    font-size: sizes.$h5-font-size;
+    letter-spacing: 0.1em;
+  }
+  @include media-breakpoint-down(xs) {
+    font-size: sizes.$h6-font-size;
+    letter-spacing: 0.09em;
+  }
+}
+.h5 {
+  font-size: sizes.$h5-font-size;
+  letter-spacing: 0.1em;
+  @include media-breakpoint-down(xs) {
+    font-size: sizes.$h6-font-size;
+    letter-spacing: 0.09em;
+  }
+}
+.h6 {
+  font-size: sizes.$h6-font-size;
+  letter-spacing: 0.09em;
+}
+
+.heading-serif {
+  font-family: fonts.$headings-font-family;
+  line-height: lh.$line-height-sm;
+}
+
+.heading-sans {
+  font-family: fonts.$font-family-sans-serif;
+  line-height: lh.$line-height-sm;
+}
+
+.text-sans {
+  color: colors.$gray-500;
+  font-weight: fonts.$font-weight-bold;
+
+  &.text-l {
+    font-size: sizes.$h5-font-size;
+    letter-spacing: 0.1em;
+  }
+  &.text-m {
+    font-size: sizes.$h6-font-size;
+    letter-spacing: 0.09em;
+  }
+  &.text-s {
+    font-size: sizes.$small-font-size;
+    letter-spacing: 0.07em;
+  }
+  &.label {
+    font-size: sizes.$label-font-size;
+    letter-spacing: 0.12em;
+  }
+}
+
+.fw-bold {
+  font-weight: fonts.$font-weight-bold;
+}
+
+.required::after {
+  content: "*";
+  color: colors.$danger;
+  margin-left: 4px;
+}

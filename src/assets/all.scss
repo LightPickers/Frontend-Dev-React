@@ -1,14 +1,20 @@
 @import "bootstrap/scss/functions";
+@import "./utilities/variables";
+@import "./utilities/custom-utitlities";
+@import "bootstrap/scss/bootstrap";
 
-// custom style
+// custom variable
 @import "./stylesheets/colors";
+@import "./stylesheets/fonts";
+@import "./stylesheets/sizes";
+@import "./stylesheets/line-height";
+@import "./stylesheets/border";
 @import "./stylesheets/spacers";
 @import "./stylesheets/grid-system";
-@import "./stylesheets/typography";
-@import "./stylesheets/border";
+
+@import "./mixins/breakpoints";
+
+@import "./base/base";
 
 // custom components
-@import "./component_style/buttons";
-
-@import "./refs/variables";
-@import "bootstrap/scss/bootstrap";
+@import "./components/buttons";
