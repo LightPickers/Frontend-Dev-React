@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
-function PrimaryButton({ children, size = "medium", className, disabled = false, onClick }) {
+function BtnPrimary({ children, size = "medium", className, disabled = false, onClick }) {
   const classes = classNames("btn-custom", size, className);
   return (
     <>
@@ -12,7 +12,7 @@ function PrimaryButton({ children, size = "medium", className, disabled = false,
   );
 }
 
-PrimaryButton.propTypes = {
+BtnPrimary.propTypes = {
   children: PropTypes.string.isRequired, // 必填、字串
   className: PropTypes.string,
   onClick: PropTypes.func, // 函式
@@ -20,10 +20,10 @@ PrimaryButton.propTypes = {
   disabled: PropTypes.bool, // 布林值
 };
 
-PrimaryButton.defaultProps = {
+BtnPrimary.defaultProps = {
   size: "medium",
   disabled: false,
   onClick: () => {},
 };
 
-export default PrimaryButton;
+export default BtnPrimary;
