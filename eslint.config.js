@@ -28,9 +28,32 @@ export default [
         },
       },
       globals: {
+        // 瀏覽器基礎全域物件
         window: "readonly",
         document: "readonly",
         console: "readonly",
+        alert: "readonly",
+        confirm: "readonly",
+        prompt: "readonly",
+
+        // 計時器
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+
+        // 瀏覽器 API
+        localStorage: "readonly",
+        sessionStorage: "readonly",
+        location: "readonly",
+        navigator: "readonly",
+        history: "readonly",
+        fetch: "readonly",
+        Event: "readonly",
+        CustomEvent: "readonly",
+        MutationObserver: "readonly",
       },
     },
     plugins: {
