@@ -1,28 +1,28 @@
-export { default as HomePage } from "./HomePage";
-export { default as ErrorPage } from "./ErrorPage";
+export { default as HomePage } from "@pages/HomePage";
+export { default as ErrorPage } from "@pages/ErrorPage";
 
 // AuthPages
-export { default as LoginPage } from "./AuthPages/LoginPage";
-export { default as RegisterPage } from "./AuthPages/RegisterPage";
+export { default as LoginPage } from "@pages/AuthPages/LoginPage";
+export { default as RegisterPage } from "@pages/AuthPages/RegisterPage";
 
 // CheckoutPages
-export { default as CheckoutPage } from "./CheckoutPages/CheckoutPage";
-export { default as OrderConfirmationPage } from "./CheckoutPages/OrderConfirmationPage";
-export { default as OrderStatusPage } from "./CheckoutPages/OrderStatusPage";
+export { default as CheckoutPage } from "@pages/CheckoutPages/CheckoutPage";
+export { default as OrderConfirmationPage } from "@pages/CheckoutPages/OrderConfirmationPage";
+export { default as OrderStatusPage } from "@pages/CheckoutPages/OrderStatusPage";
 
 // MemberAccountPages
-export { default as AccountDashboardPage } from "./MemberAccountPages/AccountDashboardPage";
-export { default as AccountSettingsPage } from "./MemberAccountPages/AccountSettingsPage";
-export { default as OrderHistoryPage } from "./MemberAccountPages/OrderHistoryPage";
-export { default as WishlistPage } from "./MemberAccountPages/WishlistPage";
+export { default as AccountDashboardPage } from "@pages/MemberAccountPages/AccountDashboardPage";
+export { default as AccountSettingsPage } from "@pages/MemberAccountPages/AccountSettingsPage";
+export { default as OrderHistoryPage } from "@pages/MemberAccountPages/OrderHistoryPage";
+export { default as WishlistPage } from "@pages/MemberAccountPages/WishlistPage";
 
 // ShoppingPages
-export { default as ProductCatalogPage } from "./ShoppingPages/ProductCatalogPage";
-export { default as ProductDetailPage } from "./ShoppingPages/ProductDetailPage";
-export { default as CartPage } from "./ShoppingPages/CartPage";
+export { default as ProductCatalogPage } from "@pages/ShoppingPages/ProductCatalogPage";
+export { default as ProductDetailPage } from "@pages/ShoppingPages/ProductDetailPage";
+export { default as CartPage } from "@pages/ShoppingPages/CartPage";
 
 // SellPages
-export { default as SellProcessPage } from "./SellPages/SellProcessPage";
-export { default as SellFormPage } from "./SellPages/SellFormPage";
-export { default as SellConfirmationPage } from "./SellPages/SellConfirmationPage";
-export { default as SellApplyStatusPage } from "./SellPages/SellApplyStatusPage";
+export { default as SellProcessPage } from "@pages/SellPages/SellProcessPage";
+export { default as SellFormPage } from "@pages/SellPages/SellFormPage";
+export { default as SellConfirmationPage } from "@pages/SellPages/SellConfirmationPage";
+export { default as SellApplyStatusPage } from "@pages/SellPages/SellApplyStatusPage";
