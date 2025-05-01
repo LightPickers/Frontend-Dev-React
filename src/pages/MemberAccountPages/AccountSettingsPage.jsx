@@ -3,7 +3,8 @@ import { useParams, Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-import EditProfileForm from "@/pages/MemberAccountPages/components/EditProfileForm";
+import EditProfileForm from "@/features/users/EditProfileForm";
+import { H2Primary, H5Primary } from "@/components/Headings";
 
 function AccountSettingsPage() {
   const { userId } = useParams();
@@ -27,7 +28,7 @@ function AccountSettingsPage() {
           return;
         }
 
-        const res = await axios.get(`${API_BASE}/profile`, {
+        const res = await axios.get(`${API_BASE}/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log(res);
@@ -47,7 +48,7 @@ function AccountSettingsPage() {
   }, [userId, token, API_BASE]);
 
   if (authorized === null) {
-    return <div className="text-center mt-5">載入中...</div>;
+    return <H5Primary className="text-center mt-5">載入中...</H5Primary>;
   }
 
   if (authorized === false) {
@@ -57,11 +58,11 @@ function AccountSettingsPage() {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">會員帳戶設定</h2>
+      <H2Primary className="mb-4">會員帳戶設定</H2Primary>
       {userData ? (
         <EditProfileForm userData={userData} token={token} />
       ) : (
-        <div>會員資料載入中...</div>
+        <H5Primary>會員資料載入中...</H5Primary>
       )}
     </div>
   );
