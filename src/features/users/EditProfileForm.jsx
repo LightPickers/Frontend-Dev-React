@@ -33,7 +33,7 @@ function EditProfileForm({ userData, token }) {
     try {
       delete data.email;
       const API_BASE = import.meta.env.VITE_API_BASE;
-      await axios.put(`${API_BASE}/profile`, data, {
+      await axios.put(`${API_BASE}/users/profile`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("更新成功");
