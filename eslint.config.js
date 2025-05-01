@@ -77,7 +77,6 @@ export default [
             ["@layouts", "./src/layouts"],
             ["@routes", "./src/routes"],
             ["@assets", "./src/assets"],
-            ["@stylesheets", "./src/assets/stylesheets"],
           ],
           extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
         },
