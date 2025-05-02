@@ -12,7 +12,9 @@ function AccountSettingsPage() {
   const handleUpdateProfile = async newData => {
     setIsUpdating(true);
     try {
-      await updateUser(newData).unwrap();
+      console.log("要更新的資料：", newData);
+      const res = await updateUser(newData).unwrap();
+      console.log("更新回應", res);
       toast.success("更新資料成功");
     } catch (error) {
       console.error("更新失敗：", error);
@@ -40,6 +42,9 @@ function AccountSettingsPage() {
   }
 
   const userData = data.data.user;
+
+  console.log("API 返回的原始數據:", data);
+  console.log("傳給表單的數據:", userData);
 
   return (
     <>

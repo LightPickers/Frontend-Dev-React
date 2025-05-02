@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import BtnPrimary from "@components/Button";
 import TaiwanAddressSelector from "@components/TaiwanAddressSelector";
 import { profileSchema } from "@/schemas/users/profileSchema";
+import { registerSchema } from "@/schemas/users/registerSchema";
 
 function UserProfileForm({
   isEdit = false,
@@ -14,8 +15,9 @@ function UserProfileForm({
   isSubmitting = false,
   isLoggingin = false,
 }) {
+  const validateSchema = isEdit ? profileSchema : registerSchema;
   const methods = useForm({
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(validateSchema),
     mode: "onBlur",
   });
   const {
@@ -27,9 +29,15 @@ function UserProfileForm({
 
   useEffect(() => {
     if (userData) {
+      console.log("重置表單資料:", userData);
       reset(userData);
     }
   }, [userData, reset]);
+
+  const onFormSubmit = data => {
+    console.log("表單提交數據:", data);
+    onSubmit(data);
+  };
 
   return (
     <div className="container py-5">
@@ -41,7 +49,7 @@ function UserProfileForm({
                 {isEdit ? "編輯個人資料" : "會員註冊"}
               </h2>
               <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
                   {/* Email */}
                   <div className="mb-3">
                     <label htmlFor="email" className="form-label">
