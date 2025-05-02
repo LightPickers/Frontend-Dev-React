@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import BtnPrimary from "@components/Button";
-import { useLoginMutation } from "@features/auth/authApi";
+import { useLoginUserMutation } from "@features/users/userApi";
 import { loginSchema } from "@schemas/users/loginSchema";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
 
@@ -16,11 +16,11 @@ function LoginPage() {
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
-  const [login, { isLoading, error }] = useLoginMutation();
+  const [loginUser, { isLoading, error }] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onSubmit = async loginData => {
-    await loginAndRedirect({ login, dispatch, navigate, loginData }); // hook 只能在元件存變數後傳給通用函式
+    await loginAndRedirect({ loginUser, dispatch, navigate, loginData }); // hook 只能在元件存變數後傳給通用函式
   };
   return (
     <div className="container py-5">

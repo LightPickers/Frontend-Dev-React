@@ -3,9 +3,9 @@ import { toast } from "react-toastify";
 
 import { setCredentials } from "@features/auth/authSlice";
 
-async function loginAndRedirect({ login, dispatch, navigate, loginData }) {
+async function loginAndRedirect({ loginUser, dispatch, navigate, loginData }) {
   try {
-    const result = await login(loginData).unwrap();
+    const result = await loginUser(loginData).unwrap();
     const { token, user } = result.data;
 
     // 在 authSlice/localStorage 存資料
