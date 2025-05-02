@@ -1,17 +1,28 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import BtnPrimary from "@components/Button";
 import TaiwanAddressSelector from "@components/TaiwanAddressSelector";
+import { profileSchema } from "@/schemas/users/profileSchema";
 
-function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
-  const methods = useForm();
+function UserProfileForm({
+  isEdit = false,
+  onSubmit,
+  userData = null,
+  isSubmitting = false,
+  isLoggingin = false,
+}) {
+  const methods = useForm({
+    resolver: zodResolver(profileSchema),
+    mode: "onBlur",
+  });
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = methods;
 
   useEffect(() => {
@@ -38,12 +49,13 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                     </label>
                     <input
                       type="email"
-                      className="form-control"
+                      className={`form-control ${errors.email ? "is-invalid" : ""}`}
                       id="email"
                       placeholder="請輸入 Email"
                       {...register("email")}
                       disabled={isEdit}
                     />
+                    {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                   </div>
 
                   {/* 密碼 */}
@@ -54,11 +66,14 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                       </label>
                       <input
                         type="password"
-                        className="form-control"
+                        className={`form-control ${errors.password ? "is-invalid" : ""}`}
                         id="password"
                         placeholder="請輸入密碼"
                         {...register("password")}
                       />
+                      {errors.password && (
+                        <div className="invalid-feedback">{errors.password.message}</div>
+                      )}
                     </div>
                   )}
 
@@ -69,11 +84,12 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                     </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.name ? "is-invalid" : ""}`}
                       id="name"
                       placeholder="請輸入姓名"
                       {...register("name")}
                     />
+                    {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                   </div>
 
                   {/* 電話 */}
@@ -83,11 +99,12 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                     </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.phone ? "is-invalid" : ""}`}
                       id="registerPhone"
                       placeholder="請輸入聯絡電話"
                       {...register("phone")}
                     />
+                    {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
                   </div>
 
                   {/* 頭像 */}
@@ -97,11 +114,12 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                     </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.photo ? "is-invalid" : ""}`}
                       id="avatar"
                       placeholder="請輸入頭像網址"
                       {...register("photo")}
                     />
+                    {errors.photo && <div className="invalid-feedback">{errors.photo.message}</div>}
                   </div>
 
                   {/* 性別 */}
@@ -111,7 +129,7 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                       <div className="form-check">
                         <input
                           type="radio"
-                          className="form-check-input"
+                          className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
                           id="male"
                           value="male"
                           {...register("gender")}
@@ -123,7 +141,7 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                       <div className="form-check">
                         <input
                           type="radio"
-                          className="form-check-input"
+                          className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
                           id="female"
                           value="female"
                           {...register("gender")}
@@ -134,8 +152,8 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                       </div>
                       <div className="form-check">
                         <input
+                          className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
                           type="radio"
-                          className="form-check-input"
                           id="others"
                           value="others"
                           {...register("gender")}
@@ -145,6 +163,9 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                         </label>
                       </div>
                     </div>
+                    {errors.gender && (
+                      <div className="invalid-feedback d-block">{errors.gender.message}</div>
+                    )}
                   </div>
 
                   {/* 生日 */}
@@ -154,17 +175,21 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                     </label>
                     <input
                       type="date"
-                      className="form-control"
+                      className={`form-control ${errors.birth_date ? "is-invalid" : ""}`}
                       id="birthDate"
                       {...register("birth_date")}
                     />
+                    {errors.birth_date && (
+                      <div className="invalid-feedback">{errors.birth_date.message}</div>
+                    )}
                   </div>
 
                   {/* 台灣地址選擇器 */}
                   {/* 確保表單已初始化完成 */}
-                  {Object.keys(methods.formState.defaultValues || {}).length > 0 && (
+                  {/* {Object.keys(methods.formState.defaultValues || {}).length > 0 && (
                     <TaiwanAddressSelector />
-                  )}
+                  )} */}
+                  <TaiwanAddressSelector errors={errors} />
 
                   {/* 詳細地址 */}
                   <div className="mb-4">
@@ -173,15 +198,27 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
                     </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.address_detail ? "is-invalid" : ""}`}
                       id="address"
                       placeholder="請輸入詳細地址"
                       {...register("address_detail")}
                     />
+                    {errors.address_detail && (
+                      <div className="invalid-feedback">{errors.address_detail.message}</div>
+                    )}
                   </div>
 
-                  <BtnPrimary size="large" className="w-100" disabled={!isDirty}>
-                    {isEdit ? "儲存" : "註冊"}
+                  <BtnPrimary
+                    size="large"
+                    className="w-100"
+                    disabled={!isDirty || isSubmitting || isLoggingin}
+                  >
+                    {isEdit && !isSubmitting && "儲存"}
+                    {isEdit && isSubmitting && "儲存中…"}
+                    {!isEdit && !isSubmitting && "註冊"}
+                    {!isEdit && isSubmitting && !isLoggingin && "註冊中…"}
+                    {!isEdit && isSubmitting && isLoggingin && "登入中…"}
+                    {/* {isEdit ? "儲存" : "註冊"} */}
                   </BtnPrimary>
                 </form>
               </FormProvider>
@@ -196,6 +233,8 @@ function UserProfileForm({ isEdit = false, onSubmit, userData = null }) {
 UserProfileForm.propTypes = {
   isEdit: PropTypes.bool,
   onSubmit: PropTypes.func,
+  isSubmitting: PropTypes.bool,
+  isLoggingin: PropTypes.bool,
   userData: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string,
