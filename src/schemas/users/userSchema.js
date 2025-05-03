@@ -33,4 +33,10 @@ export const addressDistrictSchema = z.string().optional();
 export const zipcodeSchema = z.string().regex(/^\d{3}$/, "請選擇縣市以及行政區域");
 export const addressDetailSchema = z.string().min(1, "地址為必填欄位");
 
-export const photoSchema = z.string().url("請填入正確的圖片網址").optional();
+// export const photoSchema = z.string().url("請填入正確的圖片網址").optional();
+export const photoSchema = z.union([
+  z.string().url("請填入正確的圖片網址"),
+  z.string().length(0),
+  z.null(),
+  z.undefined(),
+]);
