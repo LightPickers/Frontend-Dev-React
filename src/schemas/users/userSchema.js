@@ -23,8 +23,8 @@ export const genderSchema = z.enum(["male", "female", "others"], {
 export const birthDateSchema = z
   .string()
   .min(1, "生日為必填欄位")
-  .refine(val => !isNaN(Date.parse(val)), { message: "日期格式錯誤" })
-  .regex(/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, "日期超過合理範圍");
+  .regex(/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, "日期超過合理範圍")
+  .refine(val => !isNaN(Date.parse(val)), { message: "日期格式錯誤" });
 
 export const addressCitySchema = z.string().optional();
 // export const addressCitySchema = z.string().min(1, "縣市為必填欄位");
