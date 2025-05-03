@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useLoginUserMutation, useRegisterUserMutation } from "@features/users/userApi";
 import UserProfileForm from "@features/users/UserProfileForm";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
+import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function RegisterPage() {
   const [registerUser] = useRegisterUserMutation();
@@ -25,9 +26,8 @@ function RegisterPage() {
       setIsLoggingin(true);
       await loginAndRedirect({ loginUser, dispatch, navigate, loginData });
     } catch (error) {
-      console.error("註冊失敗", error);
-      const message = error?.data?.message || "註冊失敗，請稍後再試";
-      toast.error(message);
+      console.error("註冊失敗：", error);
+      toast.error(getApiErrorMessage(error, "註冊失敗，請稍後再試"));
     } finally {
       setIsRegistering(false);
       setIsLoggingin(false);

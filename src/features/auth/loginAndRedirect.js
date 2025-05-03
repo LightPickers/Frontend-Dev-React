@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
 import { setCredentials } from "@features/auth/authSlice";
+import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 async function loginAndRedirect({ loginUser, dispatch, navigate, loginData }) {
   try {
@@ -20,8 +21,7 @@ async function loginAndRedirect({ loginUser, dispatch, navigate, loginData }) {
     toast.success("登入成功！");
   } catch (error) {
     console.error("登入失敗：", error);
-    const message = error?.data?.message || "登入失敗，請稍後再試";
-    toast.error(message);
+    toast.error(getApiErrorMessage(error, "登入失敗，請稍後再試"));
     navigate("/login");
   }
 }
