@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { taiwanDistricts } from "@/data/taiwanDistricts";
+import { taiwanDistricts } from "@data/taiwanDistricts";
 
 export default function useTaiwanDistricts() {
   const [data, setData] = useState(null);
@@ -14,6 +14,9 @@ export default function useTaiwanDistricts() {
 
   return { data, loading, error };
 }
+
+// 以下是從遠端取得資料的方式
+
 // import { useEffect, useState } from "react";
 // import axios from "axios";
 

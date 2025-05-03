@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import loadAuthData from "@/features/auth/loadAuthData";
+import loadAuthData from "@features/auth/loadAuthData";
 
 const initialData = loadAuthData();
 
