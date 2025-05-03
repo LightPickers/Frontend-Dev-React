@@ -1,69 +1,61 @@
-import { useEffect, useState } from "react";
-import { useParams, Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import axios from "axios";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
-import EditProfileForm from "@/pages/MemberAccountPages/components/EditProfileForm";
+import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
+import UserProfileForm from "@features/users/UserProfileForm";
 
 function AccountSettingsPage() {
-  const { userId } = useParams();
-  const token = localStorage.getItem("token");
-  const API_BASE = import.meta.env.VITE_API_BASE;
+  const { data, isLoading, error } = useGetUserProfileQuery();
+  const [updateUser] = useUpdateUserMutation();
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const [authorized, setAuthorized] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const handleUpdateProfile = async newData => {
+    setIsUpdating(true);
+    try {
+      console.log("要更新的資料：", newData);
+      const res = await updateUser(newData).unwrap();
+      console.log("更新回應", res);
+      toast.success("更新資料成功");
+    } catch (error) {
+      console.error("更新失敗：", error);
+      const message = error?.data?.message || "更新失敗，請稍後再試";
+      toast.error(message);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!token) {
-        setAuthorized(false);
-        return;
-      }
-
-      try {
-        const { id: decodedId } = jwtDecode(token);
-        if (decodedId !== userId) {
-          setAuthorized(false);
-          return;
-        }
-
-        const res = await axios.get(`${API_BASE}/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        console.log(res);
-        setUserData(res.data.data.user);
-        setAuthorized(true);
-      } catch (error) {
-        if (error.response) {
-          console.error("狀態碼:", error.response.status);
-          console.error("錯誤消息:", error.response.data);
-        }
-        alert("取得資料失敗");
-        return <Navigate to="/login" />;
-      }
-    };
-
-    fetchProfile();
-  }, [userId, token, API_BASE]);
-
-  if (authorized === null) {
-    return <div className="text-center mt-5">載入中...</div>;
+  if (isLoading) {
+    return <div className="text-center py-4">資料載入中...</div>;
   }
 
-  if (authorized === false) {
-    alert("您無造訪此網頁的權限");
-    return <Navigate to="/login" />;
+  if (error) {
+    return (
+      <div className="text-center py-4 text-red-500">
+        載入數據時發生錯誤：{error?.data?.message || "請稍後再試"}
+      </div>
+    );
   }
+
+  if (!data || !data.data || !data.data.user) {
+    return <div className="text-center py-4">無法獲取用戶資料</div>;
+  }
+
+  const userData = data.data.user;
+
+  console.log("API 返回的原始數據:", data);
+  console.log("傳給表單的數據:", userData);
 
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">會員帳戶設定</h2>
-      {userData ? (
-        <EditProfileForm userData={userData} token={token} />
-      ) : (
-        <div>會員資料載入中...</div>
-      )}
-    </div>
+    <>
+      {/* {isUpdating && <div className="text-center py-2">正在更新資料...</div>} */}
+      <UserProfileForm
+        isEdit={true}
+        userData={userData}
+        onSubmit={handleUpdateProfile}
+        isSubmitting={isUpdating}
+      />
+    </>
   );
 }
 

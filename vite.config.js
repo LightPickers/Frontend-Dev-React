@@ -26,6 +26,11 @@ export default defineConfig(({ mode }) => {
         "@layouts": resolve(__dirname, "./src/layouts"),
         "@routes": resolve(__dirname, "./src/routes"),
         "@assets": resolve(__dirname, "./src/assets"),
+        "@features": resolve(__dirname, "./src/features"),
+        "@hooks": resolve(__dirname, "./src/hooks"),
+        "@schemas": resolve(__dirname, "./src/schemas"),
+        "@utils": resolve(__dirname, "./src/utils"),
+        "@data": resolve(__dirname, "./src/data"),
       },
     },
     css: {
