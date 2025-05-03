@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import BtnPrimary from "@components/Button";
 import TaiwanAddressSelector from "@components/TaiwanAddressSelector";
-import { profileSchema } from "@/schemas/users/profileSchema";
-import { registerSchema } from "@/schemas/users/registerSchema";
+import { profileSchema } from "@schemas/users/profileSchema";
+import { registerSchema } from "@schemas/users/registerSchema";
 
 function UserProfileForm({
   isEdit = false,

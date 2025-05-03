@@ -16,7 +16,7 @@ function LoginPage() {
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
-  const [loginUser, { isLoading, error }] = useLoginUserMutation();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onSubmit = async loginData => {
