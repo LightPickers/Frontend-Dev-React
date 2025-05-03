@@ -29,6 +29,8 @@ export default defineConfig(({ mode }) => {
         "@features": resolve(__dirname, "./src/features"),
         "@hooks": resolve(__dirname, "./src/hooks"),
         "@schemas": resolve(__dirname, "./src/schemas"),
+        "@utils": resolve(__dirname, "./src/utils"),
+        "@data": resolve(__dirname, "./src/data"),
       },
     },
     css: {

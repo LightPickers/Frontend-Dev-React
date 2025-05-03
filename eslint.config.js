@@ -80,6 +80,8 @@ export default [
             ["@features", "./src/features"],
             ["@hooks", "./src/hooks"],
             ["@schemas", "./src/schemas"],
+            ["@utils", "./src/utils"],
+            ["@data", "./src/data"],
           ],
           extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
         },

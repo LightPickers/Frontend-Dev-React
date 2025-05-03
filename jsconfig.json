@@ -10,7 +10,9 @@
       "@assets/*": ["src/assets/*"],
       "@features/*": ["src/features/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@schemas/*": ["src/schemas/*"]
+      "@schemas/*": ["src/schemas/*"],
+      "@utils/*": ["src/utils/*"],
+      "@data/*": ["src/data/*"]
     }
   },
   "include": ["src"]
