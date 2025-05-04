@@ -21,6 +21,7 @@ import {
   ErrorPage,
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
+import ProtectedRoute from "@components/ProtectedRoute";
 
 const ROUTES = {
   HOME: "/",
@@ -140,18 +141,47 @@ const sellRoutes = [
   },
 ];
 
+const protectedRoutes = [
+  ...accountRoutes,
+  ...checkoutRoutes,
+  {
+    path: ROUTES.SELL.ROOT,
+    element: <ProtectedRoute />,
+    children: sellRoutes[0].children,
+  },
+];
+
 // 首頁 & 路徑彙整
 const sitePages = [
   {
     path: ROUTES.HOME,
     element: <HomePage />,
   },
+  {
+    path: ROUTES.SELL.ROOT,
+    element: <SellProcessPage />,
+  },
+  {
+    element: <ProtectedRoute />,
+    children: protectedRoutes,
+  },
   ...authRoutes,
-  ...accountRoutes,
   ...shoppingRoutes,
-  ...checkoutRoutes,
-  ...sellRoutes,
+  // ...accountRoutes,
+  // ...checkoutRoutes,
+  // ...sellRoutes,
 ];
+// const sitePages = [
+//   {
+//     path: ROUTES.HOME,
+//     element: <HomePage />,
+//   },
+//   ...authRoutes,
+//   ...accountRoutes,
+//   ...shoppingRoutes,
+//   ...checkoutRoutes,
+//   ...sellRoutes,
+// ];
 
 const appRoutes = [
   {

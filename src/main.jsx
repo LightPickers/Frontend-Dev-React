@@ -8,11 +8,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import appRouter from "@routes/router";
 import store from "@/store";
+import AppInitializer from "@/components/AppInitializer";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={appRouter} />
+      <AppInitializer>
+        <RouterProvider router={appRouter} />
+      </AppInitializer>
       <ToastContainer position="top-center" autoClose={3000} />
     </Provider>
   </React.StrictMode>

@@ -27,6 +27,12 @@ export const userApi = createApi({
         body: newUser,
       }),
     }),
+    verifyAuth: builder.query({
+      query: () => ({
+        url: "/users/auth/verify",
+        method: "POST",
+      }),
+    }),
     getUserProfile: builder.query({
       query: () => "/users/profile",
     }),
@@ -41,6 +47,7 @@ export const userApi = createApi({
 });
 
 export const {
+  useVerifyAuthQuery,
   useLoginUserMutation,
   useRegisterUserMutation,
   useGetUserProfileQuery,
