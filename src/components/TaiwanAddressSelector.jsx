@@ -206,7 +206,7 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
     <>
       {/* 縣市 */}
       <div className="mb-3">
-        <label htmlFor="address_city" className="form-label">
+        <label htmlFor="address_city" className="form-label required">
           縣市
         </label>
         <select
@@ -234,7 +234,7 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
 
       {/* 鄉鎮區 */}
       <div className="mb-3">
-        <label htmlFor="address_district" className="form-label">
+        <label htmlFor="address_district" className="form-label required">
           鄉鎮區
         </label>
         <select
@@ -262,7 +262,7 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
 
       {/* 郵遞區號（手動輸入） */}
       <div className="mb-3">
-        <label htmlFor="address_zipcode" className="form-label">
+        <label htmlFor="address_zipcode" className="form-label required">
           郵遞區號
         </label>
         <input

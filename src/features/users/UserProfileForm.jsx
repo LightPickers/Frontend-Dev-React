@@ -52,7 +52,7 @@ function UserProfileForm({
                 <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
                   {/* Email */}
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
+                    <label htmlFor="email" className="form-label required">
                       Email
                     </label>
                     <input
@@ -69,7 +69,7 @@ function UserProfileForm({
                   {/* 密碼 */}
                   {!isEdit && (
                     <div className="mb-3">
-                      <label htmlFor="password" className="form-label">
+                      <label htmlFor="password" className="form-label required">
                         密碼
                       </label>
                       <input
@@ -87,7 +87,7 @@ function UserProfileForm({
 
                   {/* 姓名 */}
                   <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
+                    <label htmlFor="name" className="form-label required">
                       姓名
                     </label>
                     <input
@@ -102,7 +102,7 @@ function UserProfileForm({
 
                   {/* 電話 */}
                   <div className="mb-3">
-                    <label className="form-label" htmlFor="registerPhone">
+                    <label className="form-label required" htmlFor="registerPhone">
                       電話
                     </label>
                     <input
@@ -132,7 +132,7 @@ function UserProfileForm({
 
                   {/* 性別 */}
                   <div className="mb-3">
-                    <label className="form-label">性別</label>
+                    <label className="form-label required">性別</label>
                     <div className="d-flex gap-3">
                       <div className="form-check">
                         <input
@@ -178,7 +178,7 @@ function UserProfileForm({
 
                   {/* 生日 */}
                   <div className="mb-3">
-                    <label htmlFor="birthDate" className="form-label">
+                    <label htmlFor="birthDate" className="form-label required">
                       生日
                     </label>
                     <input
@@ -201,7 +201,7 @@ function UserProfileForm({
 
                   {/* 詳細地址 */}
                   <div className="mb-4">
-                    <label htmlFor="address" className="form-label">
+                    <label htmlFor="address" className="form-label required">
                       地址
                     </label>
                     <input
