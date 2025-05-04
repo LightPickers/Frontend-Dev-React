@@ -10,6 +10,7 @@ const authSlice = createSlice({
     user: initialData?.user || null,
     token: initialData?.token || null,
     isAuthenticated: !!initialData?.token,
+    isLoading: true,
   },
   reducers: {
     setCredentials: (state, action) => {
@@ -25,8 +26,11 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       localStorage.removeItem("auth");
     },
+    finishLoading: state => {
+      state.isLoading = false;
+    },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, finishLoading } = authSlice.actions;
 export default authSlice.reducer;

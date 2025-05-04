@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import BtnPrimary from "@components/Button";
 import { useLoginUserMutation } from "@features/users/userApi";
 import { loginSchema } from "@schemas/users/loginSchema";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
+import useAuthRedirect from "@hooks/useAuthRedirect";
 
 function LoginPage() {
   const {
@@ -19,9 +20,20 @@ function LoginPage() {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { redirectedPage, from } = useAuthRedirect();
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname || "/"; // 預設首頁
+
   const onSubmit = async loginData => {
-    await loginAndRedirect({ loginUser, dispatch, navigate, loginData }); // hook 只能在元件存變數後傳給通用函式
+    await loginAndRedirect({
+      loginUser,
+      dispatch,
+      navigate,
+      loginData,
+      onSuccess: redirectedPage,
+    }); // hook 只能在元件存變數後傳給通用函式
   };
+
   return (
     <div className="container py-5">
       <div className="row">
@@ -32,7 +44,7 @@ function LoginPage() {
               <form onSubmit={handleSubmit(onSubmit)}>
                 {/* email */}
                 <div className="mb-3">
-                  <label htmlFor="loginEmail" className="form-label">
+                  <label htmlFor="loginEmail" className="form-label required">
                     Email
                   </label>
                   <input
@@ -47,7 +59,7 @@ function LoginPage() {
 
                 {/* 密碼 */}
                 <div className="mb-3">
-                  <label htmlFor="loginPassword" className="form-label">
+                  <label htmlFor="loginPassword" className="form-label required">
                     密碼
                   </label>
                   <input
