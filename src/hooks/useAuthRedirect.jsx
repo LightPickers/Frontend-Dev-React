@@ -8,9 +8,9 @@ export default function useAuthRedirect() {
   // 把使用者原本想去的頁面存起來，若無則導向首頁
   const from = location.state?.from?.pathname || "/";
 
-  const redirectedPage = () => {
+  const redirectToPage = () => {
     navigate(from, { replace: true });
   };
 
-  return { redirectedPage, from };
+  return { redirectToPage, from };
 }

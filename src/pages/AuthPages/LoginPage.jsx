@@ -20,9 +20,7 @@ function LoginPage() {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { redirectedPage, from } = useAuthRedirect();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/"; // 預設首頁
+  const { redirectToPage } = useAuthRedirect();
 
   const onSubmit = async loginData => {
     await loginAndRedirect({
@@ -30,7 +28,7 @@ function LoginPage() {
       dispatch,
       navigate,
       loginData,
-      onSuccess: redirectedPage,
+      onSuccess: redirectToPage,
     }); // hook 只能在元件存變數後傳給通用函式
   };
 

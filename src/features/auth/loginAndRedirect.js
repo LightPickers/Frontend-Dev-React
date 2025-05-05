@@ -23,11 +23,11 @@ async function loginAndRedirect({ loginUser, dispatch, navigate, loginData, onSu
     toast.success("登入成功！");
     if (onSuccess) {
       onSuccess();
-      console.log("onSuccess");
+      console.log("登入成功");
     } else {
       console.log("navigate");
       const { id: userId } = jwtDecode(token);
-      navigate(`/account/${userId}/settings`);
+      navigate("/account/profile/settings");
     }
   } catch (error) {
     console.error("登入失敗：", error);
