@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <>
-      <div>這是 footer</div>
+      <div className="fixed-bottom">這是 footer</div>
     </>
   );
 }

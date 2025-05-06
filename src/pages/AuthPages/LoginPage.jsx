@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import BtnPrimary from "@components/Button";
@@ -33,7 +33,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 mt-25">
       <div className="row">
         <div className="col-12 col-md-8 col-lg-6 mx-auto">
           <div className="card shadow rounded-4">
@@ -71,11 +71,9 @@ function LoginPage() {
                     <div className="invalid-feedback">{errors.password.message}</div>
                   )}
                 </div>
-                {/* {error?.data?.message && (
-                  <div className="alert alert-danger mt-3" role="alert">
-                    {error.data.message}
-                  </div>
-                )} */}
+                <p className="text-sans text-m text-end">
+                  還沒有會員？前往<Link to="/register">註冊</Link>
+                </p>
 
                 {/* 提交按鈕 */}
                 <BtnPrimary size="large" className="w-100" disabled={isLoading}>
