@@ -13,7 +13,7 @@ export const passwordSchema = z
 export const nameSchema = z
   .string()
   .min(1, "姓名為必填欄位")
-  .regex(/^[a-zA-Z\u4e00-\u9fa5]{2,10}$/, "姓名須為 2-10 個字，不可包含特殊符號與空白");
+  .regex(/^[a-zA-Z\u4e00-\u9fa5]{2,10}$/, "姓名須為 2-10 個字，不可包含特殊符號、空白與數字");
 export const phoneSchema = z
   .string()
   .min(1, "電話為必填欄位")
