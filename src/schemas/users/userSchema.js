@@ -10,7 +10,10 @@ export const passwordSchema = z
     "密碼需包含英文大小寫與數字，至少 8 碼、至多 16 碼"
   );
 
-export const nameSchema = z.string().min(1, "姓名為必填欄位");
+export const nameSchema = z
+  .string()
+  .min(1, "姓名為必填欄位")
+  .regex(/^[a-zA-Z\u4e00-\u9fa5]{2,10}$/, "姓名須為 2-10 個字，不可包含特殊符號與空白");
 export const phoneSchema = z
   .string()
   .min(1, "電話為必填欄位")
