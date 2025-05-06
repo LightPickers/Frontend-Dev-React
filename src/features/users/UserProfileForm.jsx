@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -20,22 +20,69 @@ function UserProfileForm({
     resolver: zodResolver(validateSchema),
     mode: "onBlur",
   });
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isDirty, errors },
+    watch,
+    getValues,
+    formState: { isDirty, errors, dirtyFields },
   } = methods;
+
+  // 保存原始表單數據，用於比較是否有實際更改
+  const originalDataRef = useRef(null);
+
+  // 監聽表單值的變化
+  const watchAllFields = watch();
+
+  // 實現自己的 "isDirty" 檢查，檢測實際內容是否改變
+  const hasRealChanges = () => {
+    if (!originalDataRef.current) return isDirty;
+
+    // 比較當前值和原始值
+    const currentValues = getValues();
+    const originalValues = originalDataRef.current;
+
+    // 檢查每個欄位
+    for (const key in currentValues) {
+      // 如果欄位被標記為 dirty，檢查值是否實際改變
+      if (dirtyFields[key]) {
+        // 特殊處理日期字段
+        if (key === "birth_date") {
+          const currentDate = currentValues[key] ? new Date(currentValues[key]) : null;
+          const originalDate = originalValues[key] ? new Date(originalValues[key]) : null;
+
+          if (currentDate && originalDate) {
+            if (currentDate.getTime() !== originalDate.getTime()) return true;
+          } else if (currentDate !== originalDate) {
+            return true;
+          }
+        }
+        // 一般字段比較
+        else if (currentValues[key] !== originalValues[key]) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
 
   useEffect(() => {
     if (userData) {
       console.log("重置表單資料:", userData);
       reset(userData);
+      originalDataRef.current = { ...userData };
     }
   }, [userData, reset]);
 
   const onFormSubmit = data => {
     console.log("表單提交數據:", data);
+
+    // 更新原始資料參考
+    originalDataRef.current = { ...data };
+
     onSubmit(data);
   };
 
@@ -200,11 +247,8 @@ function UserProfileForm({
                     </div>
 
                     {/* 台灣地址選擇器 */}
-                    {/* 確保表單已初始化完成 */}
-                    {/* {Object.keys(methods.formState.defaultValues || {}).length > 0 && (
-                    <TaiwanAddressSelector />
-                  )} */}
-                    <TaiwanAddressSelector errors={errors} />
+                    {/* 保持地址選擇器的引用，確保重置後也保留值 */}
+                    <TaiwanAddressSelector errors={errors} key="address-selector" />
 
                     {/* 詳細地址 */}
                     <div className="mb-4">
@@ -226,14 +270,13 @@ function UserProfileForm({
                     <BtnPrimary
                       size="large"
                       className="w-100"
-                      disabled={!isDirty || isSubmitting || isLoggingin}
+                      disabled={!hasRealChanges() || isSubmitting || isLoggingin}
                     >
                       {isEdit && !isSubmitting && "儲存"}
                       {isEdit && isSubmitting && "儲存中…"}
                       {!isEdit && !isSubmitting && "註冊"}
                       {!isEdit && isSubmitting && !isLoggingin && "註冊中…"}
                       {!isEdit && isSubmitting && isLoggingin && "登入中…"}
-                      {/* {isEdit ? "儲存" : "註冊"} */}
                     </BtnPrimary>
                   </fieldset>
                 </form>
