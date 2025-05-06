@@ -12,7 +12,9 @@ export const userApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["User"],
   endpoints: builder => ({
+    // 用戶登入
     loginUser: builder.mutation({
       query: credentials => ({
         url: "/users/login",
@@ -20,6 +22,7 @@ export const userApi = createApi({
         body: credentials,
       }),
     }),
+    // 用戶註冊
     registerUser: builder.mutation({
       query: newUser => ({
         url: "/users/signup",
@@ -27,20 +30,34 @@ export const userApi = createApi({
         body: newUser,
       }),
     }),
+    // 驗證登入身分
+    verifyAuth: builder.query({
+      query: () => ({
+        url: "/users/auth/verify",
+        method: "POST",
+      }),
+      providesTags: ["User"],
+    }),
+    // 取得用戶資料
     getUserProfile: builder.query({
       query: () => "/users/profile",
+      providesTags: ["User"],
     }),
+    // 修改用戶資料
     updateUser: builder.mutation({
       query: updatedUser => ({
         url: "/users/profile",
         method: "PUT",
         body: updatedUser,
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });
 
 export const {
+  useVerifyAuthQuery,
+  useLazyVerifyAuthQuery,
   useLoginUserMutation,
   useRegisterUserMutation,
   useGetUserProfileQuery,

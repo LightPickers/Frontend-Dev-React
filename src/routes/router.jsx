@@ -21,38 +21,40 @@ import {
   ErrorPage,
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
+import ProtectedRoute from "@components/ProtectedRoute";
 
 const ROUTES = {
-  HOME: "/",
+  HOME: "/", // 首頁
   AUTH: {
-    REGISTER: "/register",
-    LOGIN: "/login",
+    REGISTER: "/register", // 註冊
+    LOGIN: "/login", // 登入
   },
   ACCOUNT: {
-    ROOT: "/account/:userId",
-    SETTINGS: "settings",
-    ORDERS: "orders",
-    WISHLISTS: "wishlists",
+    ROOT: "/account/profile", // 會員中心首頁（目前沒線稿）
+    SETTINGS: "settings", // 會員資料管理 // /account/profile/settings
+    ORDERS: "orders", // 訂單管理
+    WISHLISTS: "wishlists", // 收藏列表
   },
   SHOPPING: {
-    PRODUCTS: "/products",
-    PRODUCT_DETAIL: "/products/:productId",
-    CART: "/cart/:cartId",
+    PRODUCTS: "/products", // 產品列表頁
+    PRODUCT_DETAIL: "/products/:productId", // 產品資訊頁
   },
   CHECKOUT: {
-    CHECKOUT: "/checkout/:cartId",
-    CONFIRMATION: "/checkout/confirmation/:orderId",
-    STATUS: "/checkout/status/:orderId",
+    CART: "/cart", // 購物車 // /cart
+    CHECKOUT: "/checkout", // 結帳頁面 // /checkout
+    CONFIRMATION: "/checkout/confirmation/:orderId", // 確認結帳頁面
+    STATUS: "/checkout/status/:orderId", // 結帳結果頁面
   },
   SELL: {
-    ROOT: "/sell",
-    FORM: "form",
-    CONFIRMATION: "confirmation/:applicationId",
-    STATUS: "status/:applicationId",
+    ROOT: "/sell", // 出售流程
+    // 注意：子路由現在在受保護路由中需要完整路徑
+    FORM: "form", // 出售列表
+    CONFIRMATION: "confirmation/:applicationId", // 確認出售資訊頁
+    STATUS: "status/:applicationId", // 出售狀態頁
   },
 };
 
-// 註冊、登入
+// 註冊、登入 (公開路由)
 const authRoutes = [
   {
     path: ROUTES.AUTH.REGISTER,
@@ -64,7 +66,20 @@ const authRoutes = [
   },
 ];
 
-// 會員中心
+// 商品目錄 (公開路由)
+const shoppingRoutes = [
+  {
+    path: ROUTES.SHOPPING.PRODUCTS,
+    element: <ProductCatalogPage />,
+  },
+  {
+    path: ROUTES.SHOPPING.PRODUCT_DETAIL,
+    element: <ProductDetailPage />,
+  },
+];
+
+// 需要保護的路由 (需要登入)
+// 會員中心路由
 const accountRoutes = [
   {
     path: ROUTES.ACCOUNT.ROOT,
@@ -86,24 +101,12 @@ const accountRoutes = [
   },
 ];
 
-// 商品、購物車
-const shoppingRoutes = [
+// 結帳路由
+const checkoutRoutes = [
   {
-    path: ROUTES.SHOPPING.PRODUCTS,
-    element: <ProductCatalogPage />,
-  },
-  {
-    path: ROUTES.SHOPPING.PRODUCT_DETAIL,
-    element: <ProductDetailPage />,
-  },
-  {
-    path: ROUTES.SHOPPING.CART,
+    path: ROUTES.CHECKOUT.CART,
     element: <CartPage />,
   },
-];
-
-// 結帳
-const checkoutRoutes = [
   {
     path: ROUTES.CHECKOUT.CHECKOUT,
     element: <CheckoutPage />,
@@ -118,39 +121,50 @@ const checkoutRoutes = [
   },
 ];
 
-// 出售流程
-const sellRoutes = [
+// 出售流程相關路由
+// 主頁面是公開的，但表單和狀態頁面需要保護
+const sellPublicRoute = {
+  path: ROUTES.SELL.ROOT,
+  element: <SellProcessPage />,
+};
+
+// 出售流程子路由：因受保護，放上完整路徑
+const sellProtectedRoutes = [
   {
-    path: ROUTES.SELL.ROOT,
-    element: <SellProcessPage />,
-    children: [
-      {
-        path: ROUTES.SELL.FORM,
-        element: <SellFormPage />,
-      },
-      {
-        path: ROUTES.SELL.CONFIRMATION,
-        element: <SellConfirmationPage />,
-      },
-      {
-        path: ROUTES.SELL.STATUS,
-        element: <SellApplyStatusPage />,
-      },
-    ],
+    path: `${ROUTES.SELL.ROOT}/${ROUTES.SELL.FORM}`,
+    element: <SellFormPage />,
+  },
+  {
+    path: `${ROUTES.SELL.ROOT}/${ROUTES.SELL.CONFIRMATION}`,
+    element: <SellConfirmationPage />,
+  },
+  {
+    path: `${ROUTES.SELL.ROOT}/${ROUTES.SELL.STATUS}`,
+    element: <SellApplyStatusPage />,
   },
 ];
 
-// 首頁 & 路徑彙整
-const sitePages = [
+// 整合所有需要保護的路由
+const protectedRoutes = [...accountRoutes, ...checkoutRoutes, ...sellProtectedRoutes];
+
+// 首頁與公開路由
+const publicRoutes = [
   {
     path: ROUTES.HOME,
     element: <HomePage />,
   },
+  sellPublicRoute,
   ...authRoutes,
-  ...accountRoutes,
   ...shoppingRoutes,
-  ...checkoutRoutes,
-  ...sellRoutes,
+];
+
+// 整合所有路由
+const sitePages = [
+  ...publicRoutes,
+  {
+    element: <ProtectedRoute />,
+    children: protectedRoutes,
+  },
 ];
 
 const appRoutes = [

@@ -6,6 +6,7 @@ export { default as LoginPage } from "@pages/AuthPages/LoginPage";
 export { default as RegisterPage } from "@pages/AuthPages/RegisterPage";
 
 // CheckoutPages
+export { default as CartPage } from "@pages/CheckoutPages/CartPage";
 export { default as CheckoutPage } from "@pages/CheckoutPages/CheckoutPage";
 export { default as OrderConfirmationPage } from "@pages/CheckoutPages/OrderConfirmationPage";
 export { default as OrderStatusPage } from "@pages/CheckoutPages/OrderStatusPage";
@@ -19,7 +20,6 @@ export { default as WishlistPage } from "@pages/MemberAccountPages/WishlistPage"
 // ShoppingPages
 export { default as ProductCatalogPage } from "@pages/ShoppingPages/ProductCatalogPage";
 export { default as ProductDetailPage } from "@pages/ShoppingPages/ProductDetailPage";
-export { default as CartPage } from "@pages/ShoppingPages/CartPage";
 
 // SellPages
 export { default as SellProcessPage } from "@pages/SellPages/SellProcessPage";

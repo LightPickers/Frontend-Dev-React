@@ -1,6 +1,7 @@
 @import "bootstrap/scss/functions";
 @import "./utilities/variables";
 @import "./utilities/custom-utitlities";
+@import "./stylesheets/spacers";
 @import "bootstrap/scss/bootstrap";
 
 // custom variable
@@ -9,7 +10,7 @@
 @import "./stylesheets/sizes";
 @import "./stylesheets/line-height";
 @import "./stylesheets/border";
-@import "./stylesheets/spacers";
+
 @import "./stylesheets/grid-system";
 
 @import "./mixins/breakpoints";
@@ -18,3 +19,5 @@
 
 // custom components
 @import "./components/buttons";
+
+// page

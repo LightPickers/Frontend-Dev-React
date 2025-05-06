@@ -85,23 +85,23 @@ img {
 .text-sans {
   color: colors.$gray-500;
   font-weight: fonts.$font-weight-bold;
+}
 
-  &.text-l {
-    font-size: sizes.$h5-font-size;
-    letter-spacing: 0.1em;
-  }
-  &.text-m {
-    font-size: sizes.$h6-font-size;
-    letter-spacing: 0.09em;
-  }
-  &.text-s {
-    font-size: sizes.$small-font-size;
-    letter-spacing: 0.07em;
-  }
-  &.label {
-    font-size: sizes.$label-font-size;
-    letter-spacing: 0.12em;
-  }
+.text-l {
+  font-size: sizes.$h5-font-size;
+  letter-spacing: 0.1em;
+}
+.text-m {
+  font-size: sizes.$h6-font-size;
+  letter-spacing: 0.09em;
+}
+.text-s {
+  font-size: sizes.$small-font-size;
+  letter-spacing: 0.07em;
+}
+.label {
+  font-size: sizes.$label-font-size;
+  letter-spacing: 0.12em;
 }
 
 .fw-bold {

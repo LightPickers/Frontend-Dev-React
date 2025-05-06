@@ -12,9 +12,30 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
   const [initialized, setInitialized] = useState(false);
   const [isInitialSetup, setIsInitialSetup] = useState(true);
 
+  // 保存最後一次提交的表單值
+  const [lastFormValues, setLastFormValues] = useState({
+    address_zipcode: "",
+    address_city: "",
+    address_district: "",
+  });
+
   const zipcode = watch("address_zipcode");
   const city = watch("address_city");
   const district = watch("address_district");
+
+  // 添加一個追蹤用戶是否已經互動的狀態
+  const [userHasInteracted, setUserHasInteracted] = useState(false);
+
+  // 提交表單時的處理函數 - 在 UserProfileForm 中調用
+  // 這個方法需要在 UserProfileForm 中通過 props 傳入
+  const saveFormValues = () => {
+    // 保存提交時的表單值
+    setLastFormValues({
+      address_zipcode: getValues("address_zipcode") || "",
+      address_city: getValues("address_city") || "",
+      address_district: getValues("address_district") || "",
+    });
+  };
 
   // 根據郵遞區號查找並設定縣市和鄉鎮區
   const updateAddressByZipcode = useCallback(
@@ -78,13 +99,26 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
       if (cityData && Array.isArray(cityData.districts)) {
         const districtList = cityData.districts.map(dist => dist.name);
         setDistricts(districtList);
+
+        // 當城市變更時，重置區域選擇 - 但不標記為 dirty
+        const currentDistrict = getValues("address_district");
+        if (currentDistrict) {
+          // 檢查目前的區域是否在新的城市的區域列表中
+          const districtExists = cityData.districts.some(dist => dist.name === currentDistrict);
+          if (!districtExists) {
+            setValue("address_district", "", {
+              shouldValidate: true,
+              shouldDirty: false, // 不標記為 dirty
+            });
+          }
+        }
       } else {
         setDistricts([]);
       }
     } else {
       setDistricts([]);
     }
-  }, [city, taiwanDistricts]);
+  }, [city, taiwanDistricts, setValue, getValues]);
 
   // 根據 district 自動設定 zipcode
   useEffect(() => {
@@ -112,6 +146,13 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
         const currentZipcode = getValues("address_zipcode");
         const currentCity = getValues("address_city");
         const currentDistrict = getValues("address_district");
+
+        // 保存初始值作為最後提交的值
+        setLastFormValues({
+          address_zipcode: currentZipcode || "",
+          address_city: currentCity || "",
+          address_district: currentDistrict || "",
+        });
 
         // 強制使用郵遞區號優先更新地址
         if (currentZipcode) {
@@ -206,7 +247,7 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
     <>
       {/* 縣市 */}
       <div className="mb-3">
-        <label htmlFor="address_city" className="form-label">
+        <label htmlFor="address_city" className="form-label required">
           縣市
         </label>
         <select
@@ -215,12 +256,16 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
           disabled={disabled || !taiwanDistricts}
           {...register("address_city", {
             onChange: () => {
+              // 標記用戶已經互動
+              setUserHasInteracted(true);
               // 用戶選擇後立即將 isInitialSetup 設為 false
               if (isInitialSetup) setIsInitialSetup(false);
             },
           })}
         >
-          <option value="">請選擇縣市</option>
+          <option value="" disabled>
+            請選擇縣市
+          </option>
           {cities.map(cityName => (
             <option key={cityName} value={cityName}>
               {cityName}
@@ -234,7 +279,7 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
 
       {/* 鄉鎮區 */}
       <div className="mb-3">
-        <label htmlFor="address_district" className="form-label">
+        <label htmlFor="address_district" className="form-label required">
           鄉鎮區
         </label>
         <select
@@ -243,12 +288,16 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
           disabled={disabled || !city || !taiwanDistricts}
           {...register("address_district", {
             onChange: () => {
+              // 標記用戶已經互動
+              setUserHasInteracted(true);
               // 用戶選擇後立即將 isInitialSetup 設為 false
               if (isInitialSetup) setIsInitialSetup(false);
             },
           })}
         >
-          <option value="">請選擇區域</option>
+          <option value="" disabled>
+            請選擇區域
+          </option>
           {districts.map(distName => (
             <option key={distName} value={distName}>
               {distName}
@@ -262,7 +311,7 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
 
       {/* 郵遞區號（手動輸入） */}
       <div className="mb-3">
-        <label htmlFor="address_zipcode" className="form-label">
+        <label htmlFor="address_zipcode" className="form-label required">
           郵遞區號
         </label>
         <input
@@ -271,6 +320,8 @@ function TaiwanAddressSelector({ disabled = false, errors }) {
           className={`form-control ${errors.address_zipcode ? "is-invalid" : ""}`}
           {...register("address_zipcode", {
             onChange: () => {
+              // 標記用戶已經互動
+              setUserHasInteracted(true);
               // 用戶輸入後立即將 isInitialSetup 設為 false
               if (isInitialSetup) setIsInitialSetup(false);
             },

@@ -3,8 +3,6 @@ import { useEffect } from "react";
 
 import Header from "@layouts/Header";
 import Footer from "@layouts/Footer";
-import DemoRegister from "@/DemoRegister";
-import StyleSettings from "@/layouts/StyleSettings";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -22,8 +20,6 @@ function LightPickersApp() {
       <ScrollToTop />
       <Header />
       <Outlet />
-      <StyleSettings />
-      <DemoRegister />
       <Footer />
     </>
   );
