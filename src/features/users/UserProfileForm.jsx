@@ -40,7 +40,7 @@ function UserProfileForm({
   };
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 mt-25">
       <div className="row">
         <div className="col-12 col-md-8 col-lg-6 mx-auto">
           <div className="card shadow rounded-4">
@@ -50,184 +50,192 @@ function UserProfileForm({
               </h2>
               <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
-                  {/* Email */}
-                  <div className="mb-3">
-                    <label htmlFor="email" className="form-label required">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                      id="email"
-                      placeholder="請輸入 Email"
-                      {...register("email")}
-                      disabled={isEdit}
-                    />
-                    {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
-                  </div>
-
-                  {/* 密碼 */}
-                  {!isEdit && (
+                  <fieldset disabled={isSubmitting || isLoggingin}>
+                    {/* Email */}
                     <div className="mb-3">
-                      <label htmlFor="password" className="form-label required">
-                        密碼
+                      <label htmlFor="email" className="form-label required">
+                        Email
                       </label>
                       <input
-                        type="password"
-                        className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                        id="password"
-                        placeholder="請輸入密碼"
-                        {...register("password")}
+                        type="email"
+                        className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                        id="email"
+                        placeholder="請輸入 Email"
+                        {...register("email")}
+                        disabled={isEdit}
                       />
-                      {errors.password && (
-                        <div className="invalid-feedback">{errors.password.message}</div>
+                      {errors.email && (
+                        <div className="invalid-feedback">{errors.email.message}</div>
                       )}
                     </div>
-                  )}
 
-                  {/* 姓名 */}
-                  <div className="mb-3">
-                    <label htmlFor="name" className="form-label required">
-                      姓名
-                    </label>
-                    <input
-                      type="text"
-                      className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                      id="name"
-                      placeholder="請輸入姓名"
-                      {...register("name")}
-                    />
-                    {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
-                  </div>
-
-                  {/* 電話 */}
-                  <div className="mb-3">
-                    <label className="form-label required" htmlFor="registerPhone">
-                      電話
-                    </label>
-                    <input
-                      type="text"
-                      className={`form-control ${errors.phone ? "is-invalid" : ""}`}
-                      id="registerPhone"
-                      placeholder="請輸入聯絡電話"
-                      {...register("phone")}
-                    />
-                    {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
-                  </div>
-
-                  {/* 頭像 */}
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="avatar">
-                      頭像
-                    </label>
-                    <input
-                      type="text"
-                      className={`form-control ${errors.photo ? "is-invalid" : ""}`}
-                      id="avatar"
-                      placeholder="請輸入頭像網址"
-                      {...register("photo")}
-                    />
-                    {errors.photo && <div className="invalid-feedback">{errors.photo.message}</div>}
-                  </div>
-
-                  {/* 性別 */}
-                  <div className="mb-3">
-                    <label className="form-label required">性別</label>
-                    <div className="d-flex gap-3">
-                      <div className="form-check">
-                        <input
-                          type="radio"
-                          className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
-                          id="male"
-                          value="male"
-                          {...register("gender")}
-                        />
-                        <label htmlFor="male" className="form-check-label">
-                          男性
+                    {/* 密碼 */}
+                    {!isEdit && (
+                      <div className="mb-3">
+                        <label htmlFor="password" className="form-label required">
+                          密碼
                         </label>
-                      </div>
-                      <div className="form-check">
                         <input
-                          type="radio"
-                          className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
-                          id="female"
-                          value="female"
-                          {...register("gender")}
+                          type="password"
+                          className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                          id="password"
+                          placeholder="請輸入密碼"
+                          {...register("password")}
                         />
-                        <label htmlFor="female" className="form-check-label">
-                          女性
-                        </label>
+                        {errors.password && (
+                          <div className="invalid-feedback">{errors.password.message}</div>
+                        )}
                       </div>
-                      <div className="form-check">
-                        <input
-                          className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
-                          type="radio"
-                          id="others"
-                          value="others"
-                          {...register("gender")}
-                        />
-                        <label htmlFor="others" className="form-check-label">
-                          其他
-                        </label>
-                      </div>
+                    )}
+
+                    {/* 姓名 */}
+                    <div className="mb-3">
+                      <label htmlFor="name" className="form-label required">
+                        姓名
+                      </label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                        id="name"
+                        placeholder="請輸入姓名"
+                        {...register("name")}
+                      />
+                      {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
                     </div>
-                    {errors.gender && (
-                      <div className="invalid-feedback d-block">{errors.gender.message}</div>
-                    )}
-                  </div>
 
-                  {/* 生日 */}
-                  <div className="mb-3">
-                    <label htmlFor="birthDate" className="form-label required">
-                      生日
-                    </label>
-                    <input
-                      type="date"
-                      className={`form-control ${errors.birth_date ? "is-invalid" : ""}`}
-                      id="birthDate"
-                      {...register("birth_date")}
-                    />
-                    {errors.birth_date && (
-                      <div className="invalid-feedback">{errors.birth_date.message}</div>
-                    )}
-                  </div>
+                    {/* 電話 */}
+                    <div className="mb-3">
+                      <label className="form-label required" htmlFor="registerPhone">
+                        電話
+                      </label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+                        id="registerPhone"
+                        placeholder="請輸入聯絡電話"
+                        {...register("phone")}
+                      />
+                      {errors.phone && (
+                        <div className="invalid-feedback">{errors.phone.message}</div>
+                      )}
+                    </div>
 
-                  {/* 台灣地址選擇器 */}
-                  {/* 確保表單已初始化完成 */}
-                  {/* {Object.keys(methods.formState.defaultValues || {}).length > 0 && (
+                    {/* 頭像 */}
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="avatar">
+                        頭像
+                      </label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.photo ? "is-invalid" : ""}`}
+                        id="avatar"
+                        placeholder="請輸入頭像網址"
+                        {...register("photo")}
+                      />
+                      {errors.photo && (
+                        <div className="invalid-feedback">{errors.photo.message}</div>
+                      )}
+                    </div>
+
+                    {/* 性別 */}
+                    <div className="mb-3">
+                      <label className="form-label required">性別</label>
+                      <div className="d-flex gap-3">
+                        <div className="form-check">
+                          <input
+                            type="radio"
+                            className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
+                            id="male"
+                            value="male"
+                            {...register("gender")}
+                          />
+                          <label htmlFor="male" className="form-check-label">
+                            男性
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            type="radio"
+                            className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
+                            id="female"
+                            value="female"
+                            {...register("gender")}
+                          />
+                          <label htmlFor="female" className="form-check-label">
+                            女性
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
+                            type="radio"
+                            id="others"
+                            value="others"
+                            {...register("gender")}
+                          />
+                          <label htmlFor="others" className="form-check-label">
+                            其他
+                          </label>
+                        </div>
+                      </div>
+                      {errors.gender && (
+                        <div className="invalid-feedback d-block">{errors.gender.message}</div>
+                      )}
+                    </div>
+
+                    {/* 生日 */}
+                    <div className="mb-3">
+                      <label htmlFor="birthDate" className="form-label required">
+                        生日
+                      </label>
+                      <input
+                        type="date"
+                        className={`form-control ${errors.birth_date ? "is-invalid" : ""}`}
+                        id="birthDate"
+                        {...register("birth_date")}
+                      />
+                      {errors.birth_date && (
+                        <div className="invalid-feedback">{errors.birth_date.message}</div>
+                      )}
+                    </div>
+
+                    {/* 台灣地址選擇器 */}
+                    {/* 確保表單已初始化完成 */}
+                    {/* {Object.keys(methods.formState.defaultValues || {}).length > 0 && (
                     <TaiwanAddressSelector />
                   )} */}
-                  <TaiwanAddressSelector errors={errors} />
+                    <TaiwanAddressSelector errors={errors} />
 
-                  {/* 詳細地址 */}
-                  <div className="mb-4">
-                    <label htmlFor="address" className="form-label required">
-                      地址
-                    </label>
-                    <input
-                      type="text"
-                      className={`form-control ${errors.address_detail ? "is-invalid" : ""}`}
-                      id="address"
-                      placeholder="請輸入詳細地址"
-                      {...register("address_detail")}
-                    />
-                    {errors.address_detail && (
-                      <div className="invalid-feedback">{errors.address_detail.message}</div>
-                    )}
-                  </div>
+                    {/* 詳細地址 */}
+                    <div className="mb-4">
+                      <label htmlFor="address" className="form-label required">
+                        地址
+                      </label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.address_detail ? "is-invalid" : ""}`}
+                        id="address"
+                        placeholder="請輸入詳細地址"
+                        {...register("address_detail")}
+                      />
+                      {errors.address_detail && (
+                        <div className="invalid-feedback">{errors.address_detail.message}</div>
+                      )}
+                    </div>
 
-                  <BtnPrimary
-                    size="large"
-                    className="w-100"
-                    disabled={!isDirty || isSubmitting || isLoggingin}
-                  >
-                    {isEdit && !isSubmitting && "儲存"}
-                    {isEdit && isSubmitting && "儲存中…"}
-                    {!isEdit && !isSubmitting && "註冊"}
-                    {!isEdit && isSubmitting && !isLoggingin && "註冊中…"}
-                    {!isEdit && isSubmitting && isLoggingin && "登入中…"}
-                    {/* {isEdit ? "儲存" : "註冊"} */}
-                  </BtnPrimary>
+                    <BtnPrimary
+                      size="large"
+                      className="w-100"
+                      disabled={!isDirty || isSubmitting || isLoggingin}
+                    >
+                      {isEdit && !isSubmitting && "儲存"}
+                      {isEdit && isSubmitting && "儲存中…"}
+                      {!isEdit && !isSubmitting && "註冊"}
+                      {!isEdit && isSubmitting && !isLoggingin && "註冊中…"}
+                      {!isEdit && isSubmitting && isLoggingin && "登入中…"}
+                      {/* {isEdit ? "儲存" : "註冊"} */}
+                    </BtnPrimary>
+                  </fieldset>
                 </form>
               </FormProvider>
             </div>
