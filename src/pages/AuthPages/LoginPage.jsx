@@ -16,6 +16,7 @@ function LoginPage() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
+    mode: "onBlur",
   });
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
