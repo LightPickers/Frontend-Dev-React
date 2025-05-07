@@ -1,11 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { TextLarge } from "@components/TextTypography";
 import { BtnPrimary } from "@components/Buttons";
 
 function Header() {
-  const [isLogin, setIsLogin] = useState(null);
+  const user = useSelector(state => state.auth.user);
+  console.log(user);
   const navItems = [
     { name: "相機", path: "/products?category=cameras" },
     { name: "機身", path: "/products?category=camera_bodies" },
@@ -34,7 +36,7 @@ function Header() {
             ))}
           </ul>
           {/* icon */}
-          <div className="d-flex gap-7">
+          <div className="d-flex align-items-center gap-7">
             <div className="d-flex align-items-center gap-3">
               <Link className="btn btn-link">
                 <img src="/public/icon/search.svg" alt="搜尋" />
@@ -46,20 +48,21 @@ function Header() {
                 <img src="/public/icon/cart.svg" alt="購物車" />
               </Link>
             </div>
-            {isLogin ? (
+            {user ? (
               <div>
-                <Link to="/profile" className="user-avatar">
+                <Link to="/account/profile/settings" className="user-avatar">
                   <img
-                    src="/api/placeholder/40/40"
-                    alt="User Avatar"
-                    className="rounded-circle"
-                    width="32"
-                    height="32"
+                    src={user.photo || "/public/icon/default_avatar.svg"}
+                    alt={user.name}
+                    className="user-avatar rounded-circle bg-primary-100 p-1"
+                    title="前往會員中心"
                   />
                 </Link>
               </div>
             ) : (
-              <BtnPrimary>註冊∕登入</BtnPrimary>
+              <BtnPrimary as={Link} to="/login">
+                註冊∕登入
+              </BtnPrimary>
             )}
           </div>
         </div>
