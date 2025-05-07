@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import { finishLoading } from "@/features/auth/authSlice";
-import { useLazyVerifyAuthQuery } from "@/features/users/userApi";
+import { finishLoading } from "@features/auth/authSlice";
+import { useLazyVerifyAuthQuery } from "@features/users/userApi";
 
 export function AuthProvider({ children }) {
   const dispatch = useDispatch();
