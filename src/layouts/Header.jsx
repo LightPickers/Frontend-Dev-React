@@ -8,6 +8,7 @@ import { BtnPrimary } from "@components/Buttons";
 function Header() {
   const user = useSelector(state => state.auth.user);
   console.log(user);
+  const APP_BASE = import.meta.env.VITE_APP_BASE;
   const navItems = [
     { name: "相機", path: "/products?category=cameras" },
     { name: "機身", path: "/products?category=camera_bodies" },
@@ -21,7 +22,7 @@ function Header() {
       <div className="container">
         {/* Logo */}
         <Link className="navbar-brand" to="/">
-          <img src="/public/logo.svg" alt="拾光堂 logo" />
+          <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" />
         </Link>
 
         {/* 導航項目 */}
@@ -39,20 +40,20 @@ function Header() {
           <div className="d-flex align-items-center gap-7">
             <div className="d-flex align-items-center gap-3">
               <Link className="btn btn-link">
-                <img src="/public/icon/search.svg" alt="搜尋" />
+                <img src={`${APP_BASE}icon/search.svg`} alt="搜尋" />
               </Link>
               <Link className="btn btn-link">
-                <img src="/public/icon/favorite.svg" alt="收藏清單" />
+                <img src={`${APP_BASE}icon/favorite.svg`} alt="收藏清單" />
               </Link>
               <Link className="btn btn-link">
-                <img src="/public/icon/cart.svg" alt="購物車" />
+                <img src={`${APP_BASE}icon/cart.svg`} alt="購物車" />
               </Link>
             </div>
             {user ? (
               <div>
                 <Link to="/account/profile/settings" className="user-avatar">
                   <img
-                    src={user.photo || "/public/icon/default_avatar.svg"}
+                    src={user.photo || `${APP_BASE}icon/default_avatar.svg`}
                     alt={user.name}
                     className="user-avatar rounded-circle bg-primary-100 p-1"
                     title="前往會員中心"
