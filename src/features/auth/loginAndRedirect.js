@@ -17,10 +17,10 @@ async function loginAndRedirect({ loginUser, dispatch, navigate, loginData, onSu
     // 成功訊息
     toast.success("登入成功！");
     if (onSuccess) {
-      onSuccess();
+      onSuccess(); // 跳轉目標頁面
     } else {
       // const { id: userId } = jwtDecode(token);
-      navigate("/account/profile/settings");
+      navigate("/");
     }
   } catch (error) {
     toast.error(getApiErrorMessage(error, "登入失敗，請稍後再試"));
