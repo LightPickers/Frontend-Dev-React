@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -36,7 +36,7 @@ function LoginPage() {
 
   return (
     <>
-      <RedirectIfAuthenticated />
+      {/* <RedirectIfAuthenticated /> */}
       <div className="container py-5 mt-25">
         <div className="row">
           <div className="col-12 col-md-8 col-lg-6 mx-auto">

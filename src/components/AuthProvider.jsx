@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import { finishLoading } from "@features/auth/authSlice";
+import { finishLoading, setVerified } from "@features/auth/authSlice";
 import { useLazyVerifyAuthQuery } from "@features/users/userApi";
 
 export function AuthProvider({ children }) {
@@ -17,9 +17,10 @@ export function AuthProvider({ children }) {
           await verifyAuth().unwrap();
         } catch (err) {
           console.error("認證驗證失敗:", err);
+          dispatch(setVerified());
         }
       } else {
-        dispatch(finishLoading());
+        dispatch(setVerified());
       }
     };
 

@@ -13,6 +13,7 @@ const authSlice = createSlice({
     token: initialData?.token || null,
     isAuthenticated: !!initialData?.token,
     isLoading: true,
+    isVerified: false,
     error: null,
   },
   reducers: {
@@ -39,6 +40,10 @@ const authSlice = createSlice({
     },
     clearError: state => {
       state.error = null;
+    },
+    setVerified: state => {
+      state.isLoading = false;
+      state.isVerified = true;
     },
   },
   // 監聽 RTK Query
@@ -82,6 +87,7 @@ const authSlice = createSlice({
       .addMatcher(userApi.endpoints.verifyAuth.matchFulfilled, (state, { payload }) => {
         state.isAuthenticated = true;
         state.isLoading = false;
+        state.isVerified = true;
         // 更新用戶資料 (可選)
         if (payload.user) {
           const updatedData = {
@@ -104,6 +110,7 @@ const authSlice = createSlice({
         state.token = null;
         state.isAuthenticated = false;
         state.isLoading = false;
+        state.isVerified = true;
         localStorage.removeItem("auth");
       })
       // 處理用戶資料更新
@@ -138,5 +145,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout, finishLoading, setError, clearError } = authSlice.actions;
+export const { setCredentials, logout, finishLoading, setError, clearError, setVerified } =
+  authSlice.actions;
 export default authSlice.reducer;

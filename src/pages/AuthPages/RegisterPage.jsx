@@ -1,14 +1,14 @@
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useLoginUserMutation, useRegisterUserMutation } from "@features/users/userApi";
 import UserProfileForm from "@features/users/UserProfileForm";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 import useAuthRedirect from "@hooks/useAuthRedirect";
-import RedirectIfAuthenticated from "@/components/RedirectIfAuthenticated";
+// import RedirectIfAuthenticated from "@/components/RedirectIfAuthenticated";
 
 function RegisterPage() {
   const [registerUser] = useRegisterUserMutation();
@@ -43,7 +43,7 @@ function RegisterPage() {
   };
   return (
     <>
-      <RedirectIfAuthenticated />
+      {/* <RedirectIfAuthenticated /> */}
       <UserProfileForm
         onSubmit={handleRegister}
         isSubmitting={isRegistering}
