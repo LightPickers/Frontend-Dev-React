@@ -26,7 +26,7 @@ function RegisterPage() {
       setIsLoggingin(true);
       await loginAndRedirect({ loginUser, dispatch, navigate, loginData });
     } catch (error) {
-      console.error("註冊失敗：", error);
+      // console.error("註冊失敗：", error);
       toast.error(getApiErrorMessage(error, "註冊失敗，請稍後再試"));
     } finally {
       setIsRegistering(false);

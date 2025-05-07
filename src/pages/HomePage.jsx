@@ -1,8 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import BtnPrimary from "@/components/Button";
-// import { getAccountSettingsPath } from "@/routes/helpers";
 function HomePage() {
   const userId = useSelector(state => state.auth.user?.id);
   console.log(userId);

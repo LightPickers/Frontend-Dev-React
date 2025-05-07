@@ -1,4 +1,4 @@
-// AppInitializer.jsx
+// 棄用，暫先保留
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
