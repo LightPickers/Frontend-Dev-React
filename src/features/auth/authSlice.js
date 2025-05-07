@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import loadAuthData from "@features/auth/loadAuthData";
 import { userApi } from "@features/users/userApi";
 
+// 從 localStorage 取資料
 const initialData = loadAuthData();
 
 const authSlice = createSlice({
@@ -83,11 +84,15 @@ const authSlice = createSlice({
         state.isLoading = false;
         // 更新用戶資料 (可選)
         if (payload.user) {
-          state.user = payload.user;
+          const updatedData = {
+            ...state.user,
+            ...payload.user,
+          };
+          state.user = updatedData;
           localStorage.setItem(
             "auth",
             JSON.stringify({
-              user: payload.user,
+              user: updatedData,
               token: state.token,
             })
           );
@@ -104,27 +109,32 @@ const authSlice = createSlice({
       // 處理用戶資料更新
       .addMatcher(userApi.endpoints.updateUser.matchFulfilled, (state, { payload }) => {
         if (payload.user) {
-          state.user = payload.user;
+          const updatedData = {
+            ...state.user,
+            ...payload.user,
+          };
+          state.user = updatedData;
           localStorage.setItem(
             "auth",
             JSON.stringify({
-              user: payload.user,
+              user: updatedData,
               token: state.token,
             })
           );
         }
       })
       // 任何 API 的通用錯誤處理
-      .addMatcher(action => {
-        action.type.endsWith("/rejected") &&
+      .addMatcher(
+        action =>
+          action.type.endsWith("/rejected") &&
           (action.type.includes("loginUser") ||
             action.type.includes("registerUser") ||
             action.type.includes("verifyAuth")),
-          (state, action) => {
-            state.error = action.payload?.data?.message || action.error?.message || "認證失敗";
-            state.isLoading = false;
-          };
-      });
+        (state, action) => {
+          state.error = action.payload?.data?.message || action.error?.message || "認證失敗";
+          state.isLoading = false;
+        }
+      );
   },
 });
 
