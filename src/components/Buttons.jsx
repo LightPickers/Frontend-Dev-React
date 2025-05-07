@@ -35,5 +35,3 @@ BtnPrimary.propTypes = {
   size: PropTypes.oneOf(["small", "medium", "large", "cta"]),
   disabled: PropTypes.bool,
 };
-
-// export default BtnPrimary;
