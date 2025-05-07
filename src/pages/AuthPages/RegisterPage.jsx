@@ -7,7 +7,8 @@ import { useLoginUserMutation, useRegisterUserMutation } from "@features/users/u
 import UserProfileForm from "@features/users/UserProfileForm";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
-import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useAuthRedirect from "@hooks/useAuthRedirect";
+import RedirectIfAuthenticated from "@/components/RedirectIfAuthenticated";
 
 function RegisterPage() {
   const [registerUser] = useRegisterUserMutation();
@@ -42,6 +43,7 @@ function RegisterPage() {
   };
   return (
     <>
+      <RedirectIfAuthenticated />
       <UserProfileForm
         onSubmit={handleRegister}
         isSubmitting={isRegistering}
