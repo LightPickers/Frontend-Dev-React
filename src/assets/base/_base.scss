@@ -1,20 +1,34 @@
+// 設定樣式時，盡量不要直接對元素 (h1、h2...) 設定
+// 而是另設定一個標籤 (.h1、.h2) 來設定，才不會影響全域唷
+
 @use "../stylesheets/fonts" as fonts;
 @use "../stylesheets/sizes" as sizes;
 @use "../stylesheets/colors" as colors;
 @use "../stylesheets/line-height" as lh;
 
+// 全域設定
 body {
   font-family: fonts.$font-family-sans-serif;
   font-weight: fonts.$font-weight-normal;
   line-height: lh.$line-height-base;
   color: colors.$gray-1000;
 }
-
 img {
   max-width: 100%;
   height: auto;
 }
+a {
+  text-decoration: none;
+}
+textarea {
+  resize: none;
+}
+ol,
+ul {
+  list-style: none;
+}
 
+// 標題
 .h1 {
   font-size: sizes.$h1-font-size;
   letter-spacing: 0.16em;
@@ -76,12 +90,12 @@ img {
   font-family: fonts.$headings-font-family;
   line-height: lh.$line-height-sm;
 }
-
 .heading-sans {
   font-family: fonts.$font-family-sans-serif;
   line-height: lh.$line-height-sm;
 }
 
+// 文字
 .text-sans {
   color: colors.$gray-500;
   font-weight: fonts.$font-weight-bold;
@@ -108,6 +122,7 @@ img {
   font-weight: fonts.$font-weight-bold;
 }
 
+// 必填星號
 .required::after {
   content: "*";
   color: colors.$danger;
