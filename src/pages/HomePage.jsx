@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function HomePage() {
-  const userId = useSelector(state => state.auth.user?.id);
-  console.log(userId);
+  // const userId = useSelector(state => state.auth.user?.id);
+  // console.log(userId);
   return (
     <>
       {/* <BtnPrimary>進入會員中心</BtnPrimary> */}

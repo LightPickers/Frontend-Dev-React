@@ -7,6 +7,7 @@ import { useLoginUserMutation, useRegisterUserMutation } from "@features/users/u
 import UserProfileForm from "@features/users/UserProfileForm";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
 
 function RegisterPage() {
   const [registerUser] = useRegisterUserMutation();
@@ -15,18 +16,24 @@ function RegisterPage() {
   const navigate = useNavigate();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isLoggingin, setIsLoggingin] = useState(false);
+  const { redirectToPage } = useAuthRedirect();
 
   const handleRegister = async data => {
     setIsRegistering(true);
     try {
-      await registerUser(data).unwrap();
-      // toast.success("註冊成功，正在登入…");
+      const result = await registerUser(data).unwrap();
+      console.log("註冊結果", result);
       const { email, password } = data;
       const loginData = { email, password };
       setIsLoggingin(true);
-      await loginAndRedirect({ loginUser, dispatch, navigate, loginData });
+      await loginAndRedirect({
+        loginUser,
+        dispatch,
+        navigate,
+        loginData,
+        onSuccess: redirectToPage,
+      });
     } catch (error) {
-      // console.error("註冊失敗：", error);
       toast.error(getApiErrorMessage(error, "註冊失敗，請稍後再試"));
     } finally {
       setIsRegistering(false);
