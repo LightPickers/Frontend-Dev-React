@@ -101,6 +101,35 @@ ul {
   font-weight: fonts.$font-weight-bold;
 }
 
+.link-text {
+  color: colors.$gray-500;
+  font-weight: fonts.$font-weight-bold;
+  text-decoration: none;
+
+  &:hover {
+    color: colors.$primary-600;
+  }
+
+  &:active {
+    color: colors.$primary-600;
+  }
+
+  &:focus-visible {
+    outline: 1px dashed colors.$primary-400;
+    outline-offset: 4px;
+  }
+
+  &.is-active {
+    color: colors.$primary-600;
+  }
+
+  &.is-disabled {
+    color: colors.$gray-200;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}
+
 .text-l {
   font-size: sizes.$h5-font-size;
   letter-spacing: 0.1em;
