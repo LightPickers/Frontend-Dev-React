@@ -1,29 +1,39 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
-function BtnPrimary({ children, size = "medium", className, disabled = false, onClick }) {
-  const classes = classNames("btn-custom", size, className);
+function BtnPrimary({
+  as: Component = "button",
+  children,
+  type = "button",
+  size = "medium",
+  className,
+  disabled = false,
+  onClick = () => {},
+  ...rest
+}) {
+  const classes = classNames("btn-custom-primary", size, className);
+
   return (
-    <>
-      <button className={classes} disabled={disabled} onClick={onClick}>
-        {children}
-      </button>
-    </>
+    <Component
+      className={classes}
+      disabled={disabled}
+      onClick={onClick}
+      type={Component === "button" ? type : undefined}
+      {...rest}
+    >
+      {children}
+    </Component>
   );
 }
 
 BtnPrimary.propTypes = {
-  children: PropTypes.string.isRequired, // 必填、字串
+  as: PropTypes.elementType,
+  children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  onClick: PropTypes.func, // 函式
-  size: PropTypes.oneOf(["small", "medium", "large", "cta"]), // 四值擇一
-  disabled: PropTypes.bool, // 布林值
-};
-
-BtnPrimary.defaultProps = {
-  size: "medium",
-  disabled: false,
-  onClick: () => {},
+  onClick: PropTypes.func,
+  type: PropTypes.string,
+  size: PropTypes.oneOf(["small", "medium", "large", "cta"]),
+  disabled: PropTypes.bool,
 };
 
 export default BtnPrimary;
