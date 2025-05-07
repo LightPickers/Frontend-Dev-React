@@ -1,4 +1,4 @@
-import BtnPrimary from "@/components/Button";
+import { BtnPrimary } from "@components/Buttons";
 import {
   H1Primary,
   H2Primary,

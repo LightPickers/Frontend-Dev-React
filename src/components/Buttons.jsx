@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
-function BtnPrimary({
+export function BtnPrimary({
   as: Component = "button",
   children,
   type = "button",
@@ -36,4 +36,4 @@ BtnPrimary.propTypes = {
   disabled: PropTypes.bool,
 };
 
-export default BtnPrimary;
+// export default BtnPrimary;

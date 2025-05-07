@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import BtnPrimary from "@components/Button";
+import { BtnPrimary } from "@components/Buttons";
 import { useLoginUserMutation } from "@features/users/userApi";
 import { loginSchema } from "@schemas/users/loginSchema";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
@@ -78,7 +78,7 @@ function LoginPage() {
                   </p>
 
                   {/* 提交按鈕 */}
-                  <BtnPrimary size="large" className="w-100" disabled={isLoading}>
+                  <BtnPrimary type="submit" size="large" className="w-100" disabled={isLoading}>
                     {isLoading ? "登入中..." : "登入"}
                   </BtnPrimary>
                 </fieldset>

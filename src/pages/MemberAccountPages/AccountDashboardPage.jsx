@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import BtnPrimary from "@/components/Button";
+import { BtnPrimary } from "@components/Buttons";
 import logoutAndRedirect from "@/features/auth/logoutAndRedirect";
 import { H2Primary } from "@/components/Headings";
 
