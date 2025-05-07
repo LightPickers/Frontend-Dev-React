@@ -54,7 +54,7 @@ function AccountSettingsPage() {
   if (error) {
     return (
       <div className="text-center py-4 text-red-500">
-        載入數據時發生錯誤：{error?.data?.message || "請稍後再試"}
+        載入資料時發生錯誤：{error?.data?.message || "請稍後再試"}
       </div>
     );
   }
@@ -65,8 +65,8 @@ function AccountSettingsPage() {
 
   const userData = data.data.user;
 
-  console.log("API 返回的原始數據:", data);
-  console.log("傳給表單的數據:", userData);
+  console.log("API 返回的原始資料:", data);
+  console.log("傳給表單的資料:", userData);
 
   return (
     <>
