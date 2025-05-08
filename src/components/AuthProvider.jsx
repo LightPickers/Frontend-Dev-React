@@ -1,8 +1,10 @@
+// 檢查應用初始化時檢查是否有 token
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import { finishLoading, setVerified } from "@features/auth/authSlice";
+import { setVerified } from "@features/auth/authSlice";
 import { useLazyVerifyAuthQuery } from "@features/users/userApi";
 
 export function AuthProvider({ children }) {
@@ -10,6 +12,7 @@ export function AuthProvider({ children }) {
   const { token, isLoading } = useSelector(state => state.auth);
   const [verifyAuth, { isLoading: isVerifying }] = useLazyVerifyAuthQuery();
 
+  // 若有 token，通過 RTK query 的 verifyAuth() 驗證
   useEffect(() => {
     const checkAuth = async () => {
       if (token) {
@@ -23,7 +26,6 @@ export function AuthProvider({ children }) {
         dispatch(setVerified());
       }
     };
-
     checkAuth();
   }, [dispatch, token, verifyAuth]);
 

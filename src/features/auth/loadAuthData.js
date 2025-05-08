@@ -1,9 +1,9 @@
 export default function loadAuthData() {
-  const data = localStorage.getItem("auth");
-  if (!data) return null;
   try {
-    return JSON.parse(data);
-  } catch {
+    const storedData = localStorage.getItem("auth");
+    return storedData ? JSON.parse(storedData) : null;
+  } catch (err) {
+    console.error("auth localStorage parse error", err);
     return null;
   }
 }

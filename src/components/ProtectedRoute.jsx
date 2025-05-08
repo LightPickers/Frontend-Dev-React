@@ -5,17 +5,17 @@ function ProtectedRoute() {
   const { isAuthenticated, isVerified, isLoading } = useSelector(state => state.auth);
   const location = useLocation();
 
-  // 還在載入認證狀態，避免閃跳
+  // 確認是否還在載入驗證狀態
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  // 認證完成後仍未通過驗證，導向登入頁
-  if (!isAuthenticated && isVerified) {
+  // 驗證完成，且未通過驗證 -> 導向登入頁
+  if (isVerified && !isAuthenticated) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
-  // 認證通過，繼續渲染
+  // 通過驗證，繼續渲染
   return <Outlet />;
 }
 

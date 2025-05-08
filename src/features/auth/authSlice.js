@@ -11,9 +11,9 @@ const authSlice = createSlice({
   initialState: {
     user: initialData?.user || null,
     token: initialData?.token || null,
-    isAuthenticated: !!initialData?.token,
-    isLoading: true,
-    isVerified: false,
+    isAuthenticated: !!initialData?.token, // 是否登入成功（有 token 且驗證成功）
+    isLoading: true, // 是否等待驗證完成
+    isVerified: false, // 是否完成初次登入認證流程（驗證完 token）
     error: null,
   },
   reducers: {
@@ -32,6 +32,10 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.removeItem("auth");
     },
+    setVerified: state => {
+      state.isLoading = false;
+      state.isVerified = true;
+    },
     finishLoading: state => {
       state.isLoading = false;
     },
@@ -40,10 +44,6 @@ const authSlice = createSlice({
     },
     clearError: state => {
       state.error = null;
-    },
-    setVerified: state => {
-      state.isLoading = false;
-      state.isVerified = true;
     },
   },
   // 監聽 RTK Query
@@ -89,7 +89,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isVerified = true;
         // 更新用戶資料 (可選)
-        if (payload.user) {
+        if (payload && payload.user) {
           const updatedData = {
             ...state.user,
             ...payload.user,

@@ -9,7 +9,7 @@ export default function useAuthRedirect() {
   const from = location.state?.from?.pathname || "/";
 
   const redirectToPage = () => {
-    navigate(from, { replace: true });
+    navigate(from, { replace: true, state: { fromLogin: true } });
   };
 
   return { redirectToPage, from };

@@ -2,13 +2,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 import { BtnPrimary } from "@components/Buttons";
 import { useLoginUserMutation } from "@features/users/userApi";
 import { loginSchema } from "@schemas/users/loginSchema";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
 import useAuthRedirect from "@hooks/useAuthRedirect";
-import RedirectIfAuthenticated from "@/components/RedirectIfAuthenticated";
+import RedirectIfAuthenticated from "@components/RedirectIfAuthenticated";
 
 function LoginPage() {
   const {
@@ -25,18 +26,22 @@ function LoginPage() {
   const { redirectToPage } = useAuthRedirect();
 
   const onSubmit = async loginData => {
-    await loginAndRedirect({
-      loginUser,
-      dispatch,
-      navigate,
-      loginData,
-      onSuccess: redirectToPage,
-    }); // hook 只能在元件存變數後傳給通用函式
+    try {
+      await loginAndRedirect({
+        loginUser,
+        dispatch,
+        navigate,
+        loginData,
+        onSuccess: redirectToPage,
+      });
+    } catch {
+      toast.error("登入發生錯誤，請稍後再試");
+    }
   };
 
   return (
     <>
-      {/* <RedirectIfAuthenticated /> */}
+      <RedirectIfAuthenticated />
       <div className="container py-5 mt-25">
         <div className="row">
           <div className="col-12 col-md-8 col-lg-6 mx-auto">

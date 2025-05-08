@@ -1,22 +1,21 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const RedirectIfAuthenticated = () => {
-  const { user, isVerified } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector(state => state.auth);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    // 如果尚未完成驗證，不做任何事
-    if (!isVerified) return;
-
-    // 驗證完成後且有使用者資料，進行跳轉
-    if (isVerified && user) {
+    const fromLoginForm = location.state?.fromLogin;
+    const fromProtectedRoute = location.state?.from;
+    if (isAuthenticated && !fromProtectedRoute && !fromLoginForm) {
       toast.info("你已經登入，正在跳轉回首頁");
       navigate("/", { replace: true });
     }
-  }, [isVerified, user, navigate]);
+  }, [isAuthenticated, navigate, location]);
 
   return null;
 };
