@@ -1,4 +1,4 @@
-// 以 4 為級距，若有神奇的特殊間距就再討論
+// 以 4 為級距，若有神奇的特殊間距，可用 inline-style 撰寫，或是寫在 scss 中
 $spacer: 4px;
 $spacers: (
   0: 0,
@@ -12,6 +12,10 @@ $spacers: (
   8: $spacer * 8,
   9: $spacer * 9,
   10: $spacer * 10,
+  12: $spacer * 12,
+  15: $spacer * 15,
+  17: $spacer * 17,
+  20: $spacer * 20,
   25: $spacer * 25,
 );
 
