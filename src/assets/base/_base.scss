@@ -12,6 +12,7 @@ body {
   font-weight: fonts.$font-weight-normal;
   line-height: lh.$line-height-base;
   color: colors.$gray-1000;
+  margin-top: 88px;
 }
 img {
   max-width: 100%;
@@ -105,6 +106,7 @@ ul {
   color: colors.$gray-500;
   font-weight: fonts.$font-weight-bold;
   text-decoration: none;
+  transition: all 0.3s ease;
 
   &:hover {
     color: colors.$primary-600;
