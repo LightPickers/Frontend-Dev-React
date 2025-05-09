@@ -28,6 +28,15 @@ ol,
 ul {
   list-style: none;
 }
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0;
+}
 
 // 標題
 .h1 {
@@ -158,4 +167,21 @@ ul {
   content: "*";
   color: colors.$danger;
   margin-left: 4px;
+}
+
+.heading-em-dash {
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0.75rem;
+    width: 120px;
+    height: 1px;
+    background-color: colors.$gray-400;
+  }
 }

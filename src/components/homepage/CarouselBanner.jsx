@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { H1Primary } from "@components/Headings";
-import SearchIcon from "@/components/icons/SearchIcon";
+import SearchIcon from "@components/icons/SearchIcon";
 
 const APP_BASE = import.meta.env.VITE_APP_BASE;
 const BANNER_SLIDES = [
@@ -45,7 +45,7 @@ function CarouselBanner() {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
     <>
-      <div className="carousel-banner-container">
+      <section className="carousel-banner-container container">
         <Swiper
           modules={[Pagination, Autoplay, EffectFade]}
           spaceBetween={0}
@@ -65,7 +65,6 @@ function CarouselBanner() {
         >
           {BANNER_SLIDES.map(slide => {
             const imageTexts = slide.title.split("，");
-            console.log(imageTexts);
             return (
               <SwiperSlide key={slide.id}>
                 {/* 背景 */}
@@ -110,7 +109,7 @@ function CarouselBanner() {
           })}
         </Swiper>
         <div className="external-pagination mt-12 text-center"></div>
-      </div>
+      </section>
     </>
   );
 }
