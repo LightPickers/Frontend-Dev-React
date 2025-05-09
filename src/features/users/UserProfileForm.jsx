@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import BtnPrimary from "@components/Button";
+import { BtnPrimary } from "@components/Buttons";
 import TaiwanAddressSelector from "@components/TaiwanAddressSelector";
 import { profileSchema } from "@schemas/users/profileSchema";
 import { registerSchema } from "@schemas/users/registerSchema";
@@ -268,6 +268,7 @@ function UserProfileForm({
                     </div>
 
                     <BtnPrimary
+                      type="submit"
                       size="large"
                       className="w-100"
                       disabled={!hasRealChanges() || isSubmitting || isLoggingin}

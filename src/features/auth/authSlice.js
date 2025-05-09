@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import loadAuthData from "@features/auth/loadAuthData";
 import { userApi } from "@features/users/userApi";
 
+// 從 localStorage 取資料
 const initialData = loadAuthData();
 
 const authSlice = createSlice({
@@ -10,8 +11,9 @@ const authSlice = createSlice({
   initialState: {
     user: initialData?.user || null,
     token: initialData?.token || null,
-    isAuthenticated: !!initialData?.token,
-    isLoading: true,
+    isAuthenticated: !!initialData?.token, // 是否登入成功（有 token 且驗證成功）
+    isLoading: true, // 是否等待驗證完成
+    isVerified: false, // 是否完成初次登入認證流程（驗證完 token）
     error: null,
   },
   reducers: {
@@ -29,6 +31,10 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       localStorage.removeItem("auth");
+    },
+    setVerified: state => {
+      state.isLoading = false;
+      state.isVerified = true;
     },
     finishLoading: state => {
       state.isLoading = false;
@@ -81,13 +87,18 @@ const authSlice = createSlice({
       .addMatcher(userApi.endpoints.verifyAuth.matchFulfilled, (state, { payload }) => {
         state.isAuthenticated = true;
         state.isLoading = false;
+        state.isVerified = true;
         // 更新用戶資料 (可選)
-        if (payload.user) {
-          state.user = payload.user;
+        if (payload && payload.user) {
+          const updatedData = {
+            ...state.user,
+            ...payload.user,
+          };
+          state.user = updatedData;
           localStorage.setItem(
             "auth",
             JSON.stringify({
-              user: payload.user,
+              user: updatedData,
               token: state.token,
             })
           );
@@ -99,34 +110,41 @@ const authSlice = createSlice({
         state.token = null;
         state.isAuthenticated = false;
         state.isLoading = false;
+        state.isVerified = true;
         localStorage.removeItem("auth");
       })
       // 處理用戶資料更新
       .addMatcher(userApi.endpoints.updateUser.matchFulfilled, (state, { payload }) => {
         if (payload.user) {
-          state.user = payload.user;
+          const updatedData = {
+            ...state.user,
+            ...payload.user,
+          };
+          state.user = updatedData;
           localStorage.setItem(
             "auth",
             JSON.stringify({
-              user: payload.user,
+              user: updatedData,
               token: state.token,
             })
           );
         }
       })
       // 任何 API 的通用錯誤處理
-      .addMatcher(action => {
-        action.type.endsWith("/rejected") &&
+      .addMatcher(
+        action =>
+          action.type.endsWith("/rejected") &&
           (action.type.includes("loginUser") ||
             action.type.includes("registerUser") ||
             action.type.includes("verifyAuth")),
-          (state, action) => {
-            state.error = action.payload?.data?.message || action.error?.message || "認證失敗";
-            state.isLoading = false;
-          };
-      });
+        (state, action) => {
+          state.error = action.payload?.data?.message || action.error?.message || "認證失敗";
+          state.isLoading = false;
+        }
+      );
   },
 });
 
-export const { setCredentials, logout, finishLoading, setError, clearError } = authSlice.actions;
+export const { setCredentials, logout, finishLoading, setError, clearError, setVerified } =
+  authSlice.actions;
 export default authSlice.reducer;

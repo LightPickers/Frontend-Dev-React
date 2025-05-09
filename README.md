@@ -1,6 +1,6 @@
 # Frontend-Dev-React 專案開發環境與目錄結構介紹
 
-以 **React + Vite** 為基礎
+以 **React + Vite** 為建設
 
 - 樣式： **SCSS、CSS**
 - 驗證： **JWT 身份驗證機制**
@@ -43,3 +43,19 @@ src/
 ├── index.html                      // 應用程式渲染 root 檔案
 ├── package.json                    // 專案依賴套件與 script 設定
 ├── README.md                       // 專案說明文件
+
+## 注意事項
+### 環境變數
+- 分別設置 .env、.env.production 檔案，並創建環境變數 VITE_APP_BASE 作為部屬路徑使用
+- .env.production 的部屬路徑請設置 repo 名稱
+- 環境變數請用 VITE_ 開頭，使用時須加上 import.meta.env.環境變數名稱
+- 使用 public 靜態資料時，請用部屬路徑作為前綴
+
+### 路由
+- 創建頁面流程：
+  1. 在 src/pages/ 找到該頁面的分類資料夾中創建，沒有所屬類別資料夾就創一個
+  2. 在 src/pages/index.js 匯入並匯出
+  3. 到 src/routes/router.jsx 匯入 index 的地方添加該頁面
+  4. 在 src/routes/router.jsx 的目錄 (ROUTES) 物件上找到對應處設定路徑，沒有就自訂一個
+  5. 在 src/routes/router.jsx，根據該頁面是否公開、頁面種類來找創建路由
+  6. 在 src/routes/router.jsx，若是新增的種類，則需要在整合處另外添加

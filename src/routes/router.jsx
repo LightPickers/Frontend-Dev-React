@@ -31,7 +31,7 @@ const ROUTES = {
   },
   ACCOUNT: {
     ROOT: "/account/profile", // 會員中心首頁（目前沒線稿）
-    SETTINGS: "settings", // 會員資料管理 // /account/profile/settings
+    SETTINGS: "settings", // 會員資料管理
     ORDERS: "orders", // 訂單管理
     WISHLISTS: "wishlists", // 收藏列表
   },
@@ -40,8 +40,8 @@ const ROUTES = {
     PRODUCT_DETAIL: "/products/:productId", // 產品資訊頁
   },
   CHECKOUT: {
-    CART: "/cart", // 購物車 // /cart
-    CHECKOUT: "/checkout", // 結帳頁面 // /checkout
+    CART: "/cart", // 購物車 //
+    CHECKOUT: "/checkout", // 結帳頁面 //
     CONFIRMATION: "/checkout/confirmation/:orderId", // 確認結帳頁面
     STATUS: "/checkout/status/:orderId", // 結帳結果頁面
   },
@@ -128,7 +128,7 @@ const sellPublicRoute = {
   element: <SellProcessPage />,
 };
 
-// 出售流程子路由：因受保護，放上完整路徑
+// 出售流程子路由：因與父元素分離關係，放上完整路徑
 const sellProtectedRoutes = [
   {
     path: `${ROUTES.SELL.ROOT}/${ROUTES.SELL.FORM}`,

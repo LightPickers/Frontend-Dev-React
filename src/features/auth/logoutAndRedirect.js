@@ -8,8 +8,10 @@ function logoutAndRedirect({ dispatch, navigate }) {
 
   toast.success("已成功登出");
   console.log("成功登出");
-  navigate("/", { replace: true });
-  console.log("目前頁面：", window.location.hash);
+  // 加入延遲，避免 ProtectedRoute 判斷過早
+  Promise.resolve().then(() => {
+    navigate("/", { replace: true });
+  });
 }
 
 export default logoutAndRedirect;
