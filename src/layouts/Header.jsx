@@ -18,7 +18,7 @@ function Header() {
     { name: "其他", path: "#" },
   ];
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light py-5">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light py-5 fixed-top">
       <div className="container">
         {/* Logo */}
         <Link className="navbar-brand" to="/">
