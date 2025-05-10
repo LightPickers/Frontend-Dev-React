@@ -19,6 +19,11 @@ function UserProfileForm({
   const methods = useForm({
     resolver: zodResolver(validateSchema),
     mode: "onBlur",
+    defaultValues: {
+      address_city: "",
+      address_district: "",
+      address_zipcode: "",
+    },
   });
 
   const {
