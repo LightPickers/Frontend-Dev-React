@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import eslint from "vite-plugin-eslint";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
+import svgr from "vite-plugin-svgr";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,6 +15,7 @@ export default defineConfig(({ mode }) => {
     base: env.VITE_APP_BASE,
     plugins: [
       react(),
+      svgr(),
       eslint({
         include: ["src/**/*.{js,jsx,ts,tsx}"],
       }),

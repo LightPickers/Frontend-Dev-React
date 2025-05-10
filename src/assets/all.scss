@@ -19,9 +19,12 @@
 
 // custom components
 @import "./components/buttons";
-@import "./components/carousel-banner";
 
 // layouts
 @import "./layouts/header";
 
 // pages
+// homepage
+@import "./pages/homepage/carousel-banner";
+@import "./pages/homepage/product-showcase";
+@import "./pages/homepage/be-saler-section";

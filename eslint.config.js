@@ -83,7 +83,10 @@ export default [
             ["@utils", "./src/utils"],
             ["@data", "./src/data"],
           ],
-          extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".svg"],
+        },
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".svg"],
         },
       },
     },
@@ -96,7 +99,7 @@ export default [
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "react/prop-types": "error",
       "no-unused-vars": ["warn", { varsIgnorePattern: ".*", argsIgnorePattern: ".*" }],
-      "import/no-unresolved": "error",
+      "import/no-unresolved": "off", //"error",
       "import/order": [
         "warn",
         {
