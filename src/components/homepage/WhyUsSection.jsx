@@ -21,8 +21,11 @@ function WhyUsSection() {
                   {reason.description}
                 </H5Secondary>
               </div>
+              {/* 圖片區塊 */}
               <div className="col-md-7">
-                <img src={reason.image_lg} alt={reason.title} />
+                <div className="seafoam-overlay">
+                  <img src={reason.image_lg} alt={reason.title} />
+                </div>
               </div>
             </div>
           );
