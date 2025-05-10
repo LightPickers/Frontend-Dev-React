@@ -6,7 +6,7 @@ import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 async function loginAndRedirect({ loginUser, dispatch, navigate, loginData, onSuccess }) {
   try {
     const result = await loginUser(loginData).unwrap();
-    console.log("登入結果", result);
+    // console.log("登入結果", result);
 
     // 在 authSlice/localStorage 存資料
     const { token, user } = result?.data || {};
