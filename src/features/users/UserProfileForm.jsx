@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import useTaiwanDistricts from "@hooks/useTaiwanDistricts";
 import { BtnPrimary } from "@components/Buttons";
 import TaiwanAddressSelector from "@components/TaiwanAddressSelector";
 import { profileSchema } from "@schemas/users/profileSchema";
@@ -74,13 +75,37 @@ function UserProfileForm({
     return false;
   };
 
+  const { data: taiwanDistricts } = useTaiwanDistricts();
+
   useEffect(() => {
-    if (userData) {
+    if (userData && taiwanDistricts) {
+      const address_zipcode = userData.address_zipcode;
+      let address_city = userData.address_city;
+      let address_district = userData.address_district;
+
+      if (address_zipcode && (!address_city || !address_district)) {
+        for (const cityItem of taiwanDistricts) {
+          const districtItem = cityItem.districts.find(
+            district => district.zip === address_zipcode
+          );
+          if (districtItem) {
+            address_city = cityItem.name;
+            address_district = districtItem.name;
+            break;
+          }
+        }
+      }
+      const fallbackData = {
+        ...userData,
+        address_city: address_city,
+        address_district: address_district,
+      };
+
       console.log("重置表單資料:", userData);
-      reset(userData);
+      reset(fallbackData);
       originalDataRef.current = { ...userData };
     }
-  }, [userData, reset]);
+  }, [userData, reset, taiwanDistricts]);
 
   const onFormSubmit = data => {
     console.log("表單提交數據:", data);
