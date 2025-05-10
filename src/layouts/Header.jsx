@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { TextLarge } from "@components/TextTypography";
@@ -7,18 +7,35 @@ import { BtnPrimary } from "@components/Buttons";
 
 function Header() {
   const user = useSelector(state => state.auth.user);
-  console.log(user);
   const APP_BASE = import.meta.env.VITE_APP_BASE;
+  const navRef = useRef(null);
   const navItems = [
     { name: "相機", path: "/products?category=cameras" },
     { name: "機身", path: "/products?category=camera_bodies" },
     { name: "鏡頭", path: "/products?category=lens" },
     { name: "配件", path: "/products?category=accessories" },
     { name: "收購流程", path: "/sell" },
-    { name: "其他", path: "#" },
+    // { name: "其他", path: "#" },
   ];
+
+  useEffect(() => {
+    const handleNavbarScroll = () => {
+      if (!navRef.current) return;
+      if (window.scrollY > 0) {
+        navRef.current.classList.add("scrollDown");
+      } else {
+        navRef.current.classList.remove("scrollDown");
+      }
+    };
+
+    window.addEventListener("scroll", handleNavbarScroll);
+    return () => {
+      window.removeEventListener("scroll", handleNavbarScroll);
+    };
+  }, []);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light py-5 fixed-top">
+    <nav ref={navRef} className="navbar navbar-custom navbar-expand-lg py-5 fixed-top">
       <div className="container">
         {/* Logo */}
         <Link className="navbar-brand" to="/">
@@ -35,6 +52,16 @@ function Header() {
                 </TextLarge>
               </li>
             ))}
+            <li className="py-2 px-3">
+              <TextLarge as={NavLink} to="/account/profile/settings">
+                會員中心
+              </TextLarge>
+            </li>
+            <li className="py-2 px-3">
+              <TextLarge as={NavLink} to="/register">
+                註冊
+              </TextLarge>
+            </li>
           </ul>
           {/* icon */}
           <div className="d-flex align-items-center gap-7">
