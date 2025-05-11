@@ -13,6 +13,30 @@
     transform 0.3s ease,
     box-shadow 0.3s ease;
 
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .card-image-container .icon-group {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card-image-container .product-image {
+      transform: scale(1.1);
+      filter: blur(8px);
+    }
+
+    .card-image-container::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(-0.5px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
   .card-image-container {
     height: 280px;
     position: relative;
@@ -104,29 +128,5 @@
       transition: opacity 0.3s;
       z-index: 2;
     }
-  }
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-    .card-image-container .icon-group {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .card-image-container .product-image {
-      transform: scale(1.1);
-      filter: blur(8px);
-    }
-
-    .card-image-container::before {
-      opacity: 1;
-    }
-  }
-
-  &:active {
-    transform: translateY(-0.5px) scale(0.98);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 }
