@@ -43,56 +43,35 @@ $utilities: map-merge(
         lg: $line-height-lg,
       ),
     ),
-    // "color": (
-    //   property: color,
-    //   class: text,
-    //   local-vars: (
-    //     "text-opacity": 1,
-    //   ),
-    //   values: map-merge(
-    //       $utilities-text-colors,
-    //       (
-    //         "muted": var(--#{$prefix}secondary-color),
-    //         // deprecated
-    //         "black-50": rgba($black, 0.5),
-    //         // deprecated
-    //         "white-50": rgba($white, 0.5),
-    //         // deprecated
-    //         "body-secondary": var(--#{$prefix}secondary-color),
-    //         "body-tertiary": var(--#{$prefix}tertiary-color),
-    //         "body-emphasis": var(--#{$prefix}emphasis-color),
-    //         "reset": inherit,
-    //       )
-    //     ),
-    // ),
     "text-color": (
-        responsive: true,
-        property: color,
-        class: text,
-        values: $theme-colors,
-      ),
+      responsive: true,
+      property: color,
+      class: text,
+      values: $theme-colors,
+    ),
     "background-color": (
       responsive: true,
       property: background-color,
       class: bg,
       values: $theme-colors,
     ),
+    // 圓角
     "rounded": (
-      responsive: true,
-      property: border-radius,
-      class: rounded,
-      values: (
-        null: var(--#{$prefix}border-radius),
-        0: 0,
-        1: var(--#{$prefix}border-radius-sm),
-        2: var(--#{$prefix}border-radius),
-        3: var(--#{$prefix}border-radius-lg),
-        4: var(--#{$prefix}border-radius-xl),
-        5: var(--#{$prefix}border-radius-xxl),
-        circle: 50%,
-        pill: var(--#{$prefix}border-radius-pill),
+        responsive: true,
+        property: border-radius,
+        class: rounded,
+        values: (
+          null: var(--#{$prefix}border-radius),
+          0: 0,
+          1: var(--#{$prefix}border-radius-sm),
+          2: var(--#{$prefix}border-radius),
+          3: var(--#{$prefix}border-radius-lg),
+          4: var(--#{$prefix}border-radius-xl),
+          5: var(--#{$prefix}border-radius-xxl),
+          circle: 50%,
+          pill: var(--#{$prefix}border-radius-pill),
+        ),
       ),
-    ),
     "rounded-top": (
       responsive: true,
       property: border-top-left-radius border-top-right-radius,
