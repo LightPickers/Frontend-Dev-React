@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { H5Secondary } from "@/components/Headings";
+import { H5Secondary } from "@components/Headings";
 function ProductCard({ product }) {
   return (
     <section

@@ -19,7 +19,7 @@ function Header() {
   ];
 
   useEffect(() => {
-    const handleNavbarScroll = () => {
+    const handleNavScroll = () => {
       if (!navRef.current) return;
       if (window.scrollY > 0) {
         navRef.current.classList.add("scrollDown");
@@ -28,14 +28,14 @@ function Header() {
       }
     };
 
-    window.addEventListener("scroll", handleNavbarScroll);
+    window.addEventListener("scroll", handleNavScroll);
     return () => {
-      window.removeEventListener("scroll", handleNavbarScroll);
+      window.removeEventListener("scroll", handleNavScroll);
     };
   }, []);
 
   return (
-    <nav ref={navRef} className="navbar navbar-custom navbar-expand-lg py-5 fixed-top">
+    <nav ref={navRef} className="navbar navbar-custom navbar-light navbar-expand-lg py-5 fixed-top">
       <div className="container">
         {/* Logo */}
         <Link className="navbar-brand" to="/">
@@ -45,13 +45,13 @@ function Header() {
         {/* 導航項目 */}
         <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="me-auto mb-2 mb-lg-0 d-flex gap-5">
-            {navItems.map((item, index) => (
+            {/* {navItems.map((item, index) => (
               <li key={index} className="py-2 px-3">
                 <TextLarge as={NavLink} to={item.path}>
                   {item.name}
                 </TextLarge>
               </li>
-            ))}
+            ))} */}
             <li className="py-2 px-3">
               <TextLarge as={NavLink} to="/account/profile/settings">
                 會員中心
