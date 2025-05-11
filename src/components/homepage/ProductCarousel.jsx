@@ -6,7 +6,7 @@ import ProductCard from "@components/homepage/ProductCard";
 function ProductCarousel({ products }) {
   return (
     <Swiper
-      className="mb-10"
+      className="mb-10 py-2"
       spaceBetween={12}
       slidesPerView={1}
       breakpoints={{
