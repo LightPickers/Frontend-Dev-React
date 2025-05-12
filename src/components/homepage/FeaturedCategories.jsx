@@ -14,8 +14,8 @@ function FeaturedCategories() {
       <section className="container py-30">
         <H2Primary className="heading-em-dash mb-10">矚目類別</H2Primary>
         <div className="row">
-          {categories.map(cat => {
-            const { id, name, image } = cat;
+          {categories.map(category => {
+            const { id, name, image } = category;
             return (
               <div className="col-md-3 col-6" key={id}>
                 <main className="category-card d-flex flex-column align-items-center justify-content-between gap-7 pt-7 pb-9">

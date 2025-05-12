@@ -30,6 +30,11 @@
     transform: translateY(-2px);
   }
 
+  &:active {
+    transform: translateY(-0.5px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
   img {
     display: block;
     width: 100%;
