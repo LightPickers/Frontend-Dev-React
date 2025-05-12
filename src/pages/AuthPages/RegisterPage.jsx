@@ -22,8 +22,9 @@ function RegisterPage() {
   const handleRegister = async data => {
     setIsRegistering(true);
     try {
-      const result = await registerUser(data).unwrap();
-      console.log("註冊結果", result);
+      await registerUser(data).unwrap();
+      // const result = await registerUser(data).unwrap();
+      // console.log("註冊結果", result);
       const { email, password } = data;
       const loginData = { email, password };
       setIsLoggingin(true);

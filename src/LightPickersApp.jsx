@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import Header from "@layouts/Header";
 import Footer from "@layouts/Footer";
-import { userApi } from "@/features/users/userApi";
+import { userApi } from "@features/users/userApi";
 
 function ScrollToTop() {
   const { pathname } = useLocation();

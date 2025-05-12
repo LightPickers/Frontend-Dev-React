@@ -7,7 +7,7 @@ function logoutAndRedirect({ dispatch, navigate }) {
   localStorage.removeItem("token");
 
   toast.success("已成功登出");
-  console.log("成功登出");
+  // console.log("成功登出");
   // 加入延遲，避免 ProtectedRoute 判斷過早
   Promise.resolve().then(() => {
     navigate("/", { replace: true });

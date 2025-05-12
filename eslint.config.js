@@ -99,7 +99,7 @@ export default [
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "react/prop-types": "error",
       "no-unused-vars": ["warn", { varsIgnorePattern: ".*", argsIgnorePattern: ".*" }],
-      "import/no-unresolved": "off", //"error",
+      "import/no-unresolved": "error",
       "import/order": [
         "warn",
         {

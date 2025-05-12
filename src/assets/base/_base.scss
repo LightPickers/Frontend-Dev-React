@@ -11,23 +11,29 @@ body {
   font-family: fonts.$font-family-sans-serif;
   font-weight: fonts.$font-weight-normal;
   line-height: lh.$line-height-base;
-  color: colors.$gray-1000;
-  margin-top: 88px;
+  color: colors.$primary-1000;
+  margin-top: 88px; // 預留導覽列空間
 }
+
 img {
   max-width: 100%;
   height: auto;
 }
+
 a {
   text-decoration: none;
 }
+
 textarea {
   resize: none;
 }
+
 ol,
 ul {
   list-style: none;
 }
+
+// 若需要文字底部空間，可置 spacer 設置
 p,
 h1,
 h2,
@@ -111,6 +117,7 @@ h6 {
   font-weight: fonts.$font-weight-bold;
 }
 
+// 連結樣式
 .link-text {
   color: colors.$gray-500;
   font-weight: fonts.$font-weight-bold;
@@ -162,6 +169,11 @@ h6 {
   font-weight: fonts.$font-weight-bold;
 }
 
+// 圖片
+.object-fit-cover {
+  object-fit: cover;
+}
+
 // 必填星號
 .required::after {
   content: "*";
@@ -169,6 +181,7 @@ h6 {
   margin-left: 4px;
 }
 
+// 標題裝飾
 .heading-em-dash {
   position: relative;
   display: inline-block;
@@ -184,4 +197,14 @@ h6 {
     height: 1px;
     background-color: colors.$gray-400;
   }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  display: box; /* 未來標準 */
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* 未來標準 */
+  -webkit-box-orient: vertical;
+  box-orient: vertical; /* 未來標準 */
+  overflow: hidden;
 }

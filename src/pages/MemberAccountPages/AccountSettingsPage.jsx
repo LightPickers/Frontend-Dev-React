@@ -28,14 +28,14 @@ function AccountSettingsPage() {
   const handleUpdateProfile = async newData => {
     setIsUpdating(true);
     try {
-      console.log("要更新的資料：", newData);
+      // console.log("要更新的資料：", newData);
       const res = await updateUser(newData).unwrap();
-      console.log("更新回應", res);
+      // console.log("更新回應", res);
       toast.success("更新資料成功");
       // 重新抓取最新資料
       refetch();
     } catch (error) {
-      console.error("更新失敗：", error);
+      // console.error("更新失敗：", error);
       const message = error?.data?.message || "更新失敗，請稍後再試";
       toast.error(message);
     } finally {
@@ -65,8 +65,8 @@ function AccountSettingsPage() {
 
   const userData = data.data.user;
 
-  console.log("API 返回的原始資料:", data);
-  console.log("傳給表單的資料:", userData);
+  // console.log("API 返回的原始資料:", data);
+  // console.log("傳給表單的資料:", userData);
 
   return (
     <>

@@ -101,14 +101,14 @@ function UserProfileForm({
         address_district: address_district,
       };
 
-      console.log("重置表單資料:", userData);
+      // console.log("重置表單資料:", userData);
       reset(fallbackData);
       originalDataRef.current = { ...userData };
     }
   }, [userData, reset, taiwanDistricts]);
 
   const onFormSubmit = data => {
-    console.log("表單提交數據:", data);
+    // console.log("表單提交資料:", data);
 
     // 更新原始資料參考
     originalDataRef.current = { ...data };

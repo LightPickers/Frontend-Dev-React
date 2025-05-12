@@ -71,7 +71,7 @@ function CarouselBanner() {
                 <div
                   className="slide-container"
                   style={{
-                    backgroundImage: `url(${slide.backgroundImage})`,
+                    backgroundImage: `linear-gradient(270deg, rgba(0, 0, 0, 0) 5.98%, rgba(0, 0, 0, 0.2) 76.12%), url(${slide.backgroundImage})`,
                   }}
                 >
                   <div className="content-wrapper">
