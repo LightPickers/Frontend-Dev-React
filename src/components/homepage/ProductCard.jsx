@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { H5Secondary } from "@components/Headings";
 import { TextSmall, TextMedium, TextLarge, LabelText } from "@components/TextTypography";
 import { SearchIcon, FavoriteIcon, CartIcon } from "@components/icons";
+import { formatPrice } from "@utils/formatPrice";
 
 function ProductCard({ product }) {
   const { name, condition, original_price, selling_price } = product;
@@ -43,11 +44,11 @@ function ProductCard({ product }) {
           </H5Secondary>
         </div>
         <TextSmall as="del" className="card-text text-gray-400">
-          {`NT$ ${original_price}`}
+          {`NT$ ${formatPrice(original_price, false)}`}
         </TextSmall>
         <p className="card-text">
           <TextMedium>NT$ </TextMedium>
-          <TextLarge>{selling_price}</TextLarge>
+          <TextLarge>{formatPrice(selling_price, false)}</TextLarge>
         </p>
       </section>
     </main>
