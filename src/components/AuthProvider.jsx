@@ -18,8 +18,8 @@ export function AuthProvider({ children }) {
       if (token) {
         try {
           await verifyAuth().unwrap();
-        } catch (err) {
-          console.error("認證驗證失敗:", err);
+        } catch {
+          // console.error("認證驗證失敗:", err);
           dispatch(setVerified());
         }
       } else {
