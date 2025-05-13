@@ -1,0 +1,34 @@
+import classNames from "classnames";
+import PropTypes from "prop-types";
+
+function FacebookIocn({ size = 24, strokeWidth = 0, title, className, style, ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      className={classNames(className)}
+      style={style}
+      {...props}
+    >
+      <path
+        d="M8.5007 6.5C8.5007 5.04131 9.09082 3.64236 10.1412 2.61091C11.1916 1.57946 12.6163 1 14.1018 1L18.7694 1V6.95833H15.0353V8.79167H19L17.6511 14.75H15.0353V23H8.5007V14.75H5V8.79167H8.5007V6.5ZM14.1018 2.83333C13.1115 2.83333 12.1617 3.21964 11.4614 3.90728C10.7612 4.59491 10.3677 5.52754 10.3677 6.5V10.625H6.86704V12.9167H10.3677V21.1667H13.1683V12.9167H16.1537L16.6718 10.625H13.1683V6.95833C13.1683 6.4721 13.365 6.00579 13.7151 5.66197C14.0653 5.31815 14.5402 5.125 15.0353 5.125H16.9024V2.83333H14.1018Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+FacebookIocn.propTypes = {
+  size: PropTypes.number,
+  strokeWidth: PropTypes.number,
+  title: PropTypes.string,
+  className: PropTypes.string,
+  style: PropTypes.object,
+};
+
+export default FacebookIocn;
