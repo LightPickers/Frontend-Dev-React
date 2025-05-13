@@ -5,7 +5,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_BASE,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
+      const token = getState().auth?.token;
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -37,6 +37,7 @@ export const userApi = createApi({
         method: "POST",
       }),
       providesTags: ["User"],
+      keepUnusedDataFor: 60,
     }),
     // 取得用戶資料
     getUserProfile: builder.query({
