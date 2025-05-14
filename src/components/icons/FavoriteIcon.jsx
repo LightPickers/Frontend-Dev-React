@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
+// 空心愛心
 function FavoriteIcon({ size = 24, strokeWidth = 0, title, className, style, ...props }) {
   return (
     <svg
