@@ -5,7 +5,10 @@ import { NavLink } from "react-router-dom";
 // Base component
 function TextBase({ as: Component = "span", className, children, disabled = false, ...rest }) {
   const isLink =
-    Component === "a" || Component?.displayName === "Link" || Component?.displayName === "NavLink";
+    Component === "a" ||
+    Component === "button" ||
+    Component?.displayName === "Link" ||
+    Component?.displayName === "NavLink";
   const baseClass = "text-sans";
   const linkClass = isLink ? "link-text" : "";
   const disabledClass = disabled ? "is-disabled" : "";

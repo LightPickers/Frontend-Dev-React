@@ -1,3 +1,6 @@
+@use "../stylesheets/colors" as colors;
+@use "../stylesheets/border" as border;
+
 .user-avatar {
   width: 32px;
   height: 32px;
@@ -14,5 +17,60 @@
   &.scrollDown {
     backdrop-filter: blur(24px);
     // background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .navbar-nav {
+    .dropdown-menu {
+      transition: all 0.3s ease;
+    }
+    .nav-item {
+      &:hover .dropdown-menu {
+        display: block;
+      }
+    }
+  }
+
+  .navbar-nav .nav-link.active,
+  .navbar-nav .nav-link.show {
+    color: colors.$primary-600;
+  }
+}
+
+.dropdown-wrapper {
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.1);
+
+  .dropdown-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .dropdown-item {
+    margin-bottom: 12px;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.wishlist-items {
+  min-width: 286px;
+
+  .product-img {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+  }
+  .form-check-input {
+    flex-shrink: 0;
+  }
+  .product-info {
+    max-width: 120px;
   }
 }
