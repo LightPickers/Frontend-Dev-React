@@ -1,37 +1,43 @@
 import { Link, useNavigate } from "react-router-dom";
 
+import { useGetCartQuery, useDeleteCartProductMutation } from "@/features/cart/cartApi";
 import { BtnPrimary } from "@/components/Buttons";
 import { H3Primary, H5Primary } from "@/components/Headings";
 
 function CartPage() {
-  // 假資料
-  const cartItems = [
-    {
-      id: 1,
-      name: "商品一",
-      image: "https://fakeimg.pl/60",
-      price: 19000,
-      qty: 1,
-    },
-    {
-      id: 2,
-      name: "商品二",
-      image: "https://fakeimg.pl/60",
-      price: 20000,
-      qty: 1,
-    },
-  ];
+  const navigate = useNavigate();
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+  // 取得購物車資料
+  const { data, isLoading } = useGetCartQuery();
+  const [deleteCartProduct] = useDeleteCartProductMutation();
+
+  // 小計、運費、總計計算
+  const cartItems = data?.data?.items || [];
+  const subtotal = data?.data?.amount || 0;
   const shipping = 60;
   const total = subtotal + shipping;
 
-  const navigate = useNavigate();
-  const handleConfirm = () => {
-    // 這裡可以接後端 API 發送訂單
-    navigate("/checkout/success");
+  // 刪除品項
+  const handleDelete = async id => {
+    const confirmDelete = window.confirm("確定要刪除此商品嗎？");
+
+    if (!confirmDelete) return;
+    try {
+      await deleteCartProduct(id).unwrap();
+    } catch (err) {
+      console.error("刪除失敗", err);
+    }
+  };
+  // 按下前往結帳手續按鈕
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      alert("購物車沒有商品，請先加入商品");
+      return; // 阻止導頁
+    }
+    navigate("/checkout"); // 有商品才導到結帳頁
   };
 
+  if (isLoading) return <p>載入中...</p>;
   return (
     <>
       <div className="bg-gray-100">
@@ -77,62 +83,74 @@ function CartPage() {
           <div className="cart-contents py-8">
             <H3Primary className="mb-9 heading-border pb-3">確認訂單內容</H3Primary>
             <table className="table cart-table align-middle text-nowrap">
-              <thead className="table-head">
+              <thead className="cart-table-head">
                 <tr>
-                  <th className="text-start text-gray-600 px-3 py-2" scope="col">
-                    商品資訊
+                  <th scope="col">
+                    <p className="text-start text-gray-600">商品資訊</p>
                   </th>
-                  <th className="text-end text-gray-600 px-3 py-2" scope="col">
-                    價格
+                  <th scope="col">
+                    <p className="text-end text-gray-600">價格</p>
                   </th>
-                  <th className="text-end text-gray-600 px-3 py-2" scope="col">
-                    數量
+                  <th scope="col">
+                    <p className="text-end text-gray-600">數量</p>
                   </th>
-                  <th className="text-end text-gray-600 px-3 py-2" scope="col">
-                    總計
+                  <th scope="col">
+                    <p className="text-end text-gray-600">總計</p>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {cartItems.map(item => (
-                  <tr key={item.id}>
-                    <td>
-                      <div className="d-flex align-items-center gap-4">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="img-thumbnail"
-                          width="60"
-                        />
-                        <div>
-                          <p className="fs-5 text-gray-600">{item.name}</p>
+                {cartItems.map(item => {
+                  return (
+                    <tr key={item.id}>
+                      <td>
+                        <div className="d-flex align-items-center gap-4">
+                          <img
+                            // 先放假圖 要改回去item.primary_image
+                            src={"https://fakeimg.pl/60"}
+                            alt={item.name}
+                            className="img-thumbnail"
+                            width="60"
+                          />
+                          <div>
+                            <p className="fs-5 text-gray-600">{item.name}</p>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="d-flex justify-content-end align-items-center gap-1">
-                        <div className="text-gray-400">NT$</div>
-                        <div className="fs-5 fw-bold text-gray-500">
-                          {item.price.toLocaleString()}
+                      </td>
+                      <td>
+                        <div className="d-flex justify-content-end align-items-center gap-1">
+                          <div className="text-gray-400">NT$</div>
+                          <div className="fs-5 fw-bold text-gray-500">
+                            {item.price_at_time.toLocaleString()}
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="text-end text-gray-500">{item.qty}</td>
-                    <td>
-                      <div className="d-flex justify-content-end align-items-center gap-1">
-                        <div className="text-gray-400">NT$</div>
-                        <div className="fs-5 fw-bold text-gray-500">
-                          {(item.price * item.qty).toLocaleString()}
+                      </td>
+                      <td className="text-end text-gray-500 gap-3">{item.quantity}</td>
+                      <td>
+                        <div className="d-flex justify-content-between">
+                          <button
+                            onClick={() => handleDelete(item.id)}
+                            className="btn btn-sm btn-outline-danger ms-11"
+                            title="刪除"
+                          >
+                            刪除
+                          </button>
+                          <div className="d-flex justify-content-end align-items-center gap-1">
+                            <div className="text-gray-400">NT$</div>
+                            <div className="fs-5 fw-bold text-gray-500">
+                              {item.total_price.toLocaleString()}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
               <tfoot>
                 <tr className="gap-11">
                   <td colSpan="3" className="text-end fw-bold text-gray-500">
-                    商品合計
+                    <p>商品合計</p>
                   </td>
                   <td>
                     <div className="d-flex justify-content-end align-items-center gap-1">
@@ -143,7 +161,7 @@ function CartPage() {
                 </tr>
                 <tr>
                   <td colSpan="3" className="text-end fw-bold text-gray-500">
-                    運費
+                    <p>運費</p>
                   </td>
                   <td>
                     <div className="d-flex justify-content-end align-items-center gap-1">
@@ -152,11 +170,11 @@ function CartPage() {
                     </div>
                   </td>
                 </tr>
-                <tr className="bg-primary-200 rounded-1">
-                  <td colSpan="3" className="rounded-1 text-end fw-bold fs-5 text-primary-1000">
-                    總計
+                <tr className="bg-primary-200">
+                  <td colSpan="3" className="rounded-start text-end fw-bold fs-5 text-primary-1000">
+                    <p>總計</p>
                   </td>
-                  <td className="rounded-1">
+                  <td className="rounded-end">
                     <div className="d-flex justify-content-end align-items-center gap-1">
                       <div className="text-primary-800">NT$</div>
                       <div className="fs-5 fw-bold text-primary-1000">{total.toLocaleString()}</div>
@@ -174,9 +192,7 @@ function CartPage() {
                 繼續購物
               </Link>
             </div>
-            <BtnPrimary as={Link} to="/checkout">
-              前往結帳手續
-            </BtnPrimary>
+            <BtnPrimary onClick={handleCheckout}>前往結帳手續</BtnPrimary>
           </div>
         </section>
       </div>
