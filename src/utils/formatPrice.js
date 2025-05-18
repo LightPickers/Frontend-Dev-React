@@ -2,6 +2,11 @@
 // withSymbol => bool (需不需要貨幣符號)
 
 export function formatPrice(price, withSymbol = true) {
+  if (typeof price !== "number") {
+    console.warn("formatPrice received non-number:", price);
+    return "–";
+  }
+
   if (withSymbol) {
     const formatted = price.toLocaleString("zh-TW", {
       style: "currency",
