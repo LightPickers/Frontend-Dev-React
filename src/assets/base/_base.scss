@@ -199,12 +199,25 @@ h6 {
   }
 }
 
+// 兩行截斷
 .line-clamp-2 {
   display: -webkit-box;
-  display: box; /* 未來標準 */
+  display: box;
   -webkit-line-clamp: 2;
-  line-clamp: 2; /* 未來標準 */
+  line-clamp: 2;
   -webkit-box-orient: vertical;
-  box-orient: vertical; /* 未來標準 */
+  box-orient: vertical;
   overflow: hidden;
+}
+
+// 刪除按鈕
+.delete-btn {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 4px;
+  margin-right: -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
