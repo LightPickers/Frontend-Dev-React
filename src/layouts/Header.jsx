@@ -7,14 +7,12 @@ import {
 
 function Header() {
   const { data: categories } = useGetFeaturedCategoryQuery();
-  console.log("矚目類別資料：", categories);
   const { data: brands } = useGetProductBrandsQuery();
-  console.log("品牌資料：", brands);
 
   const featuredCategoriesList = categories?.data ?? [];
   const brandList = brands?.data ?? [];
 
-  console.log({ featuredCategoriesList }, { brandList });
+  // console.log({ featuredCategoriesList }, { brandList });
 
   const testBrands = [
     {
