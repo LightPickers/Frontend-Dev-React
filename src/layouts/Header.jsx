@@ -6,12 +6,17 @@ import {
 } from "@features/products/productApi";
 
 function Header() {
-  // const { data: categories } = useGetFeaturedCategoryQuery(); // undefined
-  // const { data: brands } = useGetProductBrandsQuery();
+  const { data: categories } = useGetFeaturedCategoryQuery();
+  console.log("類別資料：", categories);
+  const { data: brands } = useGetProductBrandsQuery();
+  console.log("品牌資料：", brands);
 
-  // console.log(categories, brands);
+  const featuredCategoriesList = categories?.data ?? [];
+  const brandList = brands?.data ?? [];
 
-  const brands = [
+  console.log({ featuredCategoriesList }, { brandList });
+
+  const testBrands = [
     {
       id: "brand-001",
       name: "Sonia",
@@ -26,7 +31,7 @@ function Header() {
     },
   ];
 
-  const featuredCategories = [
+  const testFeaturedCategories = [
     {
       id: "6a628b50-fd32-4ecb-bc1c-a875f71939c9",
       name: "機身",
@@ -49,10 +54,10 @@ function Header() {
     },
   ];
 
-  const menuItems = featuredCategories.map(category => ({
+  const menuItems = testFeaturedCategories.map(category => ({
     id: category.id,
     name: category.name,
-    brands: brands.map(brand => ({
+    brands: testBrands.map(brand => ({
       id: brand.id,
       name: brand.name,
     })),
