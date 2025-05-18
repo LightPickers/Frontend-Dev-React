@@ -73,24 +73,30 @@
 .cart-contents {
   border-radius: 8px;
   gap: 60px;
+
+  // 去除預設底線
+  .table > :not(caption) > * > * {
+    border-bottom-width: 0;
+  }
 }
 
 .cart-table {
-  border-collapse: separate;
-  border-spacing: 16px 12px;
-  .table-head {
+  // border-collapse: separate;
+  // border-spacing: 16px 12px;
+  .cart-table-head {
     th {
+      background-color: transparent;
+    }
+    th p {
       background-color: colors.$gray-200;
       border-radius: 4px;
-      padding: 12px;
+      padding: 8px 12px;
     }
   }
   td {
+    border-bottom: 1px solid colors.$gray-200;
     padding: 12px;
     background-color: transparent;
-  }
-  tfoot {
-    border-color: colors.$gray-100;
   }
 }
 
