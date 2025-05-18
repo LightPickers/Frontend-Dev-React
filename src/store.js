@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 import authReducer from "@features/auth/authSlice";
 import cartReducer from "@features/cart/cartSlice";
@@ -31,5 +32,7 @@ const store = configureStore({
       .concat(orderApi.middleware)
       .concat(wishlistApi.middleware),
 });
+
+setupListeners(store.dispatch);
 
 export default store;

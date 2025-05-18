@@ -1,101 +1,73 @@
-import { Link, NavLink } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-
-import { TextLarge } from "@components/TextTypography";
-import { BtnPrimary } from "@components/Buttons";
+import MobileNavbar from "@components/header/MobileNavbar";
+import DesktopNavbar from "@components/header/DesktopNavbar";
+import {
+  useGetFeaturedCategoryQuery,
+  useGetProductBrandsQuery,
+} from "@features/products/productApi";
 
 function Header() {
-  const user = useSelector(state => state.auth.user);
-  const APP_BASE = import.meta.env.VITE_APP_BASE;
-  const navRef = useRef(null);
-  const navItems = [
-    { name: "相機", path: "/products?category=cameras" },
-    { name: "機身", path: "/products?category=camera_bodies" },
-    { name: "鏡頭", path: "/products?category=lens" },
-    { name: "配件", path: "/products?category=accessories" },
-    { name: "收購流程", path: "/sell" },
-    // { name: "其他", path: "#" },
+  const { data: categories } = useGetFeaturedCategoryQuery();
+  console.log("矚目類別資料：", categories);
+  const { data: brands } = useGetProductBrandsQuery();
+  console.log("品牌資料：", brands);
+
+  const featuredCategoriesList = categories?.data ?? [];
+  const brandList = brands?.data ?? [];
+
+  console.log({ featuredCategoriesList }, { brandList });
+
+  const testBrands = [
+    {
+      id: "brand-001",
+      name: "Sonia",
+    },
+    {
+      id: "brand-002",
+      name: "Kano",
+    },
+    {
+      id: "brand-003",
+      name: "Polex",
+    },
   ];
 
-  useEffect(() => {
-    const handleNavScroll = () => {
-      if (!navRef.current) return;
-      if (window.scrollY > 0) {
-        navRef.current.classList.add("scrollDown");
-      } else {
-        navRef.current.classList.remove("scrollDown");
-      }
-    };
+  const testFeaturedCategories = [
+    {
+      id: "6a628b50-fd32-4ecb-bc1c-a875f71939c9",
+      name: "機身",
+      image: "https://example.com/instant.jpg",
+    },
+    {
+      id: "7fd5cbd6-a19a-414b-b55b-07029c594880",
+      name: "相機",
+      image: "https://example.com/instant.jpg",
+    },
+    {
+      id: "44dee423-8758-48ed-a1d1-b954fa50fc57",
+      name: "鏡頭",
+      image: "https://example.com/instant.jpg",
+    },
+    {
+      id: "2a847d50-f0f6-444d-86d2-1b401369cb24",
+      name: "配件",
+      image: "https://example.com/instant.jpg",
+    },
+  ];
 
-    window.addEventListener("scroll", handleNavScroll);
-    return () => {
-      window.removeEventListener("scroll", handleNavScroll);
-    };
-  }, []);
+  const menuItems = testFeaturedCategories.map(category => ({
+    id: category.id,
+    name: category.name,
+    brands: testBrands.map(brand => ({
+      id: brand.id,
+      name: brand.name,
+    })),
+  }));
 
   return (
-    <nav ref={navRef} className="navbar navbar-custom navbar-light navbar-expand-lg py-5 fixed-top">
-      <div className="container">
-        {/* Logo */}
-        <Link className="navbar-brand" to="/">
-          <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" />
-        </Link>
-
-        {/* 導航項目 */}
-        <div className="collapse navbar-collapse" id="navbarContent">
-          <ul className="me-auto mb-2 mb-lg-0 d-flex gap-5">
-            {/* {navItems.map((item, index) => (
-              <li key={index} className="py-2 px-3">
-                <TextLarge as={NavLink} to={item.path}>
-                  {item.name}
-                </TextLarge>
-              </li>
-            ))} */}
-            <li className="py-2 px-3">
-              <TextLarge as={NavLink} to="/account/profile/settings">
-                會員中心
-              </TextLarge>
-            </li>
-            <li className="py-2 px-3">
-              <TextLarge as={NavLink} to="/register">
-                註冊
-              </TextLarge>
-            </li>
-          </ul>
-          {/* icon */}
-          <div className="d-flex align-items-center gap-7">
-            <div className="d-flex align-items-center gap-3">
-              <Link className="btn btn-link">
-                <img src={`${APP_BASE}icon/search.svg`} alt="搜尋" />
-              </Link>
-              <Link className="btn btn-link">
-                <img src={`${APP_BASE}icon/favorite.svg`} alt="收藏清單" />
-              </Link>
-              <Link className="btn btn-link">
-                <img src={`${APP_BASE}icon/cart.svg`} alt="購物車" />
-              </Link>
-            </div>
-            {user ? (
-              <div>
-                <Link to="/account/profile/settings" className="user-avatar">
-                  <img
-                    src={user.photo || `${APP_BASE}icon/default_avatar.svg`}
-                    alt={user.name}
-                    className="user-avatar rounded-circle bg-primary-100 p-1"
-                    title="前往會員中心"
-                  />
-                </Link>
-              </div>
-            ) : (
-              <BtnPrimary as={Link} to="/login">
-                註冊∕登入
-              </BtnPrimary>
-            )}
-          </div>
-        </div>
-      </div>
-    </nav>
+    <>
+      <DesktopNavbar className="d-none d-lg-block" menuItems={menuItems} />
+      {/* <MobileNavbar className="d-block d-lg-none" menuItems={menuItems} /> */}
+    </>
   );
 }
 

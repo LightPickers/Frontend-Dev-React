@@ -16,11 +16,11 @@ export const wishlistApi = createApi({
   endpoints: builder => ({
     // 取得收藏列表
     getWishlistProducts: builder.query({
-      query: () => "/favorites?sortBy=created_at&orderBy=DESC",
+      query: () => "/users/favorites?sortBy=created_at&orderBy=DESC",
       providesTags: result =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Wishlist", id })),
+              ...result.data.map(({ id }) => ({ type: "Wishlist", id })),
               { type: "Wishlist", id: "LIST" },
             ]
           : [{ type: "Wishlist", id: "LIST" }],
@@ -28,7 +28,7 @@ export const wishlistApi = createApi({
     // 將商品加到收藏列表
     addProductToWishlist: builder.mutation({
       query: favoriteProduct => ({
-        url: "/favorites",
+        url: "/users/favorites",
         method: "POST",
         body: favoriteProduct,
       }),
@@ -37,7 +37,7 @@ export const wishlistApi = createApi({
     // 刪除收藏列表品項
     deleteWishlistProduct: builder.mutation({
       query: productId => ({
-        url: `/favorites/${productId}`,
+        url: `/users/favorites/${productId}`,
         method: "DELETE",
       }),
       invalidatesTags: (result, error, productId) => [
