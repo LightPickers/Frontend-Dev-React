@@ -2,6 +2,7 @@ import { Dropdown } from "bootstrap";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { FavoriteIcon, CloseIcon } from "@components/icons";
 import { TextMedium, TextSmall } from "@components/TextTypography";
@@ -13,33 +14,50 @@ import {
   useDeleteWishlistProductMutation,
 } from "@features/wishlist/wishlistApi";
 import { useAddToCartMutation } from "@features/cart/cartApi";
+import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 
 function WishlistItem({ item, checked, onCheckChange, onDelete, isDeleting }) {
-  const { id, name, selling_price, primary_image } = item;
+  const { id, Products } = item;
+  const { id: productId, name, selling_price, primary_image } = Products || {};
 
   return (
     <li className="d-flex align-items-center gap-3">
-      <input
-        type="checkbox"
-        className="form-check-input"
-        checked={checked}
-        onChange={e => onCheckChange(id, e.target.checked)}
-      />
-      <img src={primary_image} alt={name} className="product-img" />
-      <div className="product-info text-truncate flex-grow-1">
-        <H6Secondary isBold={false} className="text-truncate">
-          {name}
-        </H6Secondary>
-        <TextSmall>{`NT$ ${formatPrice(selling_price, false)}`}</TextSmall>
-      </div>
-      <button
-        type="button"
-        className="btn btn-sm delete-btn"
-        onClick={() => onDelete(id)}
-        disabled={isDeleting}
-      >
-        <CloseIcon size={24} className="text-danger" />
-      </button>
+      {!item ? (
+        <div className="d-flex justify-content-center align-items-center py-10">
+          <TextMedium as="p">載入中……</TextMedium>
+        </div>
+      ) : (
+        <>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            checked={checked}
+            onChange={e => onCheckChange(id, e.target.checked)}
+          />
+          <img src={primary_image} alt={name} className="product-img" />
+          <div className="product-info text-truncate flex-grow-1">
+            <H6Secondary isBold={false} className="text-truncate">
+              {name}
+            </H6Secondary>
+            <TextSmall>
+              {typeof selling_price === "number"
+                ? `NT$ ${formatPrice(selling_price, false)}`
+                : "N/A"}
+            </TextSmall>
+          </div>
+          <button
+            type="button"
+            className="btn btn-sm delete-btn"
+            onClick={e => {
+              e.stopPropagation();
+              onDelete(id);
+            }}
+            disabled={isDeleting}
+          >
+            <CloseIcon size={24} className="text-danger" />
+          </button>
+        </>
+      )}
     </li>
   );
 }
@@ -64,7 +82,11 @@ function DesktopNavWishlist({ user }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [isDeleting, setIsDeleting] = useState();
 
-  const wishlistItems = useMemo(() => data?.data ?? [], [data]);
+  // console.log({ data });
+  const wishlistItems = useMemo(() => {
+    // console.log("原始 wishlist 資料", data?.data);
+    return data?.data ?? [];
+  }, [data]);
   const totalSellingPrice = data?.totalSellingPrice ?? 0;
 
   // 初始化 dropdown
@@ -96,8 +118,10 @@ function DesktopNavWishlist({ user }) {
       try {
         setIsDeleting(true);
         await deleteWishlistProduct(id).unwrap();
+        toast.success("刪除成功");
       } catch (error) {
-        console.error("刪除收藏失敗", error);
+        // console.error("刪除收藏失敗", error);
+        toast.error(getApiErrorMessage(error));
       } finally {
         setIsDeleting(false);
       }
@@ -154,16 +178,18 @@ function DesktopNavWishlist({ user }) {
           ) : (
             <>
               <ul className="ps-0 d-flex flex-column gap-2">
-                {wishlistItems.map(item => (
-                  <WishlistItem
-                    key={item.id}
-                    item={item}
-                    checked={selectedIds.includes(item.id)}
-                    onCheckChange={handleCheckboxChange}
-                    onDelete={handleDelete}
-                    isDeleting={isDeleting}
-                  />
-                ))}
+                {wishlistItems.map(item => {
+                  return (
+                    <WishlistItem
+                      key={item.id}
+                      item={item}
+                      checked={selectedIds.includes(item.id)}
+                      onCheckChange={handleCheckboxChange}
+                      onDelete={handleDelete}
+                      isDeleting={isDeleting}
+                    />
+                  );
+                })}
               </ul>
 
               <TextMedium
