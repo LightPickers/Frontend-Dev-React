@@ -15,7 +15,6 @@ function DesktopNavItems({ menuItems }) {
   useEffect(() => {
     const currentDropdowns = dropdownRefs.current.slice(); // 複製當下 refs 陣列
     const handlersMap = new Map();
-    // const isDesktop = window.innerWidth >= 992;
 
     currentDropdowns.forEach(el => {
       if (!el) return;
@@ -54,26 +53,18 @@ function DesktopNavItems({ menuItems }) {
 
       parent.addEventListener("mouseenter", show);
       parent.addEventListener("mouseleave", hide);
-
-      // if (isDesktop) {
-      //   parent.addEventListener("mouseenter", show);
-      //   parent.addEventListener("mouseleave", hide);
-      // } else {
-      //   el.addEventListener("click", toggle);
-      // }
     });
 
     return () => {
       currentDropdowns.forEach(el => {
         if (!el) return;
 
-        const { parent, show, hide, toggle } = handlersMap.get(el) || {};
+        const { parent, show, hide } = handlersMap.get(el) || {};
 
         if (parent) {
           parent.removeEventListener("mouseenter", show);
           parent.removeEventListener("mouseleave", hide);
         }
-        el.removeEventListener("click", toggle);
       });
     };
   }, []);
@@ -111,13 +102,8 @@ function DesktopNavItems({ menuItems }) {
         </li>
       ))}
       <li className="nav-item py-2 px-3">
-        <TextLarge as={NavLink} to="/account/profile/settings" className="nav-link">
-          會員中心
-        </TextLarge>
-      </li>
-      <li className="nav-item py-2 px-3">
-        <TextLarge as={NavLink} to="/register" className="nav-link">
-          註冊
+        <TextLarge as={NavLink} to="/sell" className="nav-link">
+          其他
         </TextLarge>
       </li>
     </ul>
