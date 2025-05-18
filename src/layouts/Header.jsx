@@ -7,7 +7,7 @@ import {
 
 function Header() {
   const { data: categories } = useGetFeaturedCategoryQuery();
-  console.log("類別資料：", categories);
+  console.log("矚目類別資料：", categories);
   const { data: brands } = useGetProductBrandsQuery();
   console.log("品牌資料：", brands);
 
@@ -66,7 +66,7 @@ function Header() {
   return (
     <>
       <DesktopNavbar className="d-none d-lg-block" menuItems={menuItems} />
-      {/* <MobileNavbar className="d-block d-md-none" menuItems={menuItems} /> */}
+      {/* <MobileNavbar className="d-block d-lg-none" menuItems={menuItems} /> */}
     </>
   );
 }
