@@ -100,6 +100,10 @@
       &:hover {
         color: colors.$gray-500;
         background-color: colors.$gray-100;
+
+        & svg {
+          transform: scale(1.2);
+        }
       }
 
       &:focus {
@@ -113,6 +117,11 @@
         pointer-events: none;
         cursor: not-allowed;
       }
+    }
+
+    .icon-btn svg {
+      transition: all 0.3s ease;
+      transform: scale(1);
     }
 
     .icon-group {
