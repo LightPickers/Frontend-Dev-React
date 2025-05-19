@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const brandOptions = [
-  { value: "測試Fuji", label: "Fuji" },
-  { value: "測試Canon", label: "Canon" },
-  { value: "測試Sony", label: "Sony" },
+  { id: 1, value: "測試Fuji", name: "Fuji" },
+  { id: 2, value: "測試Canon", name: "Canon" },
+  { id: 3, value: "測試Sony", name: "Sony" },
 ];
 
 const statusOptions = [
-  { value: "測試九成新", label: "九成新" },
-  { value: "測試極佳", label: "極佳" },
-  { value: "測試堪用", label: "堪用" },
-  { value: "測試良好", label: "良好" },
+  { id: 1, value: "測試九成新", name: "九成新" },
+  { id: 2, value: "測試極佳", name: "極佳" },
+  { id: 3, value: "測試堪用", name: "堪用" },
+  { id: 4, value: "測試良好", name: "良好" },
 ];
 
 function ProductFilter({ onFilter }) {
@@ -48,39 +48,78 @@ function ProductFilter({ onFilter }) {
   return (
     <form className="product-filter mb-4" onSubmit={handleSubmit}>
       <div className="row">
+        {/* 品牌下拉選單 */}
         <div className="col-md-3">
           <label htmlFor="brand" className="form-label">
             品牌
           </label>
-          <select
-            id="brand"
-            className="form-select dropdown-select"
-            value={brand}
-            onChange={e => setBrand(e.target.value)}
-          >
-            <option value="">所有品牌</option>
-            <option value="測試Fuji">Fuji</option>
-            <option value="測試Canon">Canon</option>
-            <option value="測試Sony">Sony</option>
-          </select>
+          <div className="dropdown">
+            <button
+              className="btn w-100 custom-dropdown-button"
+              type="button"
+              id="brandDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {brand ? brandOptions.find(b => b.value === brand)?.name || "選擇品牌" : "所有品牌"}
+            </button>
+            <ul
+              className="dropdown-menu custom-dropdown-menu w-100"
+              aria-labelledby="brandDropdown"
+            >
+              <li className="dropdown-item py-1 px-2" onClick={() => setBrand("")}>
+                所有品牌
+              </li>
+              {brandOptions.map(brand => (
+                <li
+                  key={brand.id}
+                  className="dropdown-item py-1 px-2"
+                  onClick={() => setBrand(brand.value)}
+                >
+                  {brand.name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+
         <div className="col-md-3">
           <label htmlFor="status" className="form-label">
             商品狀態
           </label>
-          <select
-            id="status"
-            className="form-select dropdown-select"
-            value={status}
-            onChange={e => setStatus(e.target.value)}
-          >
-            <option value="">所有狀態</option>
-            <option value="測試九成新">九成新</option>
-            <option value="測試極佳">極佳</option>
-            <option value="測試堪用">堪用</option>
-            <option value="測試良好">良好</option>
-          </select>
+          <div className="dropdown">
+            <button
+              className="btn w-100 custom-dropdown-button"
+              type="button"
+              id="statusDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {status
+                ? statusOptions.find(s => s.value === status)?.name || "選擇狀態"
+                : "所有狀態"}
+            </button>
+            <ul
+              className="dropdown-menu custom-dropdown-menu w-100"
+              aria-labelledby="statusDropdown"
+            >
+              <li className="dropdown-item py-1 px-2" onClick={() => setStatus("")}>
+                所有狀態
+              </li>
+              {statusOptions.map(status => (
+                <li
+                  key={status.id}
+                  className="dropdown-item py-1 px-2"
+                  onClick={() => setStatus(status.value)}
+                >
+                  {status.name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+
+        {/* 金額範圍 */}
         <div className="col-md-3">
           <label className="form-label">金額</label>
           <div className="d-flex align-items-center">
@@ -104,6 +143,8 @@ function ProductFilter({ onFilter }) {
           </div>
           {error && <div className="text-danger mt-1">{error}</div>}
         </div>
+
+        {/* 搜尋按鈕 */}
         <div className="col-md-2 d-flex align-items-end">
           <button type="submit" className="btn btn-search w-100">
             搜尋

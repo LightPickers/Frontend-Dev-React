@@ -3,20 +3,26 @@ import React, { useState, useEffect } from "react";
 import { useGetProductsQuery } from "@features/products/productApi";
 import ProductFilter from "@components/productpage/ProductFilter";
 import ProductList from "@components/productpage/ProductList";
+import CategoryImage from "@components/productpage/CategoryImage";
 
 function ProductCatalogPage() {
   const { data: apiResponse = {}, isLoading, isError } = useGetProductsQuery();
-  const allProducts = Array.isArray(apiResponse.data) ? apiResponse.data : [];
+  const allProducts = React.useMemo(
+    () => (Array.isArray(apiResponse.data) ? apiResponse.data : []),
+    [apiResponse.data]
+  );
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+
+  const category = "lens"; // 替換為實際的 category 值
 
   useEffect(() => {
     if (!isLoading && !isError) {
       console.log("API Response:", apiResponse);
       setFilteredProducts(allProducts);
     }
-  }, [allProducts, isLoading, isError]);
+  }, [apiResponse, allProducts, isLoading, isError]);
 
   const handleFilter = filters => {
     const { brand, status, minPrice, maxPrice } = filters;
@@ -50,12 +56,35 @@ function ProductCatalogPage() {
   return (
     <div className="product-catalog-page">
       <div className="container">
-        <ProductFilter onFilter={handleFilter} />
-        <div className="product-list-wrapper">
+        {/* Category Image */}
+        <CategoryImage category={category} />
+
+        {/* ProductFilter */}
+        <div className="filter-area">
+          <ProductFilter onFilter={handleFilter} />
+        </div>
+      </div>
+
+      {/* ProductList */}
+      <div className="product-list-wrapper">
+        <div className="container">
           <ProductList products={paginatedProducts} />
+        </div>
+
+        <div className="container">
+          {/* Pagination */}
           <div className="pagination-container text-center mt-4">
             <nav>
               <ul className="pagination">
+                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+                  >
+                    &lt;
+                  </button>
+                </li>
+
                 {Array.from({ length: totalPages }, (_, index) => (
                   <li
                     key={index}
@@ -66,6 +95,15 @@ function ProductCatalogPage() {
                     </button>
                   </li>
                 ))}
+
+                <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
+                  >
+                    &gt;
+                  </button>
+                </li>
               </ul>
             </nav>
           </div>
