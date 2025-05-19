@@ -64,6 +64,7 @@ export const {
   useDeleteCartMutation,
   useDeleteCartProductMutation,
   useGetCartQuery,
+  useConfirmOrderInfoMutation,
   useLazyGetCartQuery,
   usePrefetch,
 } = cartApi;

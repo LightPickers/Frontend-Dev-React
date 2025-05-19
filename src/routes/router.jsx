@@ -42,7 +42,7 @@ const ROUTES = {
   CHECKOUT: {
     CART: "/cart", // 購物車 //
     CHECKOUT: "/checkout", // 結帳頁面 //
-    CONFIRMATION: "/checkout/confirmation/:orderId", // 確認結帳頁面
+    CONFIRMATION: "/checkout/confirmation/", // 確認結帳頁面
     STATUS: "/checkout/status/:orderId", // 結帳結果頁面
   },
   SELL: {

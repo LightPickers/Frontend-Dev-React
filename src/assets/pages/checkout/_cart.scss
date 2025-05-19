@@ -1,0 +1,114 @@
+@use "../../stylesheets/fonts" as fonts;
+@use "../../stylesheets/colors" as colors;
+@use "../../stylesheets/sizes" as sizes;
+
+// 麵包屑
+
+.breadcrumb {
+  gap: 4px;
+
+  .breadcrumb-item {
+    & + .breadcrumb-item::before {
+      color: colors.$gray-400;
+    }
+
+    a {
+      color: colors.$gray-500;
+    }
+
+    &.active {
+      color: colors.$gray-500;
+      font-weight: fonts.$font-weight-bold;
+    }
+  }
+}
+
+// 步驟進度條
+.step-background {
+  border-radius: 8px;
+  background-color: #ffffff;
+  gap: 8px;
+}
+.checkout-steps {
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    .circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background-color: colors.$gray-200;
+      color: colors.$white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.active .circle {
+      background-color: colors.$primary-600;
+    }
+
+    .step-label {
+      font-weight: fonts.$font-weight-bold;
+      color: colors.$gray-400;
+    }
+  }
+
+  .line {
+    flex-grow: 1;
+    align-self: center;
+    border-top: 2px dashed colors.$gray-200;
+
+    max-width: 146px;
+    &.active {
+      border-top: 2px dashed colors.$primary-600;
+    }
+  }
+}
+
+// 購物車內容
+.cart-contents {
+  border-radius: 8px;
+  gap: 60px;
+
+  // 去除預設底線
+  .table > :not(caption) > * > * {
+    border-bottom-width: 0;
+  }
+}
+
+.cart-table {
+  // border-collapse: separate;
+  // border-spacing: 16px 12px;
+  .cart-table-head {
+    th {
+      background-color: transparent;
+    }
+    th p {
+      background-color: colors.$gray-200;
+      border-radius: 4px;
+      padding: 8px 12px;
+    }
+  }
+  td {
+    border-bottom: 1px solid colors.$gray-200;
+    padding: 12px;
+    background-color: transparent;
+  }
+}
+
+.shipping-information-table {
+  th {
+    background-color: transparent;
+  }
+  td {
+    background-color: transparent;
+  }
+}
+
+.heading-border {
+  border-bottom: 1px solid colors.$gray-200;
+}
