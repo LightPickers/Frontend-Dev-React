@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useMemo } from "react";
 
 import { useGetUserProfileQuery } from "@/features/users/userApi";
-import { useGetCartQuery, useDeleteCartProductMutation } from "@/features/cart/cartApi";
+import { useGetCartQuery } from "@/features/cart/cartApi";
+import { useGetCouponsQuery } from "@/features/coupons/couponApi";
 import { useCreateNewOrderMutation } from "@/features/orders/orderApi";
 import { BtnPrimary } from "@/components/Buttons";
 import { H3Primary, H5Primary } from "@/components/Headings";
@@ -19,6 +21,16 @@ function OrderConfirmationPage() {
   // 取得會員資料
   const { data: userData, isLoading: isUserLoading } = useGetUserProfileQuery();
   const userInfo = userData?.data?.user;
+
+  // 取得優惠券資料
+  const { data: couponsData } = useGetCouponsQuery({ page: 1, per: 9999 });
+  const coupons = couponsData?.data || [];
+
+  const defaultDate = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 4);
+    return date.toISOString().split("T")[0];
+  }, []);
 
   // 新增訂單
   const [createNewOrder, { isLoading: isCreating }] = useCreateNewOrderMutation();
@@ -54,6 +66,18 @@ function OrderConfirmationPage() {
   const subtotal = data?.data?.amount || 0;
   const shipping = 60;
   const total = subtotal + shipping;
+
+  const matchedCoupon = useMemo(() => {
+    const code = checkoutForm.couponCode?.trim().toLowerCase();
+    if (!code) return null;
+    return coupons.find(coupon => coupon.code.toLowerCase() === code);
+  }, [checkoutForm.couponCode, coupons]);
+
+  const discountAmount = matchedCoupon
+    ? subtotal - Math.round((subtotal / 10) * matchedCoupon.discount)
+    : 0;
+
+  const finalTotal = subtotal + shipping - discountAmount;
 
   if (isLoading) return <p>載入中...</p>;
 
@@ -185,6 +209,21 @@ function OrderConfirmationPage() {
                     </div>
                   </td>
                 </tr>
+                {matchedCoupon && (
+                  <tr>
+                    <td colSpan="3" className="text-end fw-bold text-gray-500">
+                      優惠券折扣
+                    </td>
+                    <td>
+                      <div className="d-flex justify-content-end align-items-center gap-1">
+                        <div className="text-gray-400">- NT$</div>
+                        <div className="fs-5 fw-bold text-danger">
+                          {discountAmount.toLocaleString()}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
                 <tr className="bg-primary-200">
                   <td colSpan="3" className="rounded-start text-end fw-bold fs-5 text-primary-1000">
                     總計
@@ -192,7 +231,9 @@ function OrderConfirmationPage() {
                   <td className="rounded-end">
                     <div className="d-flex justify-content-end align-items-center gap-1">
                       <div className="text-primary-800">NT$</div>
-                      <div className="fs-5 fw-bold text-primary-1000">{total.toLocaleString()}</div>
+                      <div className="fs-5 fw-bold text-primary-1000">
+                        {finalTotal.toLocaleString()}
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -253,7 +294,11 @@ function OrderConfirmationPage() {
                   <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
                     希望配送日期
                   </th>
-                  <td className="py-3 text-gray-500">{checkoutForm.deliveryDate}</td>
+                  <td className="py-3 text-gray-500">
+                    {checkoutForm.deliveryDate === defaultDate
+                      ? "無希望日"
+                      : checkoutForm.deliveryDate}
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row" className="fs-5 fw-bold text-gray-500 py-3 border-0">
