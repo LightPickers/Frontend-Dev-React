@@ -52,6 +52,15 @@ function CheckoutPage() {
     return () => subscription.unsubscribe();
   }, [watch, dispatch]);
 
+  const [defaultDate, setDefaultDate] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    today.setDate(today.getDate() + 4);
+    const dateStr = today.toISOString().split("T")[0];
+    setDefaultDate(dateStr);
+  }, []);
+
   // 計算可選配送日期（三天後開始連續七天）
   const [deliveryDates, setDeliveryDates] = useState([]);
 
@@ -203,7 +212,7 @@ function CheckoutPage() {
                     <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
                       收件者
                     </th>
-                    <td className="py-3">
+                    <td className="py-3 " style={{ position: "relative" }}>
                       <div className="form-check d-flex align-items-center gap-2 flex-wrap">
                         <input
                           {...register("recipient")}
@@ -222,7 +231,16 @@ function CheckoutPage() {
                             {userInfo.address_district}
                             {userInfo.address_detail}
                           </div>
-                          <div className="">{userInfo.phone}</div>
+                          <div>{userInfo.phone}</div>
+                          <div>
+                            <Link
+                              to="/account/profile/settings"
+                              className="text-gray-500 text-decoration-underline"
+                              style={{ position: "absolute", right: 8, bottom: 12 }}
+                            >
+                              更改收件地址
+                            </Link>
+                          </div>
                         </label>
                         {errors.recipient && (
                           <p className="invalid-feedback m-0">{errors.recipient.message}</p>
@@ -261,7 +279,7 @@ function CheckoutPage() {
                         {...register("deliveryDate")}
                         className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
                       >
-                        <option value="none">無希望日</option>
+                        <option value={defaultDate}>無希望日</option>
                         {deliveryDates.map(({ value, label }) => (
                           <option key={value} value={value}>
                             {label}
