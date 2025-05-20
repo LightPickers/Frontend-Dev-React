@@ -7,9 +7,9 @@ import checkoutPageReducer from "@/features/cart/checkoutPageSlice";
 import { userApi } from "@features/users/userApi";
 import { productApi } from "@features/products/productApi";
 import { cartApi } from "@features/cart/cartApi";
-import { couponApi } from "./features/coupons/couponApi";
 import { orderApi } from "@features/orders/orderApi";
 import { wishlistApi } from "@features/wishlist/wishlistApi";
+import { couponApi } from "@features/coupons/couponApi";
 
 const store = configureStore({
   reducer: {
