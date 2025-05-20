@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import { BtnPrimary } from "@/components/Buttons";
 import { H3Primary, H5Primary } from "@/components/Headings";
@@ -11,6 +12,7 @@ import { useGetCouponsQuery } from "@/features/coupons/couponApi";
 import { useConfirmOrderInfoMutation } from "@/features/cart/cartApi";
 import { getCheckoutSchema } from "@schemas/cart/checkoutSchema";
 import { setCheckoutField, resetCheckoutForm } from "@/features/cart/checkoutPageSlice";
+import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 
 // 4-1 結帳頁面
 function CheckoutPage() {
@@ -26,7 +28,10 @@ function CheckoutPage() {
 
   // 取得優惠券資料
   const { data: couponsData } = useGetCouponsQuery({ page: 1, per: 9999 });
-  const coupons = couponsData?.data || [];
+  // const coupons = couponsData?.data || [];
+  const coupons = useMemo(() => {
+    return couponsData?.data || [];
+  }, [couponsData?.data]);
   const safeCoupons = useMemo(() => (Array.isArray(coupons) ? coupons : []), [coupons]);
 
   const schema = useMemo(() => getCheckoutSchema(safeCoupons), [safeCoupons]); // react-hook-form 初始化
@@ -109,7 +114,8 @@ function CheckoutPage() {
       // dispatch(resetCheckoutForm()); //付款成功再清除
       navigate("/checkout/confirmation");
     } catch (err) {
-      alert("訂單送出失敗，請稍後再試");
+      toast.error(getApiErrorMessage(err, "訂單送出失敗，請稍後再試"));
+      // alert("訂單送出失敗，請稍後再試");
     }
   };
 
