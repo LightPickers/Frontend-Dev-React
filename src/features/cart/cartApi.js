@@ -16,10 +16,13 @@ export const cartApi = createApi({
   endpoints: builder => ({
     // 取得購物車內容
     getCart: builder.query({
-      query: () => "/cart",
+      query: userId => `/cart?userId=${userId}`,
       providesTags: result =>
-        result && Array.isArray(result)
-          ? [...result.map(({ id }) => ({ type: "Cart", id })), { type: "Cart", id: "LIST" }]
+        result?.data.items
+          ? [
+              ...result.data.items.map(({ id }) => ({ type: "Cart", id })),
+              { type: "Cart", id: "LIST" },
+            ]
           : [{ type: "Cart", id: "LIST" }],
     }),
     // 新增商品到購物車
