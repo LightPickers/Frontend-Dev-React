@@ -1,33 +1,44 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { H5Secondary } from "@components/Headings";
 import { TextSmall, TextMedium, TextLarge, LabelText } from "@components/TextTypography";
-import { SearchIcon, FavoriteIcon, CartIcon } from "@components/icons";
+import { SearchIcon, CartIcon } from "@components/icons";
 import { formatPrice } from "@utils/formatPrice";
+import FavoriteIconToggler from "@components/FavoriteIconToggler";
+import CartIconToggler from "@components/CartIconToggler";
 
 function ProductCard({ product }) {
-  const { name, condition, original_price, selling_price } = product;
+  const { id, name, condition, primary_image, original_price, selling_price } = product;
+
   return (
     <main className="card product-card">
       {/* 圖片區域 */}
       <section className="card-image-container">
         {/* 商品主圖 */}
-        <img src="https://fakeimg.pl/300/" className="product-image object-fit-cover" alt={name} />
+        <img
+          src={primary_image || "https://fakeimg.pl/300/"}
+          className="product-image object-fit-cover"
+          alt={name}
+        />
 
         {/* 機況標籤 */}
         <LabelText className="card-badge mt-5">{condition}</LabelText>
 
         {/* 懸停按鈕 */}
         <div className="icon-group">
-          <button className="icon-btn">
+          <Link to={`/products/${id}`} className="icon-btn">
             <SearchIcon title="查看商品" strokeWidth={1} />
-          </button>
-          <button className="icon-btn">
-            <FavoriteIcon title="加入收藏" strokeWidth={1} />
-          </button>
-          <button className="icon-btn">
+          </Link>
+
+          <FavoriteIconToggler productId={id} />
+
+          <CartIconToggler productId={id} />
+
+          {/* <button className="icon-btn">
             <CartIcon title="放入購物車" strokeWidth={1} />
-          </button>
+          </button> */}
         </div>
       </section>
 

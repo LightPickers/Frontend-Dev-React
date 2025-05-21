@@ -36,12 +36,12 @@ export const wishlistApi = createApi({
     }),
     // 刪除收藏列表品項
     deleteWishlistProduct: builder.mutation({
-      query: productId => ({
-        url: `/users/favorites/${productId}`,
+      query: favoriteId => ({
+        url: `/users/favorites/${favoriteId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, productId) => [
-        { type: "Wishlist", id: productId },
+      invalidatesTags: (result, error, favoriteId) => [
+        { type: "Wishlist", id: favoriteId },
         { type: "Wishlist", id: "LIST" },
       ],
     }),
