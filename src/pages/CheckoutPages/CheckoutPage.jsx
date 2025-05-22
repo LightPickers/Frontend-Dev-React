@@ -106,7 +106,6 @@ function CheckoutPage() {
 
     try {
       await confirmOrderInfo(payload).unwrap();
-      // dispatch(resetCheckoutForm()); //付款成功再清除
       navigate("/checkout/confirmation");
     } catch (err) {
       alert("訂單送出失敗，請稍後再試");
@@ -119,254 +118,487 @@ function CheckoutPage() {
 
   return (
     <>
-      <div className="bg-gray-100">
-        <section className="container py-20">
-          {/* 麵包屑 */}
-          <nav aria-label="breadcrumb" className="mb-10">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <Link to="/">首頁</Link>
-              </li>
-              <li className="breadcrumb-item">
-                <Link to="/cart">購物車</Link>
-              </li>
-              <li className="breadcrumb-item active">
-                <Link to="/checkout">填寫訂單資料</Link>
-              </li>
-            </ol>
-          </nav>
-
-          {/* 步驟進度條 */}
-          <div className="step-background px-2 px-md-8 py-4 py-md-11 mb-10">
-            <div className="checkout-steps d-flex justify-content-center text-center ">
+      <div className="pt-4">
+        <div className="bg-gray-100 py-10 py-lg-20">
+          <section className="container d-flex flex-column gap-10">
+            {/* 麵包屑 */}
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item">
+                  <Link to="/">首頁</Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <Link to="/cart">購物車</Link>
+                </li>
+                <li className="breadcrumb-item active">
+                  <Link to="/checkout">填寫訂單資料</Link>
+                </li>
+              </ol>
+            </nav>
+            {/* 步驟進度條 */}
+            <div className="checkout-steps bg-white rounded-3 d-flex justify-content-center text-center  gap-0 gap-lg-2 px-2 px-lg-8 py-4 py-lg-11">
               <div className="step active">
                 <H5Primary className="circle">1</H5Primary>
-                <div className="step-label">確認購物車內容</div>
+                <div className="step-label active">
+                  確認
+                  <br className="d-block d-lg-none" />
+                  購物車內容
+                </div>
               </div>
               <div className="line active"></div>
               <div className="step active">
                 <H5Primary className="circle">2</H5Primary>
-                <div className="step-label">填寫訂單資料</div>
+                <div className="step-label active">
+                  填寫
+                  <br className="d-block d-lg-none" />
+                  訂單資料
+                </div>
               </div>
               <div className="line"></div>
               <div className="step">
                 <H5Primary className="circle">3</H5Primary>
-                <div className="step-label">確認訂單內容</div>
+                <div className="step-label">
+                  確認
+                  <br className="d-block d-lg-none" />
+                  訂單內容
+                </div>
               </div>
               <div className="line"></div>
               <div className="step">
                 <H5Primary className="circle">4</H5Primary>
-                <div className="step-label">訂單完成</div>
+                <div className="step-label">
+                  訂單
+                  <br className="d-block d-lg-none" />
+                  完成
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* 出貨資訊 */}
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="py-8 mb-7">
-              <H3Primary className="heading-border pb-3 mb-9">填寫訂單資料</H3Primary>
-              <table className="table shipping-information-table  align-middle text-nowrap bg-transparent px-5">
-                <tbody>
-                  <tr>
-                    <th
-                      scope="row"
-                      className="fs-5 fw-bold text-gray-500 py-3"
-                      style={{ width: "304px" }}
-                    >
-                      購買者
-                    </th>
-                    <td className="py-3 d-flex flex-column gap-2">
-                      <div className="fw-bold text-gray-500">{userInfo.name}</div>
-                      <div className="text-gray-500">{userInfo.email}</div>
-                      <div className="text-gray-500">
-                        {userInfo.address_zipcode}
-                        {userInfo.address_district}
-                        {userInfo.address_detail}
+            {/* 出貨資訊 */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="d-flex flex-column gap-11 gap-lg-7">
+                <div className="py-lg-8">
+                  <div className="d-flex flex-column gap-6 gap-lg-9">
+                    <div className="d-flex flex-column gap-3">
+                      <div className="d-flex align-items-center gap-3">
+                        <H3Primary className="text-gray-600 fs-1">確認出貨內容</H3Primary>
+                        <div className="px-2 py-1">
+                          <Link className="text-primary-800 fw-bold text-decoration-underline">
+                            關於退貨...
+                          </Link>
+                        </div>
                       </div>
-                      <div className="text-gray-500">{userInfo.phone}</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
-                      寄送方式
-                    </th>
-                    <td className="py-3 text-gray-500">
-                      <div className="form-check">
-                        <input
-                          {...register("shippingMethod")}
-                          className={`form-check-input ${errors.shippingMethod ? "is-invalid" : ""}`}
-                          type="radio"
-                          value="宅配到府"
-                          id="shipping-home"
-                        />
-                        <label className="form-check-label" htmlFor="shipping-home">
-                          宅配到府
-                        </label>
-                        {errors.shippingMethod && (
-                          <p className="invalid-feedback">{errors.shippingMethod.message}</p>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
-                      收件者
-                    </th>
-                    <td className="py-3 " style={{ position: "relative" }}>
-                      <div className="form-check d-flex align-items-center gap-2 flex-wrap">
-                        <input
-                          {...register("recipient")}
-                          className={`form-check-input ${errors.recipient ? "is-invalid" : ""}`}
-                          type="radio"
-                          value="self"
-                          id="recipient-default"
-                        />
-                        <label
-                          className={`form-check-label ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
-                          htmlFor="recipient-default"
+                      <div className="divider-line"></div>
+                    </div>
+                    <table className="table shipping-information-table  align-middle text-nowrap bg-transparent px-5">
+                      <tbody>
+                        <tr>
+                          <th
+                            scope="row"
+                            className="fs-5 fw-bold text-gray-500 py-3"
+                            style={{ width: "304px" }}
+                          >
+                            購買者
+                          </th>
+                          <td className="py-3 d-flex flex-column gap-2">
+                            <div className="fw-bold text-gray-500">{userInfo.name}</div>
+                            <div className="text-gray-500">{userInfo.email}</div>
+                            <div className="text-gray-500">
+                              {userInfo.address_zipcode}
+                              {userInfo.address_district}
+                              {userInfo.address_detail}
+                            </div>
+                            <div className="text-gray-500">{userInfo.phone}</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
+                            寄送方式
+                          </th>
+                          <td className="py-3 text-gray-500">
+                            <div className="form-check">
+                              <input
+                                {...register("shippingMethod")}
+                                className={`form-check-input ${errors.shippingMethod ? "is-invalid" : ""}`}
+                                type="radio"
+                                value="宅配到府"
+                                id="shipping-home"
+                              />
+                              <label className="form-check-label" htmlFor="shipping-home">
+                                宅配到府
+                              </label>
+                              {errors.shippingMethod && (
+                                <p className="invalid-feedback">{errors.shippingMethod.message}</p>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
+                            收件者
+                          </th>
+                          <td className="py-3 " style={{ position: "relative" }}>
+                            <div className="form-check d-flex align-items-center gap-2 flex-wrap">
+                              <input
+                                {...register("recipient")}
+                                className={`form-check-input ${errors.recipient ? "is-invalid" : ""}`}
+                                type="radio"
+                                value="self"
+                                id="recipient-default"
+                              />
+                              <label
+                                className={`form-check-label ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
+                                htmlFor="recipient-default"
+                              >
+                                <div className="fw-bold">{userInfo.name}</div>
+                                <div>
+                                  {userInfo.address_zipcode}
+                                  {userInfo.address_district}
+                                  {userInfo.address_detail}
+                                </div>
+                                <div>{userInfo.phone}</div>
+                                <div>
+                                  <Link
+                                    to="/account/profile/settings"
+                                    className="text-gray-500 text-decoration-underline"
+                                    style={{ position: "absolute", right: 8, bottom: 12 }}
+                                  >
+                                    更改收件地址
+                                  </Link>
+                                </div>
+                              </label>
+                              {errors.recipient && (
+                                <p className="invalid-feedback m-0">{errors.recipient.message}</p>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
+                            付款方式
+                          </th>
+                          <td className="py-3 text-gray-500">
+                            <div className="form-check">
+                              <input
+                                {...register("paymentMethod")}
+                                className={`form-check-input ${errors.paymentMethod ? "is-invalid" : ""}`}
+                                type="radio"
+                                value="信用卡付款"
+                                id="payment-credit"
+                              />
+                              <label className="form-check-label" htmlFor="payment-credit">
+                                信用卡付款
+                              </label>
+                              {errors.paymentMethod && (
+                                <p className="invalid-feedback">{errors.paymentMethod.message}</p>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
+                            希望配送日期
+                          </th>
+                          <td className="py-3">
+                            <select
+                              {...register("deliveryDate")}
+                              className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
+                            >
+                              <option value={defaultDate}>無希望日</option>
+                              {deliveryDates.map(({ value, label }) => (
+                                <option key={value} value={value}>
+                                  {label}
+                                </option>
+                              ))}
+                            </select>
+                            {errors.deliveryDate && (
+                              <p className="invalid-feedback">{errors.deliveryDate.message}</p>
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
+                            到貨時間
+                          </th>
+                          <td className="py-3 text-gray-500">
+                            <div className="form-check">
+                              <input
+                                {...register("deliveryTime")}
+                                className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
+                                type="radio"
+                                value="無希望時間"
+                                id="delivery-anytime"
+                              />
+                              <label className="form-check-label" htmlFor="delivery-anytime">
+                                無希望時間
+                              </label>
+                            </div>
+                            <div className="form-check">
+                              <input
+                                {...register("deliveryTime")}
+                                className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
+                                type="radio"
+                                value="8點～13點前"
+                                id="delivery-morning"
+                              />
+                              <label className="form-check-label" htmlFor="delivery-morning">
+                                8點~13點前
+                              </label>
+                            </div>
+                            <div className="form-check">
+                              <input
+                                {...register("deliveryTime")}
+                                className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
+                                type="radio"
+                                value="14點～18點"
+                                id="delivery-afternoon"
+                              />
+                              <label className="form-check-label" htmlFor="delivery-afternoon">
+                                14點～18點
+                              </label>
+                              {errors.deliveryTime && (
+                                <p className="invalid-feedback">{errors.deliveryTime.message}</p>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row" className="fs-5 fw-bold text-gray-500 py-3 border-0">
+                            使用優惠券
+                          </th>
+                          <td className="py-3 border-0">
+                            <input
+                              {...register("couponCode")}
+                              type="text"
+                              className={`form-control w-auto text-gray-500 ${errors.couponCode ? "is-invalid" : ""}`}
+                              placeholder="請輸入優惠碼"
+                            />
+                            {errors.couponCode && (
+                              <p className="invalid-feedback">{errors.couponCode.message}</p>
+                            )}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div className="shipping-information-table-mobile">
+                      <div className="d-flex flex-column gap-3">
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
                         >
-                          <div className="fw-bold">{userInfo.name}</div>
-                          <div>
+                          購買者
+                        </div>
+                        <div className="d-flex flex-column gap-1">
+                          <div className="text-gray-500 fw-bold">{userInfo.name}</div>
+                          <div className="text-gray-500">
+                            地址：
                             {userInfo.address_zipcode}
                             {userInfo.address_district}
                             {userInfo.address_detail}
                           </div>
-                          <div>{userInfo.phone}</div>
-                          <div>
-                            <Link
-                              to="/account/profile/settings"
-                              className="text-gray-500 text-decoration-underline"
-                              style={{ position: "absolute", right: 8, bottom: 12 }}
+                          <div className="text-gray-500">電話：{userInfo.phone}</div>
+                        </div>
+                      </div>
+                      <div className="divider-line"></div>
+                      <div className="d-flex flex-column gap-3">
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          寄送方式
+                        </div>
+                        <div className="form-check">
+                          <input
+                            {...register("shippingMethod")}
+                            className={`form-check-input ${errors.shippingMethod ? "is-invalid" : ""}`}
+                            type="radio"
+                            value="宅配到府"
+                            id="shipping-home"
+                          />
+                          <label className="form-check-label" htmlFor="shipping-home">
+                            宅配到府
+                          </label>
+                          {errors.shippingMethod && (
+                            <p className="invalid-feedback">{errors.shippingMethod.message}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="divider-line"></div>
+                      <div className="d-flex flex-column gap-3">
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          收件者
+                        </div>
+                        <div className="d-flex flex-column gap-1">
+                          <div
+                            className="form-check d-flex align-items-center gap-2 flex-wrap"
+                            style={{ position: "relative" }}
+                          >
+                            <input
+                              {...register("recipient")}
+                              className={`form-check-input ${errors.recipient ? "is-invalid" : ""}`}
+                              type="radio"
+                              value="self"
+                              id="recipient-default"
+                            />
+                            <label
+                              className={`form-check-label ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
+                              htmlFor="recipient-default"
                             >
-                              更改收件地址
-                            </Link>
+                              <div className="fw-bold">{userInfo.name}</div>
+                              <div>
+                                {userInfo.address_zipcode}
+                                {userInfo.address_district}
+                                {userInfo.address_detail}
+                              </div>
+                              <div>{userInfo.phone}</div>
+                              <div>
+                                <Link
+                                  to="/account/profile/settings"
+                                  className="text-gray-500 text-decoration-underline"
+                                  style={{ position: "absolute", right: 0, bottom: 0 }}
+                                >
+                                  更改收件地址
+                                </Link>
+                              </div>
+                            </label>
+                            {errors.recipient && (
+                              <p className="invalid-feedback m-0">{errors.recipient.message}</p>
+                            )}
                           </div>
-                        </label>
-                        {errors.recipient && (
-                          <p className="invalid-feedback m-0">{errors.recipient.message}</p>
+                        </div>
+                      </div>
+                      <div className="divider-line"></div>
+                      <div className="d-flex flex-column gap-3">
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          付款方式
+                        </div>
+                        <div className="form-check">
+                          <input
+                            {...register("paymentMethod")}
+                            className={`form-check-input ${errors.paymentMethod ? "is-invalid" : ""}`}
+                            type="radio"
+                            value="信用卡付款"
+                            id="payment-credit"
+                          />
+                          <label className="form-check-label" htmlFor="payment-credit">
+                            信用卡付款
+                          </label>
+                          {errors.paymentMethod && (
+                            <p className="invalid-feedback">{errors.paymentMethod.message}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="divider-line"></div>
+                      <div className="d-flex flex-column gap-3">
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          希望配送日期
+                        </div>
+                        <select
+                          {...register("deliveryDate")}
+                          className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
+                        >
+                          <option value={defaultDate}>無希望日</option>
+                          {deliveryDates.map(({ value, label }) => (
+                            <option key={value} value={value}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.deliveryDate && (
+                          <p className="invalid-feedback">{errors.deliveryDate.message}</p>
                         )}
                       </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
-                      付款方式
-                    </th>
-                    <td className="py-3 text-gray-500">
-                      <div className="form-check">
+                      <div className="divider-line"></div>
+                      <div className="d-flex flex-column gap-3">
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          到貨時間
+                        </div>
+                        <div className="form-check">
+                          <input
+                            {...register("deliveryTime")}
+                            className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
+                            type="radio"
+                            value="無希望時間"
+                            id="delivery-anytime"
+                          />
+                          <label className="form-check-label" htmlFor="delivery-anytime">
+                            無希望時間
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            {...register("deliveryTime")}
+                            className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
+                            type="radio"
+                            value="8點～13點前"
+                            id="delivery-morning"
+                          />
+                          <label className="form-check-label" htmlFor="delivery-morning">
+                            8點~13點前
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            {...register("deliveryTime")}
+                            className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
+                            type="radio"
+                            value="14點～18點"
+                            id="delivery-afternoon"
+                          />
+                          <label className="form-check-label" htmlFor="delivery-afternoon">
+                            14點～18點
+                          </label>
+                          {errors.deliveryTime && (
+                            <p className="invalid-feedback">{errors.deliveryTime.message}</p>
+                          )}
+                        </div>
+                        <div className="divider-line"></div>
+                        <div
+                          className="text-gray-500 fs-5 fw-bold"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          使用優惠券
+                        </div>
                         <input
-                          {...register("paymentMethod")}
-                          className={`form-check-input ${errors.paymentMethod ? "is-invalid" : ""}`}
-                          type="radio"
-                          value="信用卡付款"
-                          id="payment-credit"
+                          {...register("couponCode")}
+                          type="text"
+                          className={`form-control w-auto text-gray-500 ${errors.couponCode ? "is-invalid" : ""}`}
+                          placeholder="請輸入優惠碼"
                         />
-                        <label className="form-check-label" htmlFor="payment-credit">
-                          信用卡付款
-                        </label>
-                        {errors.paymentMethod && (
-                          <p className="invalid-feedback">{errors.paymentMethod.message}</p>
+                        {errors.couponCode && (
+                          <p className="invalid-feedback">{errors.couponCode.message}</p>
                         )}
                       </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
-                      希望配送日期
-                    </th>
-                    <td className="py-3">
-                      <select
-                        {...register("deliveryDate")}
-                        className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
-                      >
-                        <option value={defaultDate}>無希望日</option>
-                        {deliveryDates.map(({ value, label }) => (
-                          <option key={value} value={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
-                      {errors.deliveryDate && (
-                        <p className="invalid-feedback">{errors.deliveryDate.message}</p>
-                      )}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="fs-5 fw-bold text-gray-500 py-3">
-                      到貨時間
-                    </th>
-                    <td className="py-3 text-gray-500">
-                      <div className="form-check">
-                        <input
-                          {...register("deliveryTime")}
-                          className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
-                          type="radio"
-                          value="無希望時間"
-                          id="delivery-anytime"
-                        />
-                        <label className="form-check-label" htmlFor="delivery-anytime">
-                          無希望時間
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          {...register("deliveryTime")}
-                          className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
-                          type="radio"
-                          value="8點～13點前"
-                          id="delivery-morning"
-                        />
-                        <label className="form-check-label" htmlFor="delivery-morning">
-                          8點~13點前
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          {...register("deliveryTime")}
-                          className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
-                          type="radio"
-                          value="14點～18點"
-                          id="delivery-afternoon"
-                        />
-                        <label className="form-check-label" htmlFor="delivery-afternoon">
-                          14點～18點
-                        </label>
-                        {errors.deliveryTime && (
-                          <p className="invalid-feedback">{errors.deliveryTime.message}</p>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="fs-5 fw-bold text-gray-500 py-3 border-0">
-                      使用優惠券
-                    </th>
-                    <td className="py-3 border-0">
-                      <input
-                        {...register("couponCode")}
-                        type="text"
-                        className={`form-control w-auto text-gray-500 ${errors.couponCode ? "is-invalid" : ""}`}
-                        placeholder="請輸入優惠碼"
-                      />
-                      {errors.couponCode && (
-                        <p className="invalid-feedback">{errors.couponCode.message}</p>
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            {/* 操作按鈕 */}
-            <div className="d-flex justify-content-end align-items-center gap-8">
-              <div className="px-3 py-2">
-                <Link to="/cart" className="fs-5 fw-bold text-gray-500">
-                  回到購物車
-                </Link>
+                    </div>
+                  </div>
+                </div>
+                {/* 操作按鈕 */}
+                <div className="d-flex justify-content-end align-items-center gap-4 gap-lg-6">
+                  <div className="cart-button px-2 px-lg-3 py-1 py-lg-2">
+                    <Link to="/cart" className="fs-lg-5 fw-bold text-gray-500">
+                      回到購物車
+                    </Link>
+                  </div>
+                  <BtnPrimary className="cart-button" type="submit">
+                    確認訂單內容
+                  </BtnPrimary>
+                </div>
               </div>
-              <BtnPrimary type="submit">確認訂單內容</BtnPrimary>
-            </div>
-          </form>
-        </section>
+            </form>
+          </section>
+        </div>
       </div>
     </>
   );
