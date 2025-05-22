@@ -1,5 +1,5 @@
 import MobileNavbar from "@components/header/MobileNavbar";
-import DesktopNavbar from "@components/header/DesktopNavbar";
+import Navbar from "@/components/header/desktop/Navbar";
 import {
   useGetFeaturedCategoryQuery,
   useGetProductBrandsQuery,
@@ -63,7 +63,7 @@ function Header() {
 
   return (
     <>
-      <DesktopNavbar className="d-none d-lg-block" menuItems={menuItems} />
+      <Navbar className="d-none d-lg-block" menuItems={menuItems} />
       {/* <MobileNavbar className="d-block d-lg-none" menuItems={menuItems} /> */}
     </>
   );
