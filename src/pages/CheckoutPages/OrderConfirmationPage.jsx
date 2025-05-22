@@ -24,7 +24,10 @@ function OrderConfirmationPage() {
 
   // 取得優惠券資料
   const { data: couponsData } = useGetCouponsQuery({ page: 1, per: 9999 });
-  const coupons = couponsData?.data || [];
+  // const coupons = couponsData?.data || [];
+  const coupons = useMemo(() => {
+    return couponsData?.data || [];
+  }, [couponsData?.data]);
 
   const defaultDate = useMemo(() => {
     const date = new Date();

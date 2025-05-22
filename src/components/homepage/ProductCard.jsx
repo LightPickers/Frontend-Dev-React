@@ -96,7 +96,9 @@ function ProductCard({ product }) {
               </button>
             )
           ) : (
-            <span className="spinner-border" />
+            <button className="icon-btn text-gray-400">
+              <span className="spinner-border" />
+            </button>
           )}
 
           <button className="icon-btn">

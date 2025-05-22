@@ -36,7 +36,11 @@ function DesktopNavUserItems() {
 
         <DesktopNavWishlist user={user} />
 
-        <div className="dropdown p-3">
+        <TextMedium as={Link} to="/cart" className="p-3">
+          <CartIcon title="查看購物車" />
+        </TextMedium>
+
+        {/* <div className="dropdown p-3">
           <TextMedium
             as="a"
             ref={cartListRef}
@@ -51,7 +55,7 @@ function DesktopNavUserItems() {
           <div className="dropdown-menu dropdown-wrapper">
             <p>購物車清單</p>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {user ? (

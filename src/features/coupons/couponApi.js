@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const couponApi = createApi({
   reducerPath: "couponApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_ADMIN,
+    baseUrl: import.meta.env.VITE_ADMIN_API_BASE,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth?.token; // 根據你的 Redux 結構取得 token
       if (token) {
@@ -15,7 +15,7 @@ export const couponApi = createApi({
   endpoints: builder => ({
     getCoupons: builder.query({
       query: ({ page, per }) => ({
-        url: "admin/coupons",
+        url: "/coupons",
         params: { page, per },
       }),
     }),
