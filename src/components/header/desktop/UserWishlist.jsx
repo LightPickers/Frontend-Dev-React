@@ -20,7 +20,7 @@ import { useDropdownPosition } from "@hooks/useDropdownPosition";
 function UserWishlist({ user }) {
   const hoverTimeout = useRef(null);
 
-  const { data, isLoading } = useGetWishlistProductsQuery();
+  const { data, isLoading, refetch: reFetchWishlist } = useGetWishlistProductsQuery();
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
 
   // 使用 dropdown position hook
@@ -34,6 +34,7 @@ function UserWishlist({ user }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
   const [deletingId, setDeletingId] = useState(null);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const wishlistItems = useMemo(() => data?.data ?? [], [data]);
   const totalSellingPrice = data?.totalSellingPrice ?? 0;
@@ -92,15 +93,25 @@ function UserWishlist({ user }) {
 
   const handleAddToCart = useCallback(async () => {
     try {
-      const promises = selectedProductIds.map(id => {
+      setIsAddingToCart(true);
+      const addingRequests = selectedProductIds.map(id => {
         return store.dispatch(cartApi.endpoints.addToCart.initiate(id)).unwrap();
       });
-      await Promise.all(promises);
+      await Promise.all(addingRequests);
+      // 清除願望清單品項
+      const clearingRequests = selectedIds.map(id => {
+        return store.dispatch(cartApi.endpoints.deleteWishlistProduct.initiate(id)).unwrap();
+      });
+      await Promise.all(clearingRequests);
       toast.success("加入購物車成功");
+      reFetchWishlist();
+      setSelectedIds([]);
     } catch (errorWhenAddingToCart) {
       toast.error(getApiErrorMessage(errorWhenAddingToCart, "加入購物車失敗，請稍後再試"));
+    } finally {
+      setIsAddingToCart(false);
     }
-  }, [selectedProductIds]);
+  }, [selectedProductIds, selectedIds, reFetchWishlist]);
 
   const handleDropdownClick = useCallback(e => {
     e.stopPropagation();
@@ -191,7 +202,7 @@ function UserWishlist({ user }) {
                   type="button"
                   className="w-100"
                   onClick={handleAddToCart}
-                  disabled={selectedIds.length === 0 || deletingId}
+                  disabled={selectedIds.length === 0 || deletingId || isAddingToCart}
                 >
                   加入購物車 {selectedIds.length > 0 && `(${selectedIds.length})`}
                 </BtnPrimary>

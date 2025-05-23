@@ -50,9 +50,9 @@ function WishlistItem({ item, checked, onCheckChange, onDelete, isDeleting }) {
         onClick={e => e.stopPropagation()}
         id={wishItemId}
       />
-      <label htmlFor={wishItemId} className="d-flex align-items-center gap-3">
+      <label htmlFor={wishItemId} className="d-flex align-items-center gap-3 flex-grow-1">
         <img src={primary_image} alt={name} className="product-img" loading="lazy" />
-        <div className="product-info text-truncate flex-grow-1">
+        <div className="product-info text-truncate">
           <H6Secondary isBold={false} className="text-truncate">
             {name}
           </H6Secondary>
