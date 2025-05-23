@@ -7,6 +7,7 @@
   object-fit: cover;
 }
 
+// 滾動變色
 .navbar-custom {
   background-color: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(255, 255, 255, 1);
@@ -19,15 +20,32 @@
     // background-color: rgba(255, 255, 255, 0.8);
   }
 
-  .navbar-nav {
-    .dropdown-menu {
-      transition: all 0.3s ease;
-    }
-    .nav-item {
-      &:hover .dropdown-menu {
-        display: block;
-      }
-    }
+  // 下拉選單動畫
+  .dropdown-menu {
+    display: block !important;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 400ms ease;
+    pointer-events: none;
+    will-change: max-height, opacity, transform;
+    backface-visibility: hidden;
+  }
+
+  .nav-dropdown-icon {
+    transition: transform 400ms ease;
+  }
+
+  .dropdown.show .nav-dropdown-icon {
+    transform: rotate(180deg);
+  }
+
+  .dropdown.show .dropdown-menu {
+    max-height: 1000px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .navbar-nav .nav-link.active,
@@ -57,6 +75,14 @@
       margin-bottom: 0;
     }
   }
+
+  .dropdown-product {
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: colors.$gray-100;
+    }
+  }
 }
 
 .wishlist-items {
@@ -68,9 +94,132 @@
     object-fit: cover;
   }
   .form-check-input {
+    cursor: pointer;
     flex-shrink: 0;
   }
   .product-info {
+    // width: 120px;
     max-width: 120px;
   }
+}
+
+/* Wishlist Dropdown 樣式優化 */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu.wishlist-items {
+  /* 確保不會被其他元素覆蓋 */
+  z-index: 1050;
+
+  /* 初始狀態隱藏 */
+  // opacity: 0;
+  // visibility: hidden;
+  // transform: translateY(-10px);
+  // transition: all 0.2s ease-in-out;
+
+  /* 防止內容溢出 */
+  box-sizing: border-box;
+
+  /* 響應式寬度 */
+  width: max-content;
+  min-width: 320px;
+  max-width: min(400px, 90vw);
+}
+
+/* 顯示狀態 */
+// .dropdown.show .dropdown-menu.wishlist-items {
+//   opacity: 1;
+//   visibility: visible;
+//   transform: translateY(0);
+// }
+
+/* 防止在小螢幕上溢出 */
+@media (max-width: 768px) {
+  .dropdown-menu.wishlist-items {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: calc(100vw - 40px);
+    max-width: 380px;
+    max-height: 60vh;
+  }
+
+  // .dropdown.show .dropdown-menu.wishlist-items {
+  //   transform: translateX(-50%) translateY(0);
+  // }
+}
+
+/* 滾動容器樣式 */
+.wishlist-scroll-container {
+  /* 自定義滾動條 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* 禁用狀態樣式 */
+.dropdown-disabled {
+  pointer-events: none;
+}
+
+.dropdown-disabled .dropdown-menu {
+  opacity: 0.7;
+}
+
+/* 載入動畫 */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown.show .dropdown-menu.wishlist-items {
+  animation: fadeInDown 0.4s ease-out;
+}
+
+/* 確保觸發區域足夠大 */
+.dropdown > a[role="button"] {
+  position: relative;
+  z-index: 1;
+}
+
+/* 防止意外關閉的緩衝區域 */
+.dropdown::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: -10px;
+  right: -10px;
+  height: 10px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.dropdown.show::before {
+  pointer-events: auto;
 }
