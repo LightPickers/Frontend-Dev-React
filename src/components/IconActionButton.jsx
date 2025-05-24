@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import PropTypes from "prop-types";
+import { bool, element, func, string } from "prop-types";
 
 function IconActionButton({
   isActive = false,
@@ -8,35 +8,42 @@ function IconActionButton({
   activeIcon = null,
   onClick,
   tooltip = "",
-  activeClass = "border-danger text-danger",
+  activeColor = "danger",
 }) {
+  const getBtnIcon = () => {
+    if (isLoading)
+      return (
+        <span
+          className={`spinner-border spinner-border-sm text-${isActive ? activeColor : "gray-400"}`}
+        />
+      );
+    if (isActive && activeIcon) return activeIcon;
+    return icon;
+  };
+
   return (
     <button
       type="button"
-      className={classNames("icon-btn", { [activeClass]: isActive })}
+      className={classNames("icon-btn", {
+        [`border-${activeColor} text-${activeColor}`]: isActive,
+      })}
       disabled={isLoading}
       onClick={onClick}
       title={tooltip}
     >
-      {isLoading ? (
-        <span className="spinner-border spinner-border-sm text-gray-400" />
-      ) : isActive ? (
-        activeIcon
-      ) : (
-        icon
-      )}
+      {getBtnIcon()}
     </button>
   );
 }
 
 IconActionButton.propTypes = {
-  isActive: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  icon: PropTypes.element.isRequired,
-  activeIcon: PropTypes.element,
-  onClick: PropTypes.func.isRequired,
-  tooltip: PropTypes.string,
-  activeClass: PropTypes.string,
+  isActive: bool,
+  isLoading: bool,
+  icon: element.isRequired,
+  activeIcon: element,
+  onClick: func.isRequired,
+  tooltip: string,
+  activeColor: string,
 };
 
 export default IconActionButton;

@@ -17,11 +17,7 @@ function ProductCard({ product }) {
       {/* 圖片區域 */}
       <section className="card-image-container">
         {/* 商品主圖 */}
-        <img
-          src={primary_image || "https://fakeimg.pl/300/"}
-          className="product-image object-fit-cover"
-          alt={name}
-        />
+        <img src={primary_image} className="product-image object-fit-cover" alt={name} />
 
         {/* 機況標籤 */}
         <LabelText className="card-badge mt-5">{condition}</LabelText>
@@ -32,9 +28,9 @@ function ProductCard({ product }) {
             <SearchIcon title="查看商品" strokeWidth={1} />
           </Link>
 
-          <FavoriteIconToggler productId={id} />
+          <FavoriteIconToggler productId={id} productName={name} />
 
-          <CartIconToggler productId={id} />
+          <CartIconToggler productId={id} productName={name} />
 
           {/* <button className="icon-btn">
             <CartIcon title="放入購物車" strokeWidth={1} />
