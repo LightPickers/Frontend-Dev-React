@@ -23,10 +23,9 @@ function UserWishlist({ user }) {
   const { data, isLoading, refetch: reFetchWishlist } = useGetWishlistProductsQuery();
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
 
-  // 使用 dropdown position hook
   const { triggerRef, dropdownRef, isOpen, position, open, close } = useDropdownPosition({
     placement: "bottom",
-    alignment: "end", // 右對齊，因為通常在 header 右側
+    alignment: "center",
     offset: 12,
     boundary: 20,
   });
@@ -133,18 +132,9 @@ function UserWishlist({ user }) {
       {isOpen && (
         <section
           ref={dropdownRef}
-          className="dropdown-menu dropdown-wrapper wishlist-items"
+          className="dropdown-menu dropdown-wrapper dropdown-content mt-3"
           style={{
             ...position,
-            minWidth: "320px",
-            maxWidth: "400px",
-            // maxHeight: "70vh",
-            // overflowY: "auto",
-            // boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
-            // border: "1px solid rgba(0, 0, 0, 0.08)",
-            // opacity: isOpen ? 1 : 0,
-            // transform: isOpen ? "translateY(0)" : "translateY(-10px)",
-            // transition: "all 0.2s ease-in-out",
           }}
           onClick={handleDropdownClick}
         >
@@ -154,23 +144,23 @@ function UserWishlist({ user }) {
             </TextMedium>
 
             {!user ? (
-              <section className="d-flex align-items-center justify-content-center py-8">
+              <section className="d-flex align-items-center justify-content-center py-10">
                 <BtnPrimary as={Link} to="/login">
                   請先登入
                 </BtnPrimary>
               </section>
             ) : isLoading ? (
-              <section className="d-flex justify-content-center py-8">
+              <section className="d-flex justify-content-center py-10">
                 <TextMedium as="p">載入中...</TextMedium>
               </section>
             ) : wishlistItems.length === 0 ? (
-              <section className="d-flex justify-content-center py-8">
+              <section className="d-flex justify-content-center py-10">
                 <TextMedium as="p">您尚未收藏商品</TextMedium>
               </section>
             ) : (
               <section className="d-flex flex-column gap-4">
                 <div
-                  className="wishlist-scroll-container"
+                  className="dropdown-scroll-container"
                   style={{
                     maxHeight: "300px",
                     overflowY: "auto",
