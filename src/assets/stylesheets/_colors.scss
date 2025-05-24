@@ -11,6 +11,8 @@ $primary-1000: #313e40;
 // Status colors
 $success: #b1dfca;
 $danger: #f48282;
+$warning: #f5e6a8;
+$info: #82b4f4;
 
 // Gray scale
 $white: #ffffff;
@@ -33,6 +35,8 @@ $theme-colors: (
   // status
   "success": $success,
   "danger": $danger,
+  "warning": $warning,
+  "info": $info,
   // gray scale
   "white": $white,
   "gray-100": $gray-100,
