@@ -3,10 +3,7 @@
 @use "../../stylesheets/sizes" as sizes;
 
 // 麵包屑
-
 .breadcrumb {
-  gap: 4px;
-
   .breadcrumb-item {
     & + .breadcrumb-item::before {
       color: colors.$gray-400;
@@ -24,11 +21,6 @@
 }
 
 // 步驟進度條
-.step-background {
-  border-radius: 8px;
-  background-color: #ffffff;
-  gap: 8px;
-}
 .checkout-steps {
   .step {
     display: flex;
@@ -39,12 +31,17 @@
     .circle {
       width: 52px;
       height: 52px;
-      border-radius: 50%;
+      border-radius: 40px;
       background-color: colors.$gray-200;
       color: colors.$white;
       display: flex;
       align-items: center;
       justify-content: center;
+      @include lg {
+        width: 40px;
+        height: 40px;
+        font-size: sizes.$font-size-base;
+      }
     }
 
     &.active .circle {
@@ -53,7 +50,16 @@
 
     .step-label {
       font-weight: fonts.$font-weight-bold;
-      color: colors.$gray-400;
+      color: colors.$gray-200;
+      min-width: 124px;
+      &.active {
+        color: colors.$gray-400;
+      }
+      @include lg {
+        font-size: sizes.$small-font-size;
+        letter-spacing: 0.07em;
+        min-width: 72px;
+      }
     }
   }
 
@@ -61,7 +67,6 @@
     flex-grow: 1;
     align-self: center;
     border-top: 2px dashed colors.$gray-200;
-
     max-width: 146px;
     &.active {
       border-top: 2px dashed colors.$primary-600;
@@ -69,46 +74,89 @@
   }
 }
 
-// 購物車內容
+// 購物車訂單內容
 .cart-contents {
-  border-radius: 8px;
-  gap: 60px;
-
   // 去除預設底線
   .table > :not(caption) > * > * {
     border-bottom-width: 0;
   }
-}
+  .btn-custom-primary.text-danger:hover {
+    background-color: #f8d7da;
+  }
+  .text-multiline-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cart-table-mobile {
+    display: none;
 
-.cart-table {
-  // border-collapse: separate;
-  // border-spacing: 16px 12px;
-  .cart-table-head {
-    th {
-      background-color: transparent;
+    @include lg {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 20px;
+
+      .text-multiline-truncate {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
-    th p {
-      background-color: colors.$gray-200;
-      border-radius: 4px;
-      padding: 8px 12px;
+  }
+  .cart-table {
+    display: table;
+
+    @include lg {
+      display: none;
+    }
+    .cart-table-head {
+      th {
+        background-color: transparent;
+        padding: 0 8px 12px 8px;
+        border: 0;
+      }
+      th p {
+        background-color: colors.$gray-200;
+        border-radius: 4px;
+        padding: 8px 12px;
+        text-align: end;
+        color: colors.$gray-600;
+      }
+    }
+    .cart-table-body {
+      .cart-item-last {
+        border-color: colors.$gray-100;
+      }
+      td {
+        border-bottom: 1px solid colors.$gray-200;
+        padding: 12px 8px;
+        background-color: transparent;
+      }
+    }
+    .cart-table-foot {
+      td {
+        padding: 12px 8px;
+        background-color: transparent;
+      }
     }
   }
-  td {
-    border-bottom: 1px solid colors.$gray-200;
-    padding: 12px;
-    background-color: transparent;
-  }
 }
 
-.shipping-information-table {
-  th {
-    background-color: transparent;
-  }
-  td {
-    background-color: transparent;
+// 購物車按鈕
+.cart-button {
+  letter-spacing: 0.1em;
+  @include lg {
+    letter-spacing: 0.09em;
   }
 }
-
-.heading-border {
+// 購物車標題下橫線
+.divider-line {
   border-bottom: 1px solid colors.$gray-200;
 }
