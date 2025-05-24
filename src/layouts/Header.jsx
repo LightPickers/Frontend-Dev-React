@@ -17,7 +17,7 @@ function Header() {
   const brandList = brands?.data ?? [];
   const categoryList = allCategories?.data ?? [];
 
-  console.log({ featuredCategoriesList }, { brandList }, { allCategories }, { conditions });
+  // console.log({ featuredCategoriesList }, { brandList }, { allCategories }, { conditions });
 
   // const testBrands = [
   //   {
