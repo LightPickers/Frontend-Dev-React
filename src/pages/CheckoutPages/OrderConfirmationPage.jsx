@@ -403,8 +403,9 @@ function OrderConfirmationPage() {
                 </div>
               </div>
               {/* 出貨資訊 */}
-              <div className="py-lg-8">
-                <div className="d-flex flex-column gap-6 gap-lg-9">
+              <div className="d-flex flex-column gap-11 gap-lg-7">
+                <div className="d-flex flex-column gap-6 gap-lg-9 py-lg-8">
+                  {/* 標頭 */}
                   <div className="d-flex flex-column gap-3">
                     <div className="d-flex align-items-center gap-3">
                       <H3Primary className="text-gray-600 fs-1">確認出貨內容</H3Primary>
@@ -416,145 +417,137 @@ function OrderConfirmationPage() {
                     </div>
                     <div className="divider-line"></div>
                   </div>
-                  <table className="table shipping-information-table  align-middle text-nowrap bg-transparent">
-                    <tbody>
-                      <tr>
-                        <th scope="row" className="py-3">
-                          購買者
-                        </th>
-                        <td className="py-3 d-flex flex-column gap-1">
-                          <div className="fw-bold">{userInfo.name}</div>
-                          <div>
-                            地址：
-                            {userInfo.address_zipcode}
-                            {userInfo.address_district}
-                            {userInfo.address_detail}
+                  <div className="row m-0">
+                    <div className="d-flex flex-column gap-3  px-2 px-lg-5 text-gray-500">
+                      {/* 購買者資訊 */}
+                      <div className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-lg-3">
+                        <div className="col-12 col-lg-5">
+                          <div
+                            className="text-gray-500 fs-5 fw-bold"
+                            style={{ letterSpacing: "0.1em" }}
+                          >
+                            購買者
                           </div>
-                          <div>電話：{userInfo.phone}</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" className="py-3">
-                          寄送方式
-                        </th>
-                        <td className="py-3">{checkoutForm.shippingMethod}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row" className="py-3">
-                          收件者
-                        </th>
-                        <td className="py-3 d-flex flex-column gap-1">
-                          <div className="fw-bold">{userInfo.name}</div>
-                          <div>
-                            地址：
-                            {userInfo.address_zipcode}
-                            {userInfo.address_district}
-                            {userInfo.address_detail}
+                        </div>
+                        <div className="col-12 col-lg-7">
+                          <div className="d-flex flex-column gap-1">
+                            <div className="text-gray-500 fw-bold">{userInfo.name}</div>
+                            <div className="text-gray-500">
+                              地址：{userInfo.address_zipcode}
+                              {userInfo.address_district}
+                              {userInfo.address_detail}
+                            </div>
+                            <div className="text-gray-500">電話：{userInfo.phone}</div>
                           </div>
-                          <div>電話：{userInfo.phone}</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" className="py-3">
-                          付款方式
-                        </th>
-                        <td className="py-3">{checkoutForm.paymentMethod}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row" className="py-3">
-                          希望配送日期
-                        </th>
-                        <td className="py-3">
-                          {checkoutForm.deliveryDate === defaultDate
-                            ? "無希望日"
-                            : checkoutForm.deliveryDate}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" className="py-3 border-0">
-                          到貨時間
-                        </th>
-                        <td className="py-3 border-0">{checkoutForm.deliveryTime}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="shipping-information-table-mobile">
-                    <div className="d-flex flex-column gap-3">
-                      <div
-                        className="text-gray-500 fs-5 fw-bold"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        購買者
-                      </div>
-                      <div className="d-flex flex-column gap-1">
-                        <div className="text-gray-500 fw-bold">{userInfo.name}</div>
-                        <div className="text-gray-500">
-                          地址：
-                          {userInfo.address_zipcode}
-                          {userInfo.address_district}
-                          {userInfo.address_detail}
                         </div>
-                        <div className="text-gray-500">電話：{userInfo.phone}</div>
                       </div>
-                    </div>
-                    <div className="divider-line"></div>
-                    <div className="d-flex flex-column gap-3">
-                      <div
-                        className="text-gray-500 fs-5 fw-bold"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        寄送方式
+
+                      <div className="col-12">
+                        <div className="divider-line"></div>
                       </div>
-                      <div className="text-gray-500">{checkoutForm.shippingMethod}</div>
-                    </div>
-                    <div className="divider-line"></div>
-                    <div className="d-flex flex-column gap-3">
-                      <div
-                        className="text-gray-500 fs-5 fw-bold"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        購買者
-                      </div>
-                      <div className="d-flex flex-column gap-1">
-                        <div className="text-gray-500 fw-bold">{userInfo.name}</div>
-                        <div className="text-gray-500">
-                          地址：
-                          {userInfo.address_zipcode}
-                          {userInfo.address_district}
-                          {userInfo.address_detail}
+
+                      {/* 寄送方式 */}
+                      <div className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-lg-3">
+                        <div className="col-12 col-lg-5">
+                          <div
+                            className="text-gray-500 fs-5 fw-bold"
+                            style={{ letterSpacing: "0.1em" }}
+                          >
+                            寄送方式
+                          </div>
                         </div>
-                        <div className="text-gray-500">電話：{userInfo.phone}</div>
+                        <div className="col-12 col-lg-7">
+                          <div>{checkoutForm.shippingMethod}</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="divider-line"></div>
-                    <div className="d-flex flex-column gap-3">
-                      <div
-                        className="text-gray-500 fs-5 fw-bold"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        付款方式
+
+                      <div className="col-12">
+                        <div className="divider-line"></div>
                       </div>
-                      <div className="text-gray-500">{checkoutForm.paymentMethod}</div>
-                    </div>
-                    <div className="divider-line"></div>
-                    <div className="d-flex flex-column gap-3">
-                      <div
-                        className="text-gray-500 fs-5 fw-bold"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        希望配送日期
+
+                      {/* 收件者 */}
+                      <div className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-lg-3">
+                        <div className="col-12 col-lg-5">
+                          <div
+                            className="text-gray-500 fs-5 fw-bold"
+                            style={{ letterSpacing: "0.1em" }}
+                          >
+                            收件者
+                          </div>
+                        </div>
+                        <div className="col-12 col-lg-7">
+                          <div className="d-flex flex-column gap-1">
+                            <div className="text-gray-500 fw-bold">{userInfo.name}</div>
+                            <div className="text-gray-500">
+                              地址：{userInfo.address_zipcode}
+                              {userInfo.address_district}
+                              {userInfo.address_detail}
+                            </div>
+                            <div className="text-gray-500">電話：{userInfo.phone}</div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-gray-500">{checkoutForm.deliveryDate}</div>
-                    </div>
-                    <div className="divider-line"></div>
-                    <div className="d-flex flex-column gap-3">
-                      <div
-                        className="text-gray-500 fs-5 fw-bold"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        到貨時間
+
+                      <div className="col-12">
+                        <div className="divider-line"></div>
                       </div>
-                      <div className="text-gray-500">{checkoutForm.deliveryTime}</div>
+
+                      {/* 付款方式 */}
+                      <div className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-lg-3">
+                        <div className="col-12 col-lg-5">
+                          <div
+                            className="text-gray-500 fs-5 fw-bold"
+                            style={{ letterSpacing: "0.1em" }}
+                          >
+                            付款方式
+                          </div>
+                        </div>
+                        <div className="col-12 col-lg-7">
+                          <div className="text-gray-500">{checkoutForm.paymentMethod}</div>
+                        </div>
+                      </div>
+
+                      <div className="col-12">
+                        <div className="divider-line"></div>
+                      </div>
+
+                      {/* 希望配送日期 */}
+                      <div className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-lg-3">
+                        <div className="col-12 col-lg-5">
+                          <div
+                            className="text-gray-500 fs-5 fw-bold"
+                            style={{ letterSpacing: "0.1em" }}
+                          >
+                            希望配送日期
+                          </div>
+                        </div>
+                        <div className="col-12 col-lg-7">
+                          <div className="text-gray-500">{checkoutForm.deliveryDate}</div>
+                        </div>
+                      </div>
+
+                      <div className="col-12">
+                        <div className="divider-line"></div>
+                      </div>
+
+                      {/* 到貨時間 */}
+                      <div className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-lg-3">
+                        <div className="col-12 col-lg-5">
+                          <div
+                            className="text-gray-500 fs-5 fw-bold"
+                            style={{ letterSpacing: "0.1em" }}
+                          >
+                            到貨時間
+                          </div>
+                        </div>
+                        <div className="col-12 col-lg-7">
+                          <div className="text-gray-500">{checkoutForm.deliveryTime}</div>
+                        </div>
+                      </div>
+
+                      <div className="col-12">
+                        <div className="divider-line"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
