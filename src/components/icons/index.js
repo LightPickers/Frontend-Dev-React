@@ -2,6 +2,7 @@ export { default as SearchIcon } from "@components/icons/SearchIcon";
 export { default as CartIcon } from "@components/icons/CartIcon";
 export { default as FavoriteIcon } from "@components/icons/FavoriteIcon";
 export { default as FavoriteFilledIcon } from "@components/icons/FavoriteFilledIcon";
+export { default as CartFilledIcon } from "@components/icons/CartFilledIcon";
 
 export { default as CloseIcon } from "@components/icons/CloseIcon";
 export { default as MenuIcon } from "@components/icons/MenuIcon";
