@@ -58,6 +58,7 @@
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.1);
+  z-index: 1050;
 
   .dropdown-disabled {
     pointer-events: none;
@@ -85,8 +86,8 @@
   }
 }
 
-.wishlist-items {
-  min-width: 286px;
+.dropdown-content {
+  // min-width: 286px;
 
   .product-img {
     height: 50px;
@@ -108,72 +109,27 @@
   position: relative;
 }
 
-.dropdown-menu.wishlist-items {
-  /* 確保不會被其他元素覆蓋 */
-  z-index: 1050;
-
-  /* 初始狀態隱藏 */
-  // opacity: 0;
-  // visibility: hidden;
-  // transform: translateY(-10px);
-  // transition: all 0.2s ease-in-out;
-
-  /* 防止內容溢出 */
-  box-sizing: border-box;
-
-  /* 響應式寬度 */
-  width: max-content;
-  min-width: 320px;
-  max-width: min(400px, 90vw);
-}
-
-/* 顯示狀態 */
-// .dropdown.show .dropdown-menu.wishlist-items {
-//   opacity: 1;
-//   visibility: visible;
-//   transform: translateY(0);
-// }
-
-/* 防止在小螢幕上溢出 */
-@media (max-width: 768px) {
-  .dropdown-menu.wishlist-items {
-    position: fixed !important;
-    top: auto !important;
-    bottom: 20px !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%);
-    width: calc(100vw - 40px);
-    max-width: 380px;
-    max-height: 60vh;
-  }
-
-  // .dropdown.show .dropdown-menu.wishlist-items {
-  //   transform: translateX(-50%) translateY(0);
-  // }
-}
-
 /* 滾動容器樣式 */
-.wishlist-scroll-container {
+.dropdown-scroll-container {
   /* 自定義滾動條 */
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
-.wishlist-scroll-container::-webkit-scrollbar {
+.dropdown-scroll-container::-webkit-scrollbar {
   width: 6px;
 }
 
-.wishlist-scroll-container::-webkit-scrollbar-track {
+.dropdown-scroll-container::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.wishlist-scroll-container::-webkit-scrollbar-thumb {
+.dropdown-scroll-container::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 
-.wishlist-scroll-container::-webkit-scrollbar-thumb:hover {
+.dropdown-scroll-container::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -198,7 +154,7 @@
   }
 }
 
-.dropdown.show .dropdown-menu.wishlist-items {
+.dropdown.show .dropdown-menu.dropdown-content {
   animation: fadeInDown 0.4s ease-out;
 }
 
