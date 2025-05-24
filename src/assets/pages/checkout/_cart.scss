@@ -148,37 +148,7 @@
     }
   }
 }
-// 購物車出貨內容
-.shipping-information-table {
-  display: table;
-  th {
-    background-color: transparent;
-    letter-spacing: 0.1em;
-    font-weight: bold;
-    color: colors.$gray-500;
-    width: 526px;
-    font-size: sizes.$h5-font-size;
-  }
-  td {
-    background-color: transparent;
-    color: colors.$gray-500;
-  }
-  @include lg {
-    display: none;
-  }
-}
 
-.shipping-information-table-mobile {
-  display: none;
-
-  @include lg {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
-    padding: 0 8px;
-  }
-}
 // 購物車按鈕
 .cart-button {
   letter-spacing: 0.1em;
