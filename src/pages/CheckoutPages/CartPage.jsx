@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { useGetCartQuery, useDeleteCartProductMutation } from "@/features/cart/cartApi";
 import { BtnPrimary } from "@/components/Buttons";
@@ -16,6 +17,7 @@ function CartPage() {
   const cartItems = data?.data?.items || [];
   const subtotal = data?.data?.amount || 0;
 
+  const hasDiscontinuedProducts = cartItems.some(item => !item.is_available);
   // 刪除品項
   const handleDelete = async id => {
     const confirmDelete = window.confirm("確定要刪除此商品嗎？");
@@ -24,14 +26,18 @@ function CartPage() {
     try {
       await deleteCartProduct(id).unwrap();
     } catch (err) {
-      console.error("刪除失敗", err);
+      toast.error("刪除失敗，請稍後再試");
     }
   };
   // 按下前往結帳手續按鈕
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      alert("購物車沒有商品，請先加入商品");
+      toast.warning("購物車沒有商品，請先加入商品");
       return; // 阻止導頁
+    }
+    if (hasDiscontinuedProducts) {
+      toast.warning("購物車中有已下架商品，請先刪除後再前往結帳");
+      return;
     }
     navigate("/checkout"); // 有商品才導到結帳頁
   };
@@ -148,6 +154,9 @@ function CartPage() {
                                     style={{ letterSpacing: "0.1em" }}
                                   >
                                     {item.name}
+                                    {!item.is_available && (
+                                      <span className="badge bg-danger ms-2">已下架請移除</span>
+                                    )}
                                   </p>
                                 </div>
                               </div>
@@ -231,12 +240,15 @@ function CartPage() {
                   <div className="cart-table-mobile" style={{ letterSpacing: "0.1em" }}>
                     <div className="d-flex flex-column gap-4">
                       {cartItems.map(item => (
-                        <div className="d-flex flex-row gap-3" key={item.id}>
+                        <div key={item.id} className="d-flex flex-row gap-3">
                           <img className="rounded-1" src="https://fakeimg.pl/90" alt={item.name} />
                           <div className="d-flex flex-column justify-content-between w-100">
                             <div className="d-flex justify-content-between align-items-center">
-                              <div className="text-gray-600 h-75 text-multiline-truncate">
+                              <div className="text-gray-600 text-multiline-truncate">
                                 {item.name}
+                                {!item.is_available && (
+                                  <span className="badge bg-danger ms-2">已下架請移除</span>
+                                )}
                               </div>
                               <button
                                 type="button"
@@ -312,13 +324,18 @@ function CartPage() {
                       繼續購物
                     </Link>
                   </div>
-                  <BtnPrimary className="cart-button" type="button" onClick={handleCheckout}>
+                  <BtnPrimary
+                    className="cart-button"
+                    type="button"
+                    onClick={handleCheckout}
+                    disabled={hasDiscontinuedProducts}
+                  >
                     前往結帳手續
                   </BtnPrimary>
                 </div>
               ) : (
                 <div className="text-center">
-                  <BtnPrimary size="large" type="button" to="/">
+                  <BtnPrimary size="large" type="button" onClick={() => navigate("/")}>
                     前往首頁
                   </BtnPrimary>
                 </div>
