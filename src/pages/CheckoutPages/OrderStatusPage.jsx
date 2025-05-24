@@ -1,16 +1,37 @@
 // 4-3 付款結果頁面
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useGetOrderByIdQuery } from "@/features/orders/orderApi";
+import { useGetCartQuery, useDeleteCartMutation } from "@/features/cart/cartApi";
 import { BtnPrimary } from "@/components/Buttons";
-import { H2Primary, H2Secondary, H3Primary, H5Primary } from "@/components/Headings";
+import { H2Primary, H3Primary, H5Primary } from "@/components/Headings";
 import { TextLarge, TextSmall } from "@/components/TextTypography";
 
 function OrderStatusPage() {
+  // 取得訂單資料
   const { orderId } = useParams();
   const { data: orderData, isLoading: isOrderLoading, error } = useGetOrderByIdQuery(orderId);
-  console.log(orderData);
+
+  const { data: cartData } = useGetCartQuery();
+  const [deleteCart] = useDeleteCartMutation();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 當訂單狀態為已付款時
+    if (orderData?.order?.status === "已付款") {
+      // 清空購物車中的所有商品
+      if (cartData?.data?.items) {
+        cartData.data.items.forEach(item => {
+          deleteCart(item.id);
+        });
+      }
+
+      // 清除 checkoutForm 暫存
+      localStorage.removeItem("checkoutForm");
+    }
+  }, [orderData, cartData, deleteCart]);
 
   if (isOrderLoading) return <p className="text-center py-10">載入中...</p>;
   if (error || !orderData?.order)
@@ -90,7 +111,7 @@ function OrderStatusPage() {
 
                 <TextSmall>（訂單編號：{orderNumber}）</TextSmall>
 
-                <BtnPrimary size="large" type="button" to="/">
+                <BtnPrimary size="large" type="button" onClick={() => navigate("/")}>
                   回到首頁
                 </BtnPrimary>
               </div>
