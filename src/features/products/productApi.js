@@ -6,7 +6,7 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_BASE,
   }),
-  tagTypes: ["Product", "Category", "Brand"],
+  tagTypes: ["Product", "Category", "Brand", "Condition"],
   endpoints: builder => ({
     // 取得商品列表
     getProducts: builder.query({
@@ -43,10 +43,17 @@ export const productApi = createApi({
       query: () => "/brands",
       providesTags: ["Brand"],
     }),
+    // 取得商品狀況列表
+    getProductConditions: builder.query({
+      query: () => "/conditions",
+      providesTags: ["Condition"],
+    }),
   }),
 });
 
 export const {
+  useGetProductConditionsQuery,
+  useLazyGetProductConditionsQuery,
   useGetFeaturedCategoryQuery,
   useGetProductBrandsQuery,
   useGetProductCategoryQuery,

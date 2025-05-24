@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import DesktopNavItems from "@components/header/DesktopNavItems";
-import DesktopNavUserItems from "@components/header/DestopNavUserItems";
+import NavMenu from "@components/header/desktop/NavMenu";
+import UserMenu from "@components/header/desktop/UserMenu";
 
-function DesktopNavbar({ menuItems, className }) {
+function Navbar({ menuItems, className }) {
   const navClasses = classNames(
     className,
     "navbar",
@@ -49,18 +49,18 @@ function DesktopNavbar({ menuItems, className }) {
 
         <div className="collapse navbar-collapse" id="navbarContent">
           {/* 網頁導航項目 */}
-          <DesktopNavItems menuItems={menuItems} />
+          <NavMenu menuItems={menuItems} />
           {/* 使用者項目 */}
-          <DesktopNavUserItems />
+          <UserMenu />
         </div>
       </div>
     </nav>
   );
 }
 
-DesktopNavbar.propTypes = {
+Navbar.propTypes = {
   menuItems: PropTypes.array,
   className: PropTypes.string,
 };
 
-export default DesktopNavbar;
+export default Navbar;

@@ -27,10 +27,9 @@ export const cartApi = createApi({
     }),
     // 新增商品到購物車
     addToCart: builder.mutation({
-      query: productToBuy => ({
-        url: "/cart",
+      query: productId => ({
+        url: `/cart/${productId}`,
         method: "POST",
-        body: productToBuy,
       }),
       invalidatesTags: [{ type: "Cart", id: "LIST" }],
     }),

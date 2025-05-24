@@ -220,4 +220,16 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition:
+    color 0.3s ease,
+    transform 0.3 ease;
+
+  & svg {
+    color: colors.$danger;
+  }
+
+  &:hover svg {
+    color: red;
+    transform: scale(1.1);
+  }
 }
