@@ -11,26 +11,32 @@ import { orderApi } from "@features/orders/orderApi";
 import { wishlistApi } from "@features/wishlist/wishlistApi";
 import { couponApi } from "@features/coupons/couponApi";
 
+const apiReducers = {
+  [userApi.reducerPath]: userApi.reducer,
+  [productApi.reducerPath]: productApi.reducer,
+  [cartApi.reducerPath]: cartApi.reducer,
+  [couponApi.reducerPath]: couponApi.reducer,
+  [orderApi.reducerPath]: orderApi.reducer,
+  [wishlistApi.reducerPath]: wishlistApi.reducer,
+};
+
+const apiMiddleware = [
+  userApi.middleware,
+  productApi.middleware,
+  cartApi.middleware,
+  couponApi.middleware,
+  orderApi.middleware,
+  wishlistApi.middleware,
+];
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
     cart: cartReducer,
     checkoutPage: checkoutPageReducer,
-    [userApi.reducerPath]: userApi.reducer,
-    [productApi.reducerPath]: productApi.reducer,
-    [cartApi.reducerPath]: cartApi.reducer,
-    [couponApi.reducerPath]: couponApi.reducer,
-    [orderApi.reducerPath]: orderApi.reducer,
-    [wishlistApi.reducerPath]: wishlistApi.reducer,
+    ...apiReducers,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware()
-      .concat(userApi.middleware)
-      .concat(productApi.middleware)
-      .concat(cartApi.middleware)
-      .concat(couponApi.middleware)
-      .concat(orderApi.middleware)
-      .concat(wishlistApi.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiMiddleware),
 });
 
 setupListeners(store.dispatch);
