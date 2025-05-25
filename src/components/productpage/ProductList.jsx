@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 
 import ProductCard from "@components/homepage/ProductCard";
 
-function ProductList({ products }) {
+function ProductList({ product }) {
   return (
     <section className="product-grid-container container">
       <div className="row">
-        {products.map((product, index) => (
+        {product.map((product, index) => (
           <div key={product?.id || index} className="col-6 col-md-4 col-lg-3 mb-4">
             {product ? <ProductCard product={product} /> : <div>Invalid product data</div>}
           </div>
@@ -17,7 +17,7 @@ function ProductList({ products }) {
   );
 }
 ProductList.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  product: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ProductList;
