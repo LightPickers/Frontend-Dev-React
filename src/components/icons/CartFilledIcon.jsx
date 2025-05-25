@@ -8,13 +8,30 @@ function CartFilledIcon({ size = 24, title, className, style, ...props }) {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={classNames(className)}
       style={style}
       {...props}
     >
       <title>{title}</title>
-      <path d="M3.17 2.67a1.17 1.17 0 0 0 0 2.33h1.37l2.15 10.73a1.17 1.17 0 0 0 1.14.93h11.67a1.17 1.17 0 0 0 1.12-.84l2.33-8.17a1.17 1.17 0 0 0-1.11-1.5H7.16l-.52-2.56a1.17 1.17 0 0 0-1.14-.93H3.17Zm5.25 11.67-.84-4.84h12.66l-1.67 4.84H8.42Zm0 2.17a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Zm10.5 0a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Z" />
+
+      {/* 輪子輪廓 */}
+      <circle cx="8" cy="21" r="1" />
+      <circle cx="19" cy="21" r="1" />
+
+      {/* 購物車主體輪廓 */}
+      <path d="m2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+
+      {/* 購物車內部填滿區域 */}
+      <path
+        d="M5.12 7h15.43l-1.65 7.43a2 2 0 0 1-1.95 1.57H8.71a2 2 0 0 1-2-1.58L5.12 7z"
+        fill="currentColor"
+        stroke="none"
+      />
     </svg>
   );
 }
