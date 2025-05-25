@@ -22,6 +22,8 @@ function UserCartList() {
   const userId = useDecodedId();
   const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(userId);
 
+  console.log({ getCartResponse });
+
   const { items: cartItems = [], amount: total = 0 } = useMemo(
     () => getCartResponse?.data ?? {},
     [getCartResponse]

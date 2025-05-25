@@ -23,6 +23,8 @@ function UserWishlist({ user }) {
   const { data, isLoading, refetch: reFetchWishlist } = useGetWishlistProductsQuery();
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
 
+  console.log({ data });
+
   const { triggerRef, dropdownRef, isOpen, position, open, close } = useDropdownPosition({
     placement: "bottom",
     alignment: "center",
@@ -34,6 +36,7 @@ function UserWishlist({ user }) {
   const [selectedProductIds, setSelectedProductIds] = useState([]);
   const [deletingId, setDeletingId] = useState(null);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [addedToCartProductIds, setAddedToCartProductIds] = useState(new Set());
 
   const wishlistItems = useMemo(() => data?.data ?? [], [data]);
   const totalSellingPrice = data?.totalSellingPrice ?? 0;
@@ -53,13 +56,18 @@ function UserWishlist({ user }) {
     }, 150);
   }, [close, deletingId]);
 
-  const handleCheckboxChange = useCallback((wishItemId, productId, checked) => {
-    const updateSet = (prev, id) =>
-      checked ? Array.from(new Set([...prev, id])) : prev.filter(existingId => existingId !== id);
+  const handleCheckboxChange = useCallback(
+    (wishItemId, productId, checked) => {
+      if (addedToCartProductIds.has(productId)) return;
 
-    setSelectedIds(prev => updateSet(prev, wishItemId));
-    setSelectedProductIds(prev => updateSet(prev, productId));
-  }, []);
+      const updateSet = (prev, id) =>
+        checked ? Array.from(new Set([...prev, id])) : prev.filter(existingId => existingId !== id);
+
+      setSelectedIds(prev => updateSet(prev, wishItemId));
+      setSelectedProductIds(prev => updateSet(prev, productId));
+    },
+    [addedToCartProductIds]
+  );
 
   const handleDelete = useCallback(
     async id => {
@@ -87,16 +95,27 @@ function UserWishlist({ user }) {
       );
 
       await Promise.all(addingRequests);
+
+      // 標記這些商品已經加入購物車
+      setAddedToCartProductIds(prev => new Set([...prev, ...selectedProductIds]));
+
+      // 取消選擇已加入購物車的商品
+      setSelectedIds(prev =>
+        prev.filter(id => {
+          const item = wishlistItems.find(item => item.id === id);
+          return !selectedProductIds.includes(item?.productId);
+        })
+      );
+      setSelectedProductIds([]);
+
       toast.success("加入購物車成功");
       reFetchWishlist();
-      setSelectedIds([]);
-      setSelectedProductIds([]);
     } catch (error) {
       toast.error(getApiErrorMessage(error, "加入購物車失敗，請稍後再試"));
     } finally {
       setIsAddingToCart(false);
     }
-  }, [selectedProductIds, reFetchWishlist]);
+  }, [selectedProductIds, wishlistItems, reFetchWishlist]);
 
   const handleDropdownClick = useCallback(e => {
     e.stopPropagation();
@@ -148,6 +167,8 @@ function UserWishlist({ user }) {
                 onCheckChange={handleCheckboxChange}
                 onDelete={handleDelete}
                 isDeleting={deletingId === item.id}
+                isAddedToCart={addedToCartProductIds.has(item.productId)}
+                isCheckboxDisabled={addedToCartProductIds.has(item.productId)}
               />
             ))}
           </ul>
