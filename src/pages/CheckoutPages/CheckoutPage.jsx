@@ -19,43 +19,40 @@ function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 取 redux 裡保存的 checkout form 狀態
+  // 取得 Redux 中暫存的結帳資料
   const checkoutForm = useSelector(state => state.checkoutPage);
 
-  //取得使用者資料
+  // 取得使用者資料
   const { data, isLoading, error } = useGetUserProfileQuery();
   const userInfo = data?.data?.user;
 
   // 取得優惠券資料
   const { data: couponsData } = useGetCouponsQuery({ page: 1, per: 9999 });
-  // const coupons = couponsData?.data || [];
   const coupons = useMemo(() => {
     return couponsData?.data || [];
   }, [couponsData?.data]);
   const safeCoupons = useMemo(() => (Array.isArray(coupons) ? coupons : []), [coupons]);
 
+  // 驗證 schema
   const schema = useMemo(() => getCheckoutSchema(safeCoupons), [safeCoupons]); // react-hook-form 初始化
 
-  const [defaultDate, setDefaultDate] = useState(() => {
+  // 將無希望日改為四天後的日期傳進order
+  const getDefaultDate = () => {
     const today = new Date();
     today.setDate(today.getDate() + 4);
     return today.toISOString().split("T")[0];
-  });
+  };
 
-  // 計算可選配送日期（三天後開始連續七天）
+  // 建立可選配送日期選單（三天後開始連續七天）
   const [deliveryDates, setDeliveryDates] = useState([]);
 
   useEffect(() => {
+    const baseDate = new Date(getDefaultDate());
     const dates = [];
 
-    // 加入其他日期選項
-    const today = new Date();
-    today.setDate(today.getDate() + 4);
-
-    for (let i = 1; i <= 7; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i - 4);
-
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(baseDate);
+      date.setDate(baseDate.getDate() + i);
       const value = date.toISOString().split("T")[0];
       const weekday = date.toLocaleDateString("zh-TW", { weekday: "short" });
       const label = `${value}（${weekday}）`;
@@ -64,21 +61,43 @@ function CheckoutPage() {
     }
 
     setDeliveryDates(dates);
-  }, [defaultDate]);
+  }, []);
 
+  // 初始化表單
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     mode: "onBlur",
     defaultValues: {
       ...checkoutForm,
-      deliveryDate: defaultDate,
+      deliveryDate: checkoutForm.deliveryDate || "none",
     },
   });
+
+  useEffect(() => {
+    if (
+      checkoutForm &&
+      Object.keys(checkoutForm).length > 0 &&
+      checkoutForm.deliveryDate !== undefined
+    ) {
+      console.log("useEffect 中的 checkoutForm:", checkoutForm);
+      console.log("useEffect 中要 reset 的值:", {
+        ...checkoutForm,
+        deliveryDate: checkoutForm.deliveryDate || "none",
+      });
+
+      reset({
+        ...checkoutForm,
+        deliveryDate: checkoutForm.deliveryDate || "none",
+      });
+    }
+  }, [checkoutForm, reset]);
 
   // 監聽表單改變同步 redux + localStorage
   useEffect(() => {
@@ -107,7 +126,7 @@ function CheckoutPage() {
       shipping_method: formData.shippingMethod,
       recipient: formData.recipient,
       payment_method: formData.paymentMethod,
-      desired_date: formData.deliveryDate || "noPreference",
+      desired_date: formData.deliveryDate === "none" ? getDefaultDate() : formData.deliveryDate,
       deliveryTime: formData.deliveryTime,
       coupon_code: formData.couponCode || null,
     };
@@ -129,7 +148,10 @@ function CheckoutPage() {
     <>
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
-          <section className="container d-flex flex-column gap-10">
+          <section
+            className="container d-flex flex-column gap-10"
+            style={{ letterSpacing: "0.09em" }}
+          >
             {/* 麵包屑 */}
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb mb-0">
@@ -363,9 +385,16 @@ function CheckoutPage() {
                         <div className="col-12 col-lg-7">
                           <select
                             {...register("deliveryDate")}
+                            onChange={e => {
+                              const val = e.target.value;
+                              setValue("deliveryDate", val);
+                              if (val !== "none") {
+                                dispatch(setCheckoutField({ name: "deliveryDate", value: val }));
+                              }
+                            }}
                             className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
                           >
-                            <option value={defaultDate}>無希望日</option>
+                            <option value="none">無希望日</option>
                             {deliveryDates.map(({ value, label }) => (
                               <option key={value} value={value}>
                                 {label}
