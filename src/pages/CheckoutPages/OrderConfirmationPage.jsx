@@ -522,7 +522,11 @@ function OrderConfirmationPage() {
                           </div>
                         </div>
                         <div className="col-12 col-lg-7">
-                          <div className="text-gray-500">{checkoutForm.deliveryDate}</div>
+                          <div className="text-gray-500">
+                            {checkoutForm.deliveryDate === "none"
+                              ? "無希望日"
+                              : `${checkoutForm.deliveryDate}（${new Date(checkoutForm.deliveryDate).toLocaleDateString("zh-TW", { weekday: "short" })}）`}
+                          </div>
                         </div>
                       </div>
 

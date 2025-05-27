@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const savedState = JSON.parse(localStorage.getItem("checkoutForm")) || {
-  shippingMethod: "",
-  recipient: "",
-  paymentMethod: "",
+  shippingMethod: "宅配到府",
+  recipient: "self",
+  paymentMethod: "信用卡付款",
   deliveryDate: "none",
-  deliveryTime: "",
+  deliveryTime: "無希望時間",
   couponCode: "",
 };
 
@@ -20,11 +20,11 @@ const checkoutPageSlice = createSlice({
     },
     resetCheckoutForm(state) {
       Object.assign(state, {
-        shippingMethod: "",
-        recipient: "",
-        paymentMethod: "",
+        shippingMethod: "宅配到府",
+        recipient: "self",
+        paymentMethod: "信用卡付款",
         deliveryDate: "none",
-        deliveryTime: "",
+        deliveryTime: "無希望時間",
         couponCode: "",
       });
       localStorage.removeItem("checkoutForm");
