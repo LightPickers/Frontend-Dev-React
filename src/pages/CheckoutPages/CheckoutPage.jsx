@@ -5,14 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import { BtnPrimary } from "@/components/Buttons";
-import { H3Primary, H5Primary } from "@/components/Headings";
-import { useGetUserProfileQuery } from "@/features/users/userApi";
-import { useGetCouponsQuery } from "@/features/coupons/couponApi";
-import { useConfirmOrderInfoMutation } from "@/features/cart/cartApi";
+import { BtnPrimary } from "@components/Buttons";
+import { H3Primary, H5Primary } from "@components/Headings";
+import { useGetUserProfileQuery } from "@features/users/userApi";
+import { useGetCouponsQuery } from "@features/coupons/couponApi";
+import { useConfirmOrderInfoMutation } from "@features/cart/cartApi";
 import { getCheckoutSchema } from "@schemas/cart/checkoutSchema";
-import { setCheckoutField, resetCheckoutForm } from "@/features/cart/checkoutPageSlice";
-import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
+import { setCheckoutField, updateDeliveryDate } from "@features/cart/checkoutPageSlice";
+import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 // 4-1 結帳頁面
 function CheckoutPage() {
@@ -28,7 +28,6 @@ function CheckoutPage() {
 
   // 取得優惠券資料
   const { data: couponsData } = useGetCouponsQuery({ page: 1, per: 9999 });
-  // const coupons = couponsData?.data || [];
   const coupons = useMemo(() => {
     return couponsData?.data || [];
   }, [couponsData?.data]);
@@ -36,51 +35,53 @@ function CheckoutPage() {
 
   const schema = useMemo(() => getCheckoutSchema(safeCoupons), [safeCoupons]); // react-hook-form 初始化
 
-  const [defaultDate, setDefaultDate] = useState(() => {
-    const today = new Date();
-    today.setDate(today.getDate() + 4);
-    return today.toISOString().split("T")[0];
-  });
-
   // 計算可選配送日期（三天後開始連續七天）
   const [deliveryDates, setDeliveryDates] = useState([]);
-
   useEffect(() => {
     const dates = [];
-
-    // 加入其他日期選項
     const today = new Date();
-    today.setDate(today.getDate() + 4);
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() + 4);
 
-    for (let i = 1; i <= 7; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i - 4);
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
 
       const value = date.toISOString().split("T")[0];
       const weekday = date.toLocaleDateString("zh-TW", { weekday: "short" });
-      const label = `${value}（${weekday}）`;
+      const label = `${value}(${weekday})`;
 
       dates.push({ value, label });
     }
 
     setDeliveryDates(dates);
-  }, [defaultDate]);
+
+    // 檢查並更新過期的配送日期
+    dispatch(updateDeliveryDate());
+  }, [dispatch]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     mode: "onBlur",
-    defaultValues: {
-      ...checkoutForm,
-      deliveryDate: defaultDate,
-    },
+    defaultValues: checkoutForm,
   });
 
-  // 監聽表單改變同步 redux + localStorage
+  const [formInitialized, setFormInitialized] = useState(false); // 追蹤表單初始化狀態
+
+  useEffect(() => {
+    if (!formInitialized) {
+      reset(checkoutForm);
+      setFormInitialized(true);
+    }
+    if (formInitialized && Object.keys(checkoutForm).length > 0) reset(checkoutForm);
+  }, [reset, checkoutForm, formInitialized]);
+
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name) {
@@ -90,7 +91,7 @@ function CheckoutPage() {
     return () => subscription.unsubscribe();
   }, [watch, dispatch]);
 
-  const [confirmOrderInfo, { isLoading: isSubmitting }] = useConfirmOrderInfoMutation();
+  const [confirmOrderInfo, { isLoading: isConfirming }] = useConfirmOrderInfoMutation();
 
   const onSubmit = async formData => {
     const matchedCoupon = coupons.find(
@@ -115,9 +116,8 @@ function CheckoutPage() {
     try {
       await confirmOrderInfo(payload).unwrap();
       navigate("/checkout/confirmation");
-    } catch (err) {
-      toast.error(getApiErrorMessage(err, "訂單送出失敗，請稍後再試"));
-      // alert("訂單送出失敗，請稍後再試");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "訂單送出失敗，請稍後再試"));
     }
   };
 
@@ -365,7 +365,7 @@ function CheckoutPage() {
                             {...register("deliveryDate")}
                             className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
                           >
-                            <option value={defaultDate}>無希望日</option>
+                            <option value="none">無希望日</option>
                             {deliveryDates.map(({ value, label }) => (
                               <option key={value} value={value}>
                                 {label}
@@ -411,11 +411,11 @@ function CheckoutPage() {
                                 {...register("deliveryTime")}
                                 className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
                                 type="radio"
-                                value="8點～13點前"
+                                value="8 點 ~ 13 點前"
                                 id="delivery-morning"
                               />
                               <label className="form-check-label" htmlFor="delivery-morning">
-                                8點~13點前
+                                8 點 ~ 13 點前
                               </label>
                             </div>
                             <div className="form-check">
@@ -423,11 +423,11 @@ function CheckoutPage() {
                                 {...register("deliveryTime")}
                                 className={`form-check-input ${errors.deliveryTime ? "is-invalid" : ""}`}
                                 type="radio"
-                                value="14點～18點"
+                                value="14 點 ~ 18 點"
                                 id="delivery-afternoon"
                               />
                               <label className="form-check-label" htmlFor="delivery-afternoon">
-                                14點～18點
+                                14 點 ~ 18 點
                               </label>
                               {errors.deliveryTime && (
                                 <p className="invalid-feedback">{errors.deliveryTime.message}</p>
@@ -474,7 +474,7 @@ function CheckoutPage() {
                       回到購物車
                     </Link>
                   </div>
-                  <BtnPrimary className="cart-button" type="submit">
+                  <BtnPrimary className="cart-button" type="submit" disabled={isConfirming}>
                     確認訂單內容
                   </BtnPrimary>
                 </div>
