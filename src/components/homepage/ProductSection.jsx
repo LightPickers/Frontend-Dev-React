@@ -26,13 +26,15 @@ function ProductSection() {
       </div>
 
       {/* 最新商品 */}
-      {!isGettingTheLatest ? (
-        <ProductShowcase title={"最新商品"} products={latestProducList} />
-      ) : (
-        <TextMedium as="p" className="d-flex justify-content-center align-items-center py-10">
-          正在載入中……
-        </TextMedium>
-      )}
+      <div className="bg-white">
+        {!isGettingTheLatest ? (
+          <ProductShowcase title={"最新商品"} products={latestProducList} />
+        ) : (
+          <TextMedium as="p" className="d-flex justify-content-center align-items-center py-10">
+            正在載入中……
+          </TextMedium>
+        )}
+      </div>
     </>
   );
 }
