@@ -19,6 +19,7 @@
 
 // custom components
 @import "./components/buttons";
+@import "./components/tags";
 
 // layouts
 @import "./layouts/header";
@@ -36,3 +37,6 @@
 
 // productpage
 @import "./pages/productpage/product";
+
+// productDetailPage
+@import "./pages/productDetailPage/productDetail";

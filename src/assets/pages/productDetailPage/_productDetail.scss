@@ -1,12 +1,79 @@
+@use "../../stylesheets/colors" as colors;
+
 .product-detail {
-  .product-intro {
-    height: 454px;
+  .image-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
-  .product-images {
-    height: 100%;
-    .primary-image {
-      display: block;
-      height: 100%;
+  .product-gallery {
+    border-radius: 4px;
+    overflow: hidden;
+
+    .swiper-slide-main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & img {
+        width: 100%;
+        height: 346px;
+        object-fit: cover;
+      }
+    }
+
+    .swiper-slide-thumb {
+      display: flex;
+      gap: 12px;
+
+      img {
+        height: 96px;
+        width: 96px;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+  .product-feature-list {
+    list-style: disc;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    & li {
+      line-height: 1.5;
+
+      &::marker {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .product-nav {
+    background-color: colors.$white;
+    padding: 8px;
+
+    & ul li.nav-separator:not(:last-child)::after {
+      content: "";
+      width: 1px;
+      height: 32px;
+      margin: 0 4px;
+      background-color: colors.$gray-200;
+      align-self: center;
+    }
+
+    & ul li {
+      display: flex;
+      align-items: center;
+    }
+
+    & ul li a {
+      display: flex;
+      align-items: center;
+      padding: 4px 8px;
+      min-height: 32px;
     }
   }
 }
