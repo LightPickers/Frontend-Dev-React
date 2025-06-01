@@ -19,6 +19,9 @@ import {
   SellConfirmationPage,
   SellApplyStatusPage,
   ErrorPage,
+  ProductDescriptionPanel,
+  ProductSpecificationsPanel,
+  SellerReviewPanel,
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
@@ -38,6 +41,9 @@ const ROUTES = {
   SHOPPING: {
     PRODUCTS: "/products", // 產品列表頁
     PRODUCT_DETAIL: "/products/:productId", // 產品資訊頁
+    PRODUCT_DESCRIPTION: "description",
+    PRODUCT_SPECIFICATIONS: "specification",
+    SELLER_REVIEW: "review",
   },
   CHECKOUT: {
     CART: "/cart", // 購物車 //
@@ -75,6 +81,22 @@ const shoppingRoutes = [
   {
     path: ROUTES.SHOPPING.PRODUCT_DETAIL,
     element: <ProductDetailPage />,
+    id: "product_detail",
+    children: [
+      {
+        index: true,
+        // path: ROUTES.SHOPPING.PRODUCT_DESCRIPTION,
+        element: <ProductDescriptionPanel />,
+      },
+      {
+        path: ROUTES.SHOPPING.PRODUCT_SPECIFICATIONS,
+        element: <ProductSpecificationsPanel />,
+      },
+      {
+        path: ROUTES.SHOPPING.SELLER_REVIEW,
+        element: <SellerReviewPanel />,
+      },
+    ],
   },
 ];
 
