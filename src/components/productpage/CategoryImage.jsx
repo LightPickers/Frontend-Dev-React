@@ -1,12 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import CategoryImage from "../path/to/CategoryImage";
 
 const categoryImages = {
-  lens: "/productpage/categoryImage/Confirm.png",
-  //camera: "/path/to/camera-image.jpg",
-  //accessories: "/path/to/accessories-image.jpg",
-  //default: "/path/to/default-image.jpg",
+  lens: "/productcatalogpage/len.png",
+  camera: "/productcatalogpage/camera.png",
+  accessories: "/productcatalogpage/accessories.png",
+  default: "/productcatalogpage/default.png",
 };
 
 function CategoryImage({ category }) {
@@ -14,7 +13,19 @@ function CategoryImage({ category }) {
 
   return (
     <div className="category-image-wrapper text-center mb-4">
-      <img src={imageSrc} alt={category} className="category-image" />
+      <img
+        src={imageSrc}
+        alt={`${category} category`}
+        className="category-image"
+        onLoad={() => console.log(`Image loaded: ${imageSrc}`)}
+        onError={e => {
+          console.error(`Failed to load image: ${imageSrc}`);
+          console.error(`Full URL: ${window.location.origin}${imageSrc}`);
+          if (e.target.src !== categoryImages.default) {
+            e.target.src = categoryImages.default;
+          }
+        }}
+      />
     </div>
   );
 }
