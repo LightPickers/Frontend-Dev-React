@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import WishlistCard from "@/components/productpage/WishlistCard";
@@ -19,8 +20,29 @@ function WishlistPage() {
   const { data, error, isLoading } = useGetWishlistProductsQuery();
   const wishlist = mapWishlistData(data);
 
-  const { data: userData, error: userError, isLoading: userLoading } = useGetUserProfileQuery();
+  const { data: userData, error: userError, isLoading: isUserLoading } = useGetUserProfileQuery();
   const user = userData?.data?.user;
+
+  const isPageLoading = isLoading || isUserLoading;
+
+  if (isPageLoading) {
+    return (
+      <div
+        style={{
+          backgroundColor: "#f1f3f5",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="text-center text-muted">
+          <div className="spinner-border text-secondary mb-3" role="status"></div>
+          <div>資料載入中，請稍候...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ backgroundColor: "#f1f3f5", minHeight: "100vh", padding: "40px 0" }}>
@@ -42,7 +64,7 @@ function WishlistPage() {
                   height={80}
                 />
                 <div>{user?.name || "未登入"}</div>
-                <div>{user?.email || "無法取的您的電子郵件"}</div>
+                <div>{user?.email || "無法取得您的電子郵件"}</div>
               </div>
               <hr />
               <ul className="list-unstyled mb-0">
@@ -92,11 +114,20 @@ function WishlistPage() {
               </div>
               <hr />
               <div className="row g-4">
-                {wishlist.map(product => (
-                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6" key={product.id}>
-                    <WishlistCard product={product} />
+                {wishlist.length > 0 ? (
+                  wishlist.map(product => (
+                    <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6" key={product.id}>
+                      <WishlistCard product={product} />
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center text-muted py-5 w-100">
+                    <p className="mb-3 fs-5">尚未收藏任何商品</p>
+                    <Link to="/" className="btn btn-outline-secondary">
+                      前往首頁探索商品
+                    </Link>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
