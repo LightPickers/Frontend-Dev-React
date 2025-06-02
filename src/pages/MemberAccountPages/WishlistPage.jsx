@@ -1,58 +1,26 @@
-import { useState } from "react";
-
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
-
+import { useGetUserProfileQuery } from "@/features/users/userApi";
 import WishlistCard from "@/components/productpage/WishlistCard";
 
-// 假資料
-const mockWishlist = [
-  {
-    id: 1,
-    name: "Canon EOS R6",
-    condition: "良好",
-    primary_image:
-      "https://images.unsplash.com/photo-1536632087471-3cf3f2986328?q=80&w=1476&auto=format&fit=crop",
+function mapWishlistData(apiData) {
+  if (!apiData || !Array.isArray(apiData.data)) return [];
+
+  return apiData.data.map(item => ({
+    id: item.Products.id,
+    name: item.Products.name,
+    primary_image: item.Products.primary_image,
     liked: true,
-    original_price: 78000,
-    selling_price: 65900,
-  },
-  {
-    id: 2,
-    name: "Nikon Z6 II",
-    condition: "良好",
-    primary_image:
-      "https://images.unsplash.com/photo-1536632087471-3cf3f2986328?q=80&w=1476&auto=format&fit=crop",
-    liked: true,
-    original_price: 72000,
-    selling_price: 63500,
-  },
-  {
-    id: 3,
-    name: "Sony A7 IV",
-    condition: "良好",
-    primary_image:
-      "https://images.unsplash.com/photo-1536632087471-3cf3f2986328?q=80&w=1476&auto=format&fit=crop",
-    liked: true,
-    original_price: 82000,
-    selling_price: 69800,
-  },
-  {
-    id: 4,
-    name: "Fujifilm X-T5",
-    condition: "良好",
-    primary_image:
-      "https://images.unsplash.com/photo-1536632087471-3cf3f2986328?q=80&w=1476&auto=format&fit=crop",
-    liked: true,
-    original_price: 46000,
-    selling_price: 41200,
-  },
-];
+    original_price: item.Products.original_price, // 目前後端沒提供
+    selling_price: item.Products.selling_price,
+  }));
+}
 
 function WishlistPage() {
-  const [wishlist, setWishlist] = useState(mockWishlist);
   const { data, error, isLoading } = useGetWishlistProductsQuery();
+  const wishlist = mapWishlistData(data);
 
-  console.log("從後端抓到的收藏資料：", data);
+  const { data: userData, error: userError, isLoading: userLoading } = useGetUserProfileQuery();
+  const user = userData?.data?.user;
 
   return (
     <div style={{ backgroundColor: "#f1f3f5", minHeight: "100vh", padding: "40px 0" }}>
@@ -63,14 +31,18 @@ function WishlistPage() {
             <div className="bg-white rounded shadow-sm p-4">
               <div className="text-center">
                 <img
-                  src="https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
+                  src={
+                    user?.photo
+                      ? user.photo
+                      : "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
+                  }
                   alt="會員照片"
                   className="rounded-circle mb-2"
                   width={80}
                   height={80}
                 />
-                <div>王小明</div>
-                <div>ss1234@gmail</div>
+                <div>{user?.name || "未登入"}</div>
+                <div>{user?.email || "無法取的您的電子郵件"}</div>
               </div>
               <hr />
               <ul className="list-unstyled mb-0">
