@@ -20,7 +20,7 @@ function WishlistCard({ product }) {
     useDeleteWishlistProductMutation();
   const { data: wishlist, refetch } = useGetWishlistProductsQuery();
 
-  const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation(); // ✅ 加入購物車 hook
+  const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
 
   const handleDeleteWishlistProduct = async () => {
     const targetIndex = wishlist?.data.findIndex(item => item.Products.id === id);
