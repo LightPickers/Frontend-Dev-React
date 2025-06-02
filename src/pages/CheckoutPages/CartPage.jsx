@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { useGetCartQuery, useDeleteCartProductMutation } from "@/features/cart/cartApi";
-import { BtnPrimary } from "@/components/Buttons";
-import { CloseIcon } from "@/components/icons";
-import { H3Primary, H5Primary } from "@/components/Headings";
+import { useGetCartQuery, useDeleteCartProductMutation } from "@features/cart/cartApi";
+import { BtnPrimary } from "@components/Buttons";
+import { CloseIcon } from "@components/icons";
+import { H3Primary, H5Primary } from "@components/Headings";
+import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ function CartPage() {
     if (!confirmDelete) return;
     try {
       await deleteCartProduct(id).unwrap();
-    } catch (err) {
-      toast.error("刪除失敗，請稍後再試");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "刪除失敗，請稍後再試"));
     }
   };
   // 按下前往結帳手續按鈕

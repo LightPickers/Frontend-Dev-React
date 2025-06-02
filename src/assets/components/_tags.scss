@@ -1,0 +1,28 @@
+@use "../stylesheets/fonts" as fonts;
+@use "../stylesheets/colors" as colors;
+@use "../stylesheets/sizes" as sizes;
+
+.tag-for-condition {
+  display: inline-block;
+  color: colors.$white;
+  font-weight: fonts.$font-weight-bold;
+  font-size: sizes.$font-size-base;
+  text-align: center;
+  letter-spacing: 0.09em;
+  padding: 4px 12px;
+  background-color: colors.$primary-600;
+  border-radius: 40px;
+  width: fit-content;
+  text-wrap: nowrap;
+}
+
+.tag-for-feature {
+  display: inline-block;
+  color: colors.$white;
+  text-align: center;
+  padding: 8px 16px;
+  background-color: colors.$primary-600;
+  border-radius: 48px;
+  width: fit-content;
+  text-wrap: nowrap;
+}
