@@ -3,29 +3,41 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { H5Secondary } from "@components/Headings";
-import { TextSmall, TextMedium, TextLarge, LabelText } from "@components/TextTypography";
+import { TextSmall, TextLarge, LabelText } from "@components/TextTypography";
 import { SearchIcon, CartIcon, FavoriteFilledIcon } from "@components/icons";
 import { formatPrice } from "@utils/formatPrice";
 import {
   useDeleteWishlistProductMutation,
   useGetWishlistProductsQuery,
 } from "@features/wishlist/wishlistApi";
+import { useAddToCartMutation } from "@features/cart/cartApi";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function WishlistCard({ product }) {
   const { id, name, condition, primary_image, original_price, selling_price } = product;
 
-  const [deleteWishlistProduct, { isLoading }] = useDeleteWishlistProductMutation();
+  const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
+    useDeleteWishlistProductMutation();
   const { data: wishlist, refetch } = useGetWishlistProductsQuery();
 
-  const handleDelete = async () => {
+  const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation(); // ✅ 加入購物車 hook
+
+  const handleDeleteWishlistProduct = async () => {
     const targetIndex = wishlist?.data.findIndex(item => item.Products.id === id);
     const favoriteId = wishlist?.data[targetIndex]?.id;
-
     try {
       await deleteWishlistProduct(favoriteId).unwrap();
       toast.success("已取消收藏");
       refetch();
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(id).unwrap();
+      toast.success("已加入購物車");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
@@ -51,13 +63,13 @@ function WishlistCard({ product }) {
           </Link>
         </div>
 
-        {/* 機況標籤 */}
+        {/* 機況 */}
         <LabelText className="position-absolute top-0 start-0 m-2 bg-secondary text-white px-2 py-1 rounded small">
           {condition}
         </LabelText>
       </div>
 
-      {/* 內容區 */}
+      {/* 內容 */}
       <div className="card-body d-flex flex-column justify-content-between">
         {/* 名稱 */}
         <div className="line-clamp-2 mb-2" style={{ minHeight: "48px" }}>
@@ -72,22 +84,29 @@ function WishlistCard({ product }) {
         </TextSmall>
         <TextLarge className="text-gray-800">NT$ {formatPrice(selling_price, false)}</TextLarge>
 
-        {/* 按鈕群 */}
+        {/* 按鈕*/}
         <div className="d-flex justify-content-end align-items-center gap-2 mt-3">
-          <button className="btn btn-outline-secondary btn-sm">
+          {/*  加入購物車 */}
+          <button
+            className="btn btn-outline-secondary btn-sm"
+            onClick={handleAddToCart}
+            disabled={isAddingToCart}
+          >
             <CartIcon />
           </button>
+
+          {/* 取消收藏 */}
           <button
             className="btn btn-outline-danger btn-sm"
-            onClick={handleDelete}
-            disabled={isLoading}
+            onClick={handleDeleteWishlistProduct}
+            disabled={isRemovingFromWishlist}
           >
             <FavoriteFilledIcon />
           </button>
         </div>
       </div>
 
-      {/* hover 效果 */}
+      {/* hover */}
       <style>{`
         .wishlist-card:hover img {
           transform: scale(1.05);
