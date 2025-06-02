@@ -11,7 +11,7 @@ function ProductContentNav({ id }) {
     { label: "會員評價", path: `${PRODUCT_PATH}/review` },
   ];
   return (
-    <nav className="product-nav">
+    <nav className="product-nav row">
       <ul className="ps-0 mb-0 d-flex align-items-center">
         {navItems.map((item, index) => {
           const { label, path } = item;

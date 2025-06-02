@@ -71,6 +71,7 @@ function ProductDetailPage() {
             <aside className="col-lg-2">
               <TextLarge>我是側欄</TextLarge>
             </aside>
+
             {/* 主要區域 */}
             <section className="col-lg-10">
               <div className="row product-section mb-10">
@@ -127,12 +128,11 @@ function ProductDetailPage() {
                   </div>
                 </section>
               </div>
-
-              <div className="row">
+              <div className="d-flex flex-column gap-md-5 gap-3">
                 <ProductContentNav id={id} />
-              </div>
 
-              <Outlet context={{ id, title, subtitle, description, primary_image, hashtags }} />
+                <Outlet context={{ id, title, subtitle, description, primary_image, hashtags }} />
+              </div>
             </section>
           </div>
         </div>

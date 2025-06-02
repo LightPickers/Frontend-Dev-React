@@ -5,14 +5,16 @@ export const productDetailTestData = {
     primary_image: "https://picsum.photos/800/600",
     original_price: 12900,
     selling_price: 10900,
-    subtitle: "XXXXX",
+    title: "輕便專業，捕捉每一刻的精彩",
+    subtitle: "價格實惠、輕巧大光圈 NIKKOR Z 定焦鏡頭，主體視角自然，帶來 Z 鏡頭獨有的出眾畫質",
     summary: [
       "優異的光學表現",
       "FX 格式 Z 接環定焦鏡頭",
       "55mm 超大口徑 Z 接環",
       "最短對焦距離 0.37m",
     ],
-    title: "輕便專業，捕捉每一刻的精彩",
+    description:
+      "f/1.4大光圈帶來迷人的淺景深與柔和散景，讓主體更加突出；高品質光學設計能有效減少色差與鬼影，即使在逆光環境下也能拍出清晰影像；低ISO依然能拍出銳利細節，適合夜間拍攝或室內弱光場景",
     Brands: {
       name: "Sonia",
     },

@@ -1,4 +1,4 @@
-import { createHashRouter } from "react-router-dom";
+import { createHashRouter, Link } from "react-router-dom";
 
 import {
   HomePage,
@@ -77,6 +77,9 @@ const shoppingRoutes = [
   {
     path: ROUTES.SHOPPING.PRODUCTS,
     element: <ProductCatalogPage />,
+    handle: {
+      crumb: () => <Link to={ROUTES.SHOPPING.PRODUCTS}>商品總覽</Link>,
+    },
   },
   {
     path: ROUTES.SHOPPING.PRODUCT_DETAIL,
