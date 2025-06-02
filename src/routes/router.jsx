@@ -25,6 +25,7 @@ import {
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
+import AccountLayout from "@/layouts/AccountLayout";
 
 const ROUTES = {
   HOME: "/", // 首頁
@@ -108,8 +109,12 @@ const shoppingRoutes = [
 const accountRoutes = [
   {
     path: ROUTES.ACCOUNT.ROOT,
-    element: <AccountDashboardPage />,
+    element: <AccountLayout />,
     children: [
+      {
+        index: true,
+        element: <AccountDashboardPage />,
+      },
       {
         path: ROUTES.ACCOUNT.SETTINGS,
         element: <AccountSettingsPage />,
