@@ -1,0 +1,133 @@
+.footer {
+  background-color: #ffffff !important;
+
+  // 增加整體 padding
+  padding: 4rem 0 !important;
+
+  .container {
+    max-width: 1000px;
+  }
+
+  .footer-brand-link {
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    margin-bottom: 2rem !important;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .footer-logo {
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .footer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .footer-links {
+    li {
+      margin-bottom: 0.75rem;
+    }
+
+    .text-m {
+      font-weight: normal !important;
+    }
+  }
+
+  .footer-link {
+    color: #000000;
+    text-decoration: none;
+    font-weight: normal !important;
+    transition: color 0.3s ease;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #333333;
+      text-decoration: none;
+      font-weight: normal !important;
+    }
+  }
+
+  .footer-links a {
+    color: #000000 !important;
+    text-decoration: none !important;
+    font-weight: normal !important;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #333333 !important;
+      text-decoration: none !important;
+      font-weight: normal !important;
+    }
+  }
+
+  .social-links {
+    gap: 1.5rem !important;
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; // 稍微增大圖標區域
+      height: 40px;
+      color: #6c757d;
+      text-decoration: none;
+
+      svg {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .copyright {
+    font-size: 0.875rem;
+    text-align: left;
+    margin-bottom: 0;
+    display: inline-block;
+    white-space: nowrap;
+    margin-top: 1rem;
+  }
+
+  // 響應式設計
+  @media (max-width: 768px) {
+    padding: 3rem 0 !important;
+    .footer-brand-link {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem !important;
+    }
+
+    .social-links {
+      justify-content: center;
+    }
+
+    .footer-title {
+      margin-top: 2rem;
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+// 移除 fixed-bottom，讓 footer 正常流動
+.footer:not(.fixed-bottom) {
+  position: static;
+}
