@@ -21,47 +21,13 @@ import useDecodedId from "@/hooks/useDecodedId";
 
 function UserWishlist() {
   const hoverTimeout = useRef(null);
-
   const userId = useDecodedId();
-
-  const renderCount = useRef(0);
-  renderCount.current++;
-
-  // const shouldSkip = !userId;
-  console.log(`=== 渲染 #${renderCount.current} ===`);
-  console.log("時間:", new Date().toISOString());
-  console.log("=== UserWishlist Debug ===");
-  console.log("userId:", userId);
-  console.log("typeof userId:", typeof userId);
-  console.log("Boolean(userId):", Boolean(userId));
-  console.log("!userId:", !userId);
-  const queryArg = !userId ? skipToken : undefined;
-  console.log("queryArg:", queryArg);
-  console.log("queryArg === skipToken:", queryArg === skipToken);
-
-  const wishlistQuery = useGetWishlistProductsQuery(userId ? undefined : skipToken);
-  const { data, isLoading, refetch: reFetchWishlist } = wishlistQuery;
+  const {
+    data,
+    isLoading,
+    refetch: reFetchWishlist,
+  } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
-
-  console.log("我的最愛查詢狀態:", {
-    status: wishlistQuery.status,
-    isUninitialized: wishlistQuery.isUninitialized,
-    isLoading: wishlistQuery.isLoading,
-    isError: wishlistQuery.isError,
-    isSuccess: wishlistQuery.isSuccess,
-  });
-
-  // 檢查 Redux store 中的狀態
-  console.log("RTK Query 緩存狀態:", store.getState().api);
-
-  // const {
-  //   data,
-  //   isLoading,
-  //   refetch: reFetchWishlist,
-  // } = useGetWishlistProductsQuery(undefined, { skip: shouldSkip });
-  // const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
-
-  // console.log({ data });
 
   const { triggerRef, dropdownRef, isOpen, position, open, close } = useDropdownPosition({
     placement: "bottom",

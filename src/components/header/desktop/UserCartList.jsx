@@ -22,17 +22,9 @@ function UserCartList() {
 
   const userId = useDecodedId();
 
-  const shouldSkip = !userId;
-  const cartQueryResult = useGetCartQuery(userId ? userId : skipToken);
-  const { data: getCartResponse, isLoading: isGettingCart } = cartQueryResult;
-  // const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(userId, {
-  //   skip: shouldSkip,
-  // });
-
-  // console.log("購物車查詢是否被跳過:", cartQueryResult.isUninitialized);
-  // console.log("購物車查詢狀態:", cartQueryResult);
-  // console.log({ getCartResponse });
-
+  const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(
+    userId ? userId : skipToken
+  );
   const { items: cartItems = [], amount: total = 0 } = useMemo(
     () => getCartResponse?.data ?? {},
     [getCartResponse]
