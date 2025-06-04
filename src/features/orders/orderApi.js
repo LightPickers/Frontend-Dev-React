@@ -19,6 +19,11 @@ export const orderApi = createApi({
       query: orderId => `/orders/${orderId}`,
       providesTags: (result, error, id) => [{ type: "Order", id }],
     }),
+    // 取得結帳完成訂單
+    getPaidOrderById: builder.query({
+      query: orderId => `/orders/paid/${orderId}`,
+      providesTags: (result, error, id) => [{ type: "Order", id }],
+    }),
     // 新增訂單資料
     createNewOrder: builder.mutation({
       query: newOrder => ({
@@ -62,5 +67,6 @@ export const {
   useCreateNewOrderMutation,
   useGetOrderByIdQuery,
   useLazyGetOrderByIdQuery,
+  useGetPaidOrderByIdQuery,
   usePrefetch,
 } = orderApi;
