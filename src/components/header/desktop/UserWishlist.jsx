@@ -2,6 +2,7 @@ import { useRef, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 import store from "@/store";
 import { FavoriteIcon } from "@components/icons";
@@ -16,14 +17,17 @@ import { cartApi } from "@features/cart/cartApi";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 import WishlistItem from "@components/header/desktop/WishlistItem";
 import { useDropdownPosition } from "@hooks/useDropdownPosition";
+import useDecodedId from "@/hooks/useDecodedId";
 
-function UserWishlist({ user }) {
+function UserWishlist() {
   const hoverTimeout = useRef(null);
-
-  const { data, isLoading, refetch: reFetchWishlist } = useGetWishlistProductsQuery();
+  const userId = useDecodedId();
+  const {
+    data,
+    isLoading,
+    refetch: reFetchWishlist,
+  } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
-
-  console.log({ data });
 
   const { triggerRef, dropdownRef, isOpen, position, open, close } = useDropdownPosition({
     placement: "bottom",
@@ -122,7 +126,7 @@ function UserWishlist({ user }) {
   }, []);
 
   const renderDropdownContent = () => {
-    if (!user) {
+    if (!userId) {
       return (
         <section className="d-flex align-items-center justify-content-center py-10">
           <BtnPrimary as={Link} to="/login">
@@ -223,8 +227,8 @@ function UserWishlist({ user }) {
   );
 }
 
-UserWishlist.propTypes = {
-  user: PropTypes.any,
-};
+// UserWishlist.propTypes = {
+//   user: PropTypes.any,
+// };
 
 export default UserWishlist;

@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 import { CartIcon } from "@components/icons";
 import { TextMedium, TextSmall } from "@components/TextTypography";
@@ -20,10 +21,10 @@ function UserCartList() {
   });
 
   const userId = useDecodedId();
-  const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(userId);
 
-  console.log({ getCartResponse });
-
+  const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(
+    userId ? userId : skipToken
+  );
   const { items: cartItems = [], amount: total = 0 } = useMemo(
     () => getCartResponse?.data ?? {},
     [getCartResponse]

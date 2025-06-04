@@ -1,4 +1,4 @@
-import { createHashRouter, Link } from "react-router-dom";
+import { createHashRouter, Link, NavLink } from "react-router-dom";
 
 import {
   HomePage,
@@ -25,7 +25,8 @@ import {
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
-import AccountLayout from "@/layouts/AccountLayout";
+import AccountLayout from "@layouts/AccountLayout";
+import { TextMedium } from "@/components/TextTypography";
 
 const ROUTES = {
   HOME: "/", // 首頁
@@ -79,26 +80,47 @@ const shoppingRoutes = [
     path: ROUTES.SHOPPING.PRODUCTS,
     element: <ProductCatalogPage />,
     handle: {
-      crumb: () => <Link to={ROUTES.SHOPPING.PRODUCTS}>商品總覽</Link>,
+      crumb: () => (
+        <TextMedium as={Link} to={ROUTES.SHOPPING.PRODUCTS}>
+          商品總覽
+        </TextMedium>
+      ),
     },
   },
   {
     path: ROUTES.SHOPPING.PRODUCT_DETAIL,
     element: <ProductDetailPage />,
     id: "product_detail",
+    // loader: async () => {},
+    handle: {
+      crumb: ({ params }) => (
+        <TextMedium as={Link} to={`/products/${params.productId}`}>
+          商品 #{params.productId}
+        </TextMedium>
+      ),
+    },
     children: [
       {
         index: true,
         // path: ROUTES.SHOPPING.PRODUCT_DESCRIPTION,
         element: <ProductDescriptionPanel />,
+        handle: {
+          crumb: () => <TextMedium>商品描述</TextMedium>,
+        },
       },
       {
         path: ROUTES.SHOPPING.PRODUCT_SPECIFICATIONS,
         element: <ProductSpecificationsPanel />,
+        handle: {
+          crumb: () => <TextMedium>商品規格</TextMedium>,
+        },
       },
       {
         path: ROUTES.SHOPPING.SELLER_REVIEW,
         element: <SellerReviewPanel />,
+        handle: {
+          crumb: () => <TextMedium>賣家評論</TextMedium>,
+        },
       },
     ],
   },
@@ -110,6 +132,13 @@ const accountRoutes = [
   {
     path: ROUTES.ACCOUNT.ROOT,
     element: <AccountLayout />,
+    handle: {
+      crumb: () => (
+        <TextMedium as={Link} to="/account/profile">
+          會員中心
+        </TextMedium>
+      ),
+    },
     children: [
       {
         index: true,
@@ -118,14 +147,23 @@ const accountRoutes = [
       {
         path: ROUTES.ACCOUNT.SETTINGS,
         element: <AccountSettingsPage />,
+        handle: {
+          crumb: () => <TextMedium>會員資料</TextMedium>,
+        },
       },
       {
         path: ROUTES.ACCOUNT.ORDERS,
         element: <OrderHistoryPage />,
+        handle: {
+          crumb: () => <TextMedium>訂單紀錄</TextMedium>,
+        },
       },
       {
         path: ROUTES.ACCOUNT.WISHLISTS,
         element: <WishlistPage />,
+        handle: {
+          crumb: () => <TextMedium>願望清單</TextMedium>,
+        },
       },
     ],
   },
@@ -182,6 +220,13 @@ const publicRoutes = [
   {
     path: ROUTES.HOME,
     element: <HomePage />,
+    handle: {
+      crumb: () => (
+        <TextMedium as={NavLink} end to={ROUTES.HOME}>
+          首頁
+        </TextMedium>
+      ),
+    },
   },
   sellPublicRoute,
   ...authRoutes,

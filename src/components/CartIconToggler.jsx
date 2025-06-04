@@ -1,5 +1,6 @@
 import { string } from "prop-types";
 import { toast } from "react-toastify";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 import { CartIcon, CartFilledIcon } from "@components/icons";
 import {
@@ -16,7 +17,7 @@ function CartIconToggler({ productId, productName }) {
   const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
   const [deleteCartProduct, { isLoading: isRemovingFromCart }] = useDeleteCartProductMutation();
   const userId = useDecodedId();
-  const { data: cartList } = useGetCartQuery(userId);
+  const { data: cartList } = useGetCartQuery(userId ? userId : skipToken);
   // console.log({ cartList, productId });
   const requireAuth = useRequireAuth();
   const isInCart = cartList?.data.items.some(item => item.product_id === productId);
