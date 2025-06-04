@@ -52,3 +52,4 @@ const checkoutPageSlice = createSlice({
 export const { setCheckoutField, resetCheckoutForm, updateDeliveryDate } =
   checkoutPageSlice.actions;
 export default checkoutPageSlice.reducer;
+export { getDefaultDeliveryDate };

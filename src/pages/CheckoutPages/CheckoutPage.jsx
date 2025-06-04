@@ -11,7 +11,11 @@ import { useGetUserProfileQuery } from "@features/users/userApi";
 import { useGetCouponsQuery } from "@features/coupons/couponApi";
 import { useConfirmOrderInfoMutation } from "@features/cart/cartApi";
 import { getCheckoutSchema } from "@schemas/cart/checkoutSchema";
-import { setCheckoutField, updateDeliveryDate } from "@features/cart/checkoutPageSlice";
+import {
+  setCheckoutField,
+  updateDeliveryDate,
+  getDefaultDeliveryDate,
+} from "@features/cart/checkoutPageSlice";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 // 4-1 結帳頁面
@@ -19,10 +23,10 @@ function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 取得 Redux 中暫存的結帳資料
+  // 取 redux 裡保存的 checkout form 狀態
   const checkoutForm = useSelector(state => state.checkoutPage);
 
-  // 取得使用者資料
+  //取得使用者資料
   const { data, isLoading, error } = useGetUserProfileQuery();
   const userInfo = data?.data?.user;
 
@@ -33,13 +37,11 @@ function CheckoutPage() {
   }, [couponsData?.data]);
   const safeCoupons = useMemo(() => (Array.isArray(coupons) ? coupons : []), [coupons]);
 
-  // 驗證 schema
   const schema = useMemo(() => getCheckoutSchema(safeCoupons), [safeCoupons]); // react-hook-form 初始化
 
   // 計算可選配送日期（三天後開始連續七天）
   const [deliveryDates, setDeliveryDates] = useState([]);
   useEffect(() => {
-    const baseDate = new Date(getDefaultDate());
     const dates = [];
     const today = new Date();
     const startDate = new Date(today);
@@ -62,7 +64,6 @@ function CheckoutPage() {
     dispatch(updateDeliveryDate());
   }, [dispatch]);
 
-  // 初始化表單
   const {
     register,
     handleSubmit,
@@ -106,12 +107,14 @@ function CheckoutPage() {
       return;
     }
 
+    const defaultDate = getDefaultDeliveryDate();
+
     // 整理要送出的資料
     const payload = {
       shipping_method: formData.shippingMethod,
       recipient: formData.recipient,
       payment_method: formData.paymentMethod,
-      desired_date: formData.deliveryDate === "none" ? getDefaultDate() : formData.deliveryDate,
+      desired_date: formData.deliveryDate === "none" ? defaultDate : formData.deliveryDate,
       deliveryTime: formData.deliveryTime,
       coupon_code: formData.couponCode || null,
     };
@@ -132,10 +135,7 @@ function CheckoutPage() {
     <>
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
-          <section
-            className="container d-flex flex-column gap-10"
-            style={{ letterSpacing: "0.09em" }}
-          >
+          <section className="container d-flex flex-column gap-10">
             {/* 麵包屑 */}
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb mb-0">
@@ -369,13 +369,6 @@ function CheckoutPage() {
                         <div className="col-12 col-lg-7">
                           <select
                             {...register("deliveryDate")}
-                            onChange={e => {
-                              const val = e.target.value;
-                              setValue("deliveryDate", val);
-                              if (val !== "none") {
-                                dispatch(setCheckoutField({ name: "deliveryDate", value: val }));
-                              }
-                            }}
                             className={`form-select w-auto text-gray-500 ${errors.deliveryDate ? "is-invalid" : ""}`}
                           >
                             <option value="none">無希望日</option>
