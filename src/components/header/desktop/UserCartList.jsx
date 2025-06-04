@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 import { CartIcon } from "@components/icons";
 import { TextMedium, TextSmall } from "@components/TextTypography";
@@ -20,9 +21,17 @@ function UserCartList() {
   });
 
   const userId = useDecodedId();
-  const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(userId);
 
-  console.log({ getCartResponse });
+  const shouldSkip = !userId;
+  const cartQueryResult = useGetCartQuery(userId ? userId : skipToken);
+  const { data: getCartResponse, isLoading: isGettingCart } = cartQueryResult;
+  // const { data: getCartResponse, isLoading: isGettingCart } = useGetCartQuery(userId, {
+  //   skip: shouldSkip,
+  // });
+
+  // console.log("購物車查詢是否被跳過:", cartQueryResult.isUninitialized);
+  // console.log("購物車查詢狀態:", cartQueryResult);
+  // console.log({ getCartResponse });
 
   const { items: cartItems = [], amount: total = 0 } = useMemo(
     () => getCartResponse?.data ?? {},
