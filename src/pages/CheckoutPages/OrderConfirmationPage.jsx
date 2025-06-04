@@ -81,7 +81,7 @@ function OrderConfirmationPage() {
 
   const finalTotal = subtotal + shipping - discountAmount;
 
-  if (isLoading) return <p>載入中...</p>;
+  if (isLoading) return <div className="text-center py-10">載入中...</div>;
 
   return (
     <>
@@ -184,8 +184,7 @@ function OrderConfirmationPage() {
                           >
                             <div className="d-flex align-items-center gap-3 p-3">
                               <img
-                                // 先放假圖 要改回去item.primary_image
-                                src={"https://fakeimg.pl/60"}
+                                src={item.primary_image}
                                 alt={item.name}
                                 className="rounded-1"
                                 width="60"
@@ -522,7 +521,11 @@ function OrderConfirmationPage() {
                           </div>
                         </div>
                         <div className="col-12 col-lg-7">
-                          <div className="text-gray-500">{checkoutForm.deliveryDate}</div>
+                          <div className="text-gray-500">
+                            {checkoutForm.deliveryDate === "none"
+                              ? "無希望日"
+                              : `${checkoutForm.deliveryDate}（${new Date(checkoutForm.deliveryDate).toLocaleDateString("zh-TW", { weekday: "short" })}）`}
+                          </div>
                         </div>
                       </div>
 

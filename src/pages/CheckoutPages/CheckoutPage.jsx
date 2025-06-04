@@ -11,7 +11,11 @@ import { useGetUserProfileQuery } from "@features/users/userApi";
 import { useGetCouponsQuery } from "@features/coupons/couponApi";
 import { useConfirmOrderInfoMutation } from "@features/cart/cartApi";
 import { getCheckoutSchema } from "@schemas/cart/checkoutSchema";
-import { setCheckoutField, updateDeliveryDate } from "@features/cart/checkoutPageSlice";
+import {
+  setCheckoutField,
+  updateDeliveryDate,
+  getDefaultDeliveryDate,
+} from "@features/cart/checkoutPageSlice";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 // 4-1 結帳頁面
@@ -103,12 +107,14 @@ function CheckoutPage() {
       return;
     }
 
+    const defaultDate = getDefaultDeliveryDate();
+
     // 整理要送出的資料
     const payload = {
       shipping_method: formData.shippingMethod,
       recipient: formData.recipient,
       payment_method: formData.paymentMethod,
-      desired_date: formData.deliveryDate || "noPreference",
+      desired_date: formData.deliveryDate === "none" ? defaultDate : formData.deliveryDate,
       deliveryTime: formData.deliveryTime,
       coupon_code: formData.couponCode || null,
     };
