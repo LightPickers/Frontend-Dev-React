@@ -78,7 +78,6 @@ function WishlistPage() {
       </div>
     );
   }
-  console.log("收藏資料：", data);
   return (
     <div className="container">
       <div className="row g-4">
