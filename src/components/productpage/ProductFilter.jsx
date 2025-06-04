@@ -1,34 +1,91 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const brandOptions = [
-  { id: 1, value: "測試Fuji", name: "Fuji" },
-  { id: 2, value: "測試Canon", name: "Canon" },
-  { id: 3, value: "測試Sony", name: "Sony" },
-];
-
-const statusOptions = [
-  { id: 1, value: "測試九成新", name: "九成新" },
-  { id: 2, value: "測試極佳", name: "極佳" },
-  { id: 3, value: "測試堪用", name: "堪用" },
-  { id: 4, value: "測試良好", name: "良好" },
-];
+import {
+  useGetProductBrandsQuery,
+  useGetProductConditionsQuery,
+} from "@features/products/productApi";
 
 function ProductFilter({ onFilter }) {
-  const [brand, setBrand] = useState("");
-  const [status, setStatus] = useState("");
+  // 改為陣列來支援多選
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [error, setError] = useState("");
 
+  const { data: brandsResponse = {}, isLoading: brandsLoading } = useGetProductBrandsQuery();
+  const { data: conditionsResponse = {}, isLoading: conditionsLoading } =
+    useGetProductConditionsQuery();
+
+  const brandOptions = React.useMemo(() => {
+    return Array.isArray(brandsResponse.data) ? brandsResponse.data : [];
+  }, [brandsResponse.data]);
+
+  const statusOptions = React.useMemo(() => {
+    return Array.isArray(conditionsResponse.data) ? conditionsResponse.data : [];
+  }, [conditionsResponse.data]);
+
+  // 處理品牌選擇
+  const handleBrandSelect = brandId => {
+    setSelectedBrands(prev => {
+      if (prev.includes(brandId)) {
+        // 如果已選中，則移除
+        return prev.filter(id => id !== brandId);
+      } else {
+        // 如果未選中，則添加
+        return [...prev, brandId];
+      }
+    });
+  };
+
+  // 處理狀態選擇
+  const handleStatusSelect = statusId => {
+    setSelectedStatuses(prev => {
+      if (prev.includes(statusId)) {
+        return prev.filter(id => id !== statusId);
+      } else {
+        return [...prev, statusId];
+      }
+    });
+  };
+
+  // 清除所有品牌選擇
+  const clearAllBrands = () => {
+    setSelectedBrands([]);
+  };
+
+  // 清除所有狀態選擇
+  const clearAllStatuses = () => {
+    setSelectedStatuses([]);
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    if (Number(maxPrice) < Number(minPrice)) {
+    if (minPrice && maxPrice && Number(maxPrice) < Number(minPrice)) {
       setError("上限金額不可小於起始金額");
       return;
     }
     setError("");
-    onFilter({ brand, status, minPrice: Number(minPrice), maxPrice: Number(maxPrice) });
+
+    // 找到選中的品牌和狀態名稱
+    const selectedBrandNames = selectedBrands
+      .map(brandId => brandOptions.find(b => b.id === brandId)?.name)
+      .filter(Boolean);
+
+    const selectedStatusNames = selectedStatuses
+      .map(statusId => statusOptions.find(s => s.id === statusId)?.name)
+      .filter(Boolean);
+
+    console.log("Selected brand names:", selectedBrandNames);
+    console.log("Selected status names:", selectedStatusNames);
+
+    onFilter({
+      brands: selectedBrandNames,
+      statuses: selectedStatusNames,
+      minPrice: minPrice ? Number(minPrice) : null,
+      maxPrice: maxPrice ? Number(maxPrice) : null,
+    });
   };
 
   const handleMinPriceChange = e => {
@@ -45,10 +102,53 @@ function ProductFilter({ onFilter }) {
     }
   };
 
+  // 生成顯示文字
+  const getBrandDisplayText = () => {
+    if (selectedBrands.length === 0) return "所有品牌";
+
+    // 顯示已選擇的品牌名稱
+    const selectedBrandNames = selectedBrands
+      .map(brandId => brandOptions.find(b => b.id === brandId)?.name)
+      .filter(Boolean);
+
+    return (
+      <div className="d-flex flex-wrap gap-1">
+        {selectedBrandNames.map((name, index) => (
+          <span key={index} className="selected-tag">
+            {name}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
+  const getStatusDisplayText = () => {
+    if (selectedStatuses.length === 0) return "所有狀態";
+
+    // 顯示已選擇的狀態名稱
+    const selectedStatusNames = selectedStatuses
+      .map(statusId => statusOptions.find(s => s.id === statusId)?.name)
+      .filter(Boolean);
+
+    return (
+      <div className="d-flex flex-wrap gap-1">
+        {selectedStatusNames.map((name, index) => (
+          <span key={index} className="selected-tag">
+            {name}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
+  const handleDropdownClick = e => {
+    e.stopPropagation();
+  };
+
   return (
     <form className="product-filter mb-4" onSubmit={handleSubmit}>
       <div className="row">
-        {/* 品牌下拉選單 */}
+        {/* 品牌多選下拉選單 */}
         <div className="col-md-3">
           <label htmlFor="brand" className="form-label">
             品牌
@@ -60,29 +160,38 @@ function ProductFilter({ onFilter }) {
               id="brandDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              data-bs-auto-close="false"
             >
-              {brand ? brandOptions.find(b => b.value === brand)?.name || "選擇品牌" : "所有品牌"}
+              {getBrandDisplayText()}
             </button>
             <ul
               className="dropdown-menu custom-dropdown-menu w-100"
               aria-labelledby="brandDropdown"
+              onClick={handleDropdownClick}
             >
-              <li className="dropdown-item py-1 px-2" onClick={() => setBrand("")}>
-                所有品牌
+              <li className="dropdown-item py-1 px-2" onClick={clearAllBrands}>
+                <strong>清除所有選擇</strong>
               </li>
-              {brandOptions.map(brand => (
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              {brandOptions.map(brandOption => (
                 <li
-                  key={brand.id}
-                  className="dropdown-item py-1 px-2"
-                  onClick={() => setBrand(brand.value)}
+                  key={brandOption.id}
+                  className={`dropdown-item py-1 px-2 ${selectedBrands.includes(brandOption.id) ? "selected" : ""}`}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleBrandSelect(brandOption.id);
+                  }}
                 >
-                  {brand.name}
+                  {brandOption.name}
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
+        {/* 狀態多選下拉選單 */}
         <div className="col-md-3">
           <label htmlFor="status" className="form-label">
             商品狀態
@@ -94,25 +203,31 @@ function ProductFilter({ onFilter }) {
               id="statusDropdown"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              data-bs-auto-close="false"
             >
-              {status
-                ? statusOptions.find(s => s.value === status)?.name || "選擇狀態"
-                : "所有狀態"}
+              {getStatusDisplayText()}
             </button>
             <ul
               className="dropdown-menu custom-dropdown-menu w-100"
               aria-labelledby="statusDropdown"
+              onClick={handleDropdownClick}
             >
-              <li className="dropdown-item py-1 px-2" onClick={() => setStatus("")}>
-                所有狀態
+              <li className="dropdown-item py-1 px-2" onClick={clearAllStatuses}>
+                <strong>清除所有選擇</strong>
               </li>
-              {statusOptions.map(status => (
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              {statusOptions.map(statusOption => (
                 <li
-                  key={status.id}
-                  className="dropdown-item py-1 px-2"
-                  onClick={() => setStatus(status.value)}
+                  key={statusOption.id}
+                  className={`dropdown-item py-1 px-2 ${selectedStatuses.includes(statusOption.id) ? "selected" : ""}`}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleStatusSelect(statusOption.id);
+                  }}
                 >
-                  {status.name}
+                  {statusOption.name}
                 </li>
               ))}
             </ul>

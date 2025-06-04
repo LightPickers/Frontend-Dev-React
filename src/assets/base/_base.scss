@@ -12,6 +12,7 @@ body {
   font-weight: fonts.$font-weight-normal;
   line-height: lh.$line-height-base;
   color: colors.$primary-1000;
+  background-color: colors.$gray-100;
   margin-top: 88px; // 預留導覽列空間
 }
 
@@ -179,6 +180,14 @@ h6 {
   content: "*";
   color: colors.$danger;
   margin-left: 4px;
+}
+
+.lh-base {
+  line-height: lh.$line-height-base;
+}
+
+.line-through {
+  text-decoration: line-through;
 }
 
 // 標題裝飾

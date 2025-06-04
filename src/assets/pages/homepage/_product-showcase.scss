@@ -140,3 +140,8 @@
     }
   }
 }
+// 在對應的 SCSS 檔案中確保
+.product-card .heading-sans {
+  font-family: fonts.$font-family-sans-serif;
+  font-weight: fonts.$font-weight-normal;
+}
