@@ -15,7 +15,8 @@ import { productDetailTestData } from "@data/productDetailTestData";
 import ProductGalleryCarousel from "@components/productDetailPage/ProductGalleryCarousel";
 import { formatPrice } from "@utils/formatPrice";
 import { BtnPrimary } from "@components/Buttons";
-import ProductContentNav from "@/components/productDetailPage/ProductContentNav";
+import ProductContentNav from "@components/productDetailPage/ProductContentNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 function ProductDetailPage() {
   // const { productId } = useParams();
@@ -58,12 +59,9 @@ function ProductDetailPage() {
   console.log({ data }, { productImages });
   return (
     <div className="product-detail py-20 d-flex flex-column gap-10">
-      <nav>
-        <div className="container">
-          {/* 麵包屑 */}
-          <H6Secondary isBold={false}>我是麵包屑</H6Secondary>
-        </div>
-      </nav>
+      <div className="container">
+        <Breadcrumbs />
+      </div>
       <main>
         <div className="container">
           <div className="row d-flex">

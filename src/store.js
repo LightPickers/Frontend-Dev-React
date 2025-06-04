@@ -119,7 +119,7 @@ const store = configureStore({
         // ignoredPaths: ["cart.productIds", "wishlist.productIds"],
       },
     }).concat(apiMiddleware),
-  //devTools: process.env.NODE_ENV !== "production", // 只在開發環境啟用 DevTools
+  devTools: import.meta.env.DEV, // 只在開發環境啟用 DevTools
 });
 
 // 設置 RTK Query 監聽器
