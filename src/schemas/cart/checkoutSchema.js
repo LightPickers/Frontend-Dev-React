@@ -12,7 +12,7 @@ export const getCheckoutSchema = (couponsList = []) =>
 
     deliveryTime: z
       .string()
-      .refine(val => ["無希望時間", "8點～13點前", "14點～18點"].includes(val), {
+      .refine(val => ["無希望時間", "8 點 ~ 13 點前", "14 點 ~ 18 點"].includes(val), {
         message: "請選擇配送時段",
       }),
 
