@@ -51,13 +51,13 @@ export const orderApi = createApi({
       invalidatesTags: (result, error, { orderId }) => [{ type: "Order", id: orderId }],
     }),
     // 取得所有訂單
-    // getOrders: builder.query({
-    //   query: () => "/orders",
-    //   providesTags: result =>
-    //     result
-    //       ? [...result.map(({ id }) => ({ type: "Order", id })), { type: "Order", id: "LIST" }]
-    //       : [{ type: "Order", id: "LIST" }],
-    // }),
+    getOrders: builder.query({
+      query: () => "/orders",
+      providesTags: result =>
+        result
+          ? [...result.map(({ id }) => ({ type: "Order", id })), { type: "Order", id: "LIST" }]
+          : [{ type: "Order", id: "LIST" }],
+    }),
   }),
 });
 
@@ -69,4 +69,5 @@ export const {
   useLazyGetOrderByIdQuery,
   useGetPaidOrderByIdQuery,
   usePrefetch,
+  useGetOrdersQuery,
 } = orderApi;

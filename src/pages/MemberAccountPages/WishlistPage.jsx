@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
+import { useState, useMemo } from "react";
 import WishlistCard from "@/components/productpage/WishlistCard";
 
 function mapWishlistData(apiData) {
@@ -11,8 +12,9 @@ function mapWishlistData(apiData) {
     name: item.Products.name,
     primary_image: item.Products.primary_image,
     liked: true,
-    original_price: item.Products.original_price, // 目前後端沒提供
+    original_price: item.Products.original_price,
     selling_price: item.Products.selling_price,
+    created_at: item.created_at,
   }));
 }
 
@@ -25,6 +27,38 @@ function WishlistPage() {
 
   const isPageLoading = isLoading || isUserLoading;
   const location = useLocation();
+
+  const [sortOption, setSortOption] = useState("default");
+
+  const sortedWishlist = useMemo(() => {
+    if (!wishlist.length) return [];
+
+    const sorted = [...wishlist];
+    switch (sortOption) {
+      case "price-high":
+        sorted.sort((a, b) => b.selling_price - a.selling_price);
+        break;
+      case "price-low":
+        sorted.sort((a, b) => a.selling_price - b.selling_price);
+        break;
+      case "newest":
+        sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        break;
+      case "oldest":
+        sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        break;
+
+      default:
+        break;
+    }
+
+    return sorted;
+  }, [wishlist, sortOption]);
+
+  const handleSortChange = e => {
+    console.log("目前排序選項：", e.target.value);
+    setSortOption(e.target.value);
+  };
 
   if (isPageLoading) {
     return (
@@ -44,7 +78,6 @@ function WishlistPage() {
       </div>
     );
   }
-
   return (
     <div className="container">
       <div className="row g-4">
@@ -53,18 +86,18 @@ function WishlistPage() {
           <div className="bg-white rounded  p-4">
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
               <h4 className="mb-3 mb-md-0">收藏資訊</h4>
-              <select className="form-select w-auto">
-                <option>排序方式：預設</option>
-                <option>價格（由高到低）</option>
-                <option>價格（由低到高）</option>
-                <option>上架順序（由新到舊）</option>
-                <option>上架順序（由舊到新）</option>
+              <select className="form-select w-auto" value={sortOption} onChange={handleSortChange}>
+                <option value="default">排序方式：預設</option>
+                <option value="price-high">價格（由高到低）</option>
+                <option value="price-low">價格（由低到高）</option>
+                <option value="newest">上架順序（由新到舊）</option>
+                <option value="oldest">上架順序（由舊到新）</option>
               </select>
             </div>
             <hr />
             <div className="row g-4">
               {wishlist.length > 0 ? (
-                wishlist.map(product => (
+                sortedWishlist.map(product => (
                   <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6" key={product.id}>
                     <WishlistCard product={product} />
                   </div>
