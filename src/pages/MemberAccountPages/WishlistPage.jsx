@@ -12,7 +12,7 @@ function mapWishlistData(apiData) {
     name: item.Products.name,
     primary_image: item.Products.primary_image,
     liked: true,
-    original_price: item.Products.original_price, // 目前後端沒接到
+    original_price: item.Products.original_price,
     selling_price: item.Products.selling_price,
     created_at: item.created_at,
   }));

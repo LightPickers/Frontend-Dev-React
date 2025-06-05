@@ -1,35 +1,17 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useGetOrdersQuery } from "@/features/orders/orderApi";
 
 function OrderHistoryPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: orders = [], isLoading, isError } = useGetOrdersQuery();
 
-  const orders = [
-    {
-      id: "A123456789",
-      product: "Leica SF 60 閃光燈",
-      createdAt: "2025-06-01",
-      total: 12800,
-      payment: "信用卡",
-      status: "completed",
-    },
-    {
-      id: "B987654321",
-      product: "Fujifilm X100V",
-      createdAt: "2025-05-20",
-      total: 7600,
-      payment: "ATM轉帳",
-      status: "cancelled",
-    },
-    {
-      id: "C456789123",
-      product: "Sony RX100 VII",
-      createdAt: "2025-04-15",
-      total: 98000,
-      payment: "信用卡",
-      status: "completed",
-    },
-  ];
+  const countAll = orders.length;
+  const countCompleted = orders.filter(o => o.status === "completed").length;
+  const countCancelled = orders.filter(o => o.status === "cancell").length;
+  console.log("取得訂單：", orders);
+
   const filteredOrders = orders
     //狀態篩選
     .filter(order => activeTab === "all" || order.status === activeTab)
@@ -51,9 +33,9 @@ function OrderHistoryPage() {
               {/* 切換按鈕區 */}
               <div className="d-flex gap-4 border-bottom mb-4">
                 {[
-                  { key: "all", label: "全部", count: 3 },
-                  { key: "completed", label: "已完成", count: 3 },
-                  { key: "cancelled", label: "已取消", count: 0 },
+                  { key: "all", label: "全部", count: countAll },
+                  { key: "completed", label: "已完成", count: countCompleted },
+                  { key: "cancelled", label: "已取消", count: countCancelled },
                 ].map(tab => (
                   <button
                     key={tab.key}
@@ -65,6 +47,14 @@ function OrderHistoryPage() {
                   </button>
                 ))}
               </div>
+              {isLoading && (
+                <div className="text-center py-5">
+                  <div className="spinner-border text-secondary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <p className="mt-2 text-muted">載入中...</p>
+                </div>
+              )}
               {/* search space */}
               <div className="mb-4">
                 <input
@@ -89,31 +79,42 @@ function OrderHistoryPage() {
               </div>
 
               {/* 訂單內容 */}
-              {filteredOrders.map(order => (
-                <div
-                  key={order.id}
-                  className="row align-items-center px-2 py-3 border-bottom"
-                  style={{ fontSize: "0.95rem" }}
-                >
-                  <div className="col-6 col-md-2">{order.createdAt}</div>
-                  <div className="col-6 col-md-2">{order.id}</div>
-                  <div className="col-6 col-md-3">{order.product}</div>
-                  <div className="col-6 col-md-1">{order.total}</div>
-                  <div className="col-6 col-md-2">{order.payment}</div>
-                  <div className="col-6 col-md-2">
-                    {order.status === "completed" ? (
-                      <span className="text-muted">已完成</span>
-                    ) : order.status === "cancelled" ? (
-                      <span className="text-muted">已取消</span>
-                    ) : (
-                      <span className="text-muted">處理中</span>
-                    )}
-                  </div>
+              {filteredOrders.length === 0 ? (
+                <div className="text-center text-muted py-5 w-100">
+                  <p className="mb-3 fs-5">查無符合條件的訂單</p>
+                  <Link to="/" className="btn btn-outline-secondary">
+                    前往首頁探索商品
+                  </Link>
                 </div>
-              ))}
-              <div className="text-center text-muted py-4 " style={{ fontSize: "0.9rem" }}>
-                沒有更多訂單資料
-              </div>
+              ) : (
+                filteredOrders.map(order => (
+                  <div
+                    key={order.id}
+                    className="row align-items-center px-2 py-3 border-bottom"
+                    style={{ fontSize: "0.95rem" }}
+                  >
+                    <div className="col-6 col-md-2">{order.createdAt}</div>
+                    <div className="col-6 col-md-2">{order.id}</div>
+                    <div className="col-6 col-md-3">{order.product}</div>
+                    <div className="col-6 col-md-1">{order.total}</div>
+                    <div className="col-6 col-md-2">{order.payment}</div>
+                    <div className="col-6 col-md-2">
+                      {order.status === "completed" ? (
+                        <span className="text-muted">已完成</span>
+                      ) : order.status === "cancelled" ? (
+                        <span className="text-muted">已取消</span>
+                      ) : (
+                        <span className="text-muted">處理中</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+              {filteredOrders.length > 0 && (
+                <div className="text-center text-muted py-4 " style={{ fontSize: "0.9rem" }}>
+                  沒有更多訂單資料
+                </div>
+              )}
             </div>
           </div>
         </div>
