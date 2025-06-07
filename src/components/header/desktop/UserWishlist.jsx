@@ -28,6 +28,7 @@ function UserWishlist() {
     refetch: reFetchWishlist,
   } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
+  // console.log({ data });
 
   const { triggerRef, dropdownRef, isOpen, position, open, close } = useDropdownPosition({
     placement: "bottom",
