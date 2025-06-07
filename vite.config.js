@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import eslint from "vite-plugin-eslint";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
-import svgr from "vite-plugin-svgr";
+// import svgr from "vite-plugin-svgr";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,12 +12,23 @@ const __dirname = dirname(__filename);
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_");
   return {
-    base: env.VITE_APP_BASE,
+    base: env.VITE_APP_BASE || "/",
     plugins: [
-      react(),
-      svgr(),
+      react({
+        // 針對 React 19 的優化配置
+        jsxRuntime: "automatic",
+        babel: {
+          plugins: [],
+        },
+      }),
+      // svgr({
+      //   // SVGR 配置優化
+      //   include: "**/*.svg?react",
+      // }),
       eslint({
         include: ["src/**/*.{js,jsx,ts,tsx}"],
+        exclude: ["node_modules", "dist"],
+        cache: false, // 暫時關閉快取避免問題
       }),
     ],
     resolve: {
@@ -39,6 +50,35 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           includePaths: [resolve(__dirname, "src/assets")],
+          api: "modern-compiler", // 使用現代 SCSS 編譯器
+        },
+      },
+    },
+    // 優化依賴處理
+    optimizeDeps: {
+      include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit"],
+      exclude: ["@vitejs/plugin-react"],
+    },
+    // 開發伺服器配置
+    server: {
+      port: 5173,
+      open: true,
+      hmr: {
+        overlay: true, // 有錯誤時可以暫時關閉
+      },
+    },
+    // 建構配置
+    build: {
+      target: "esnext",
+      minify: "esbuild",
+      sourcemap: mode === "development",
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ["react", "react-dom"],
+            router: ["react-router-dom"],
+            redux: ["react-redux", "@reduxjs/toolkit"],
+          },
         },
       },
     },

@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
         <AuthProvider>
-          <RouterProvider router={appRouter} />
+          <RouterProvider router={appRouter} fallbackElement={null} />
           <ToastContainer position="bottom-center" autoClose={3000} />
         </AuthProvider>
       </PersistGate>

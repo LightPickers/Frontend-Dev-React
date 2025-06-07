@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { useGetProductsQuery } from "@features/products/productApi";
 import ProductFilter from "@components/productpage/ProductFilter";
@@ -7,7 +8,9 @@ import CategoryImage from "@components/productpage/CategoryImage";
 import lensImage from "@assets/images/len.png";
 
 function ProductCatalogPage() {
-  const { data: apiResponse = {}, isLoading, isError } = useGetProductsQuery();
+  const [searchParams] = useSearchParams();
+  const queryParams = Object.fromEntries(searchParams.entries());
+  const { data: apiResponse = {}, isLoading, isError } = useGetProductsQuery(queryParams);
   const allProducts = React.useMemo(
     () => (Array.isArray(apiResponse.data) ? apiResponse.data : []),
     [apiResponse.data]

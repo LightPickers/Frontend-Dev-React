@@ -27,6 +27,8 @@ import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
 import AccountLayout from "@layouts/AccountLayout";
 import { TextMedium } from "@/components/TextTypography";
+import { productApi } from "@/features/products/productApi";
+import store from "@/store";
 
 const ROUTES = {
   HOME: "/", // 首頁
@@ -91,11 +93,25 @@ const shoppingRoutes = [
     path: ROUTES.SHOPPING.PRODUCT_DETAIL,
     element: <ProductDetailPage />,
     id: "product_detail",
-    // loader: async () => {},
+    loader: async ({ params }) => {
+      try {
+        const result = await store.dispatch(
+          productApi.endpoints.getProductById.initiate(params.productId)
+        );
+        return result;
+      } catch (err) {
+        console.error("Loader error:", err);
+        // throw new Response("Not Found", { status: 404 });
+      }
+    },
     handle: {
-      crumb: ({ params }) => (
-        <TextMedium as={Link} to={`/products/${params.productId}`}>
-          商品 #{params.productId}
+      crumb: ({ data, params, isCurrentPage }) => (
+        <TextMedium
+          as={Link}
+          to={`/products/${params.productId}`}
+          className={isCurrentPage ? "fw-bolder" : "fw-normal"}
+        >
+          {data?.data?.data.name ?? `商品 #${params.productId}`}
         </TextMedium>
       ),
     },
@@ -105,21 +121,27 @@ const shoppingRoutes = [
         // path: ROUTES.SHOPPING.PRODUCT_DESCRIPTION,
         element: <ProductDescriptionPanel />,
         handle: {
-          crumb: () => <TextMedium>商品描述</TextMedium>,
+          crumb: ({ isCurrentPage }) => (
+            <TextMedium className={isCurrentPage ? "fw-bold" : "fw-normal"}>商品描述</TextMedium>
+          ),
         },
       },
       {
         path: ROUTES.SHOPPING.PRODUCT_SPECIFICATIONS,
         element: <ProductSpecificationsPanel />,
         handle: {
-          crumb: () => <TextMedium>商品規格</TextMedium>,
+          crumb: ({ isCurrentPage }) => (
+            <TextMedium className={isCurrentPage ? "fw-bolder" : "fw-normal"}>商品規格</TextMedium>
+          ),
         },
       },
       {
         path: ROUTES.SHOPPING.SELLER_REVIEW,
         element: <SellerReviewPanel />,
         handle: {
-          crumb: () => <TextMedium>賣家評論</TextMedium>,
+          crumb: ({ isCurrentPage }) => (
+            <TextMedium className={isCurrentPage ? "fw-bolder" : "fw-normal"}>賣家評論</TextMedium>
+          ),
         },
       },
     ],
