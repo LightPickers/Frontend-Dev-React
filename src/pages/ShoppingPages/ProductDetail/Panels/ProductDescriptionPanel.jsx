@@ -1,6 +1,8 @@
 import { useOutletContext } from "react-router-dom";
 
-import { H3Primary, H5Secondary } from "@/components/Headings";
+import { H3Primary, H5Secondary } from "@components/Headings";
+import DeltaRenderer from "@components/DeltaRenderer";
+import ProductArticle from "@/components/productDetailPage/ProductArticle";
 
 function ProductDescriptionPanel() {
   const { id, title, subtitle, description, primary_image, hashtags } = useOutletContext();
@@ -10,7 +12,13 @@ function ProductDescriptionPanel() {
         <H3Primary>{title}</H3Primary>
         <H5Secondary isBold={false}>{subtitle}</H5Secondary>
         <div className="img-container">
-          <img src={primary_image} alt={title} className="img-fluid" />
+          {primary_image && (
+            <img
+              src={primary_image}
+              alt={title}
+              className="img-fluid object-fit-cover h-100 w-100"
+            />
+          )}
         </div>
       </section>
       <section className="d-flex flex-column">
@@ -23,9 +31,8 @@ function ProductDescriptionPanel() {
             );
           })}
         </div>
-        <div>
-          <H5Secondary isBold={false}>{description}</H5Secondary>
-        </div>
+        {/* {description && <DeltaRenderer delta={description} />} */}
+        {description && <ProductArticle delta={description} />}
       </section>
     </article>
   );

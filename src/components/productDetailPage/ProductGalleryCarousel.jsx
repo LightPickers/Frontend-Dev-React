@@ -1,24 +1,19 @@
 import { array } from "prop-types";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs } from "swiper/modules";
+import { Thumbs } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
+// import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
 function ProductGalleryCarousel({ gallery }) {
   const productImages = gallery;
-  console.log({ productImages });
+  // console.log({ productImages });
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
-    <div className="product-gallery">
+    <div className="product-gallery d-md-block d-none">
       {/* 大圖 */}
-      <Swiper
-        modules={[Navigation, Thumbs]}
-        navigation
-        thumbs={{ swiper: thumbsSwiper }}
-        className="mb-3"
-      >
+      <Swiper modules={[Thumbs]} thumbs={{ swiper: thumbsSwiper }} className="mb-3">
         {productImages.map((image, index) => (
           <SwiperSlide key={index} className="swiper-slide-main">
             <img src={image} alt={`Product ${index + 1}`} />
@@ -37,7 +32,9 @@ function ProductGalleryCarousel({ gallery }) {
       >
         {productImages.map((image, index) => (
           <SwiperSlide key={index} className="swiper-slide-thumb">
-            <img src={image} alt={`Thumb ${index + 1}`} />
+            <div className="thumb-img-container">
+              <img src={image} alt={`Thumb ${index + 1}`} />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
