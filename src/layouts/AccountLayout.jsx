@@ -1,4 +1,5 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
+
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 
 function AccountLayout() {
