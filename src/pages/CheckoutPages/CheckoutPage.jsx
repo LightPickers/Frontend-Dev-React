@@ -250,7 +250,7 @@ function CheckoutPage() {
                               {...register("shippingMethod")}
                               className={`form-check-input ${errors.shippingMethod ? "is-invalid" : ""}`}
                               type="radio"
-                              value="宅配到府"
+                              value="home_delivery"
                               id="shipping-home"
                             />
                             <label className="form-check-label" htmlFor="shipping-home">
@@ -339,7 +339,7 @@ function CheckoutPage() {
                               {...register("paymentMethod")}
                               className={`form-check-input ${errors.paymentMethod ? "is-invalid" : ""}`}
                               type="radio"
-                              value="信用卡付款"
+                              value="credit_card"
                               id="payment-credit"
                             />
                             <label className="form-check-label" htmlFor="payment-credit">
