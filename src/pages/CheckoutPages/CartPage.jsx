@@ -241,7 +241,12 @@ function CartPage() {
                     <div className="d-flex flex-column gap-4">
                       {cartItems.map(item => (
                         <div key={item.id} className="d-flex flex-row gap-3">
-                          <img className="rounded-1" src="https://fakeimg.pl/90" alt={item.name} />
+                          <img
+                            className="rounded-1"
+                            src={item.primary_image}
+                            alt={item.name}
+                            width="90px"
+                          />
                           <div className="d-flex flex-column justify-content-between w-100">
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="text-gray-600 text-multiline-truncate">
