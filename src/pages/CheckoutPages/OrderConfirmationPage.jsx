@@ -310,7 +310,12 @@ function OrderConfirmationPage() {
                   <div className="d-flex flex-column gap-4">
                     {cartItems.map(item => (
                       <div className="d-flex flex-row gap-3" key={item.id}>
-                        <img className="rounded-1" src="https://fakeimg.pl/90" alt={item.name} />
+                        <img
+                          className="rounded-1"
+                          src={item.primary_image}
+                          alt={item.name}
+                          width="90"
+                        />
                         <div className="d-flex flex-column gap-3 w-100">
                           <div className="text-gray-600 h-75 text-multiline-truncate">
                             {item.name}
@@ -456,7 +461,9 @@ function OrderConfirmationPage() {
                           </div>
                         </div>
                         <div className="col-12 col-lg-7">
-                          <div>{checkoutForm.shippingMethod}</div>
+                          <div>
+                            {checkoutForm.shippingMethod === "home_delivery" ? "宅配到府" : ""}
+                          </div>
                         </div>
                       </div>
 
@@ -502,7 +509,9 @@ function OrderConfirmationPage() {
                           </div>
                         </div>
                         <div className="col-12 col-lg-7">
-                          <div className="text-gray-500">{checkoutForm.paymentMethod}</div>
+                          <div className="text-gray-500">
+                            {checkoutForm.paymentMethod === "credit_card" ? "信用卡付款" : ""}
+                          </div>
                         </div>
                       </div>
 
