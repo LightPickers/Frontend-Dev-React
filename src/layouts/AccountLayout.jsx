@@ -31,10 +31,11 @@ function AccountLayout() {
               <ul className="list-unstyled mb-0">
                 <li>
                   <Link
-                    to="/account/profile"
-                    className={`text-decoration-none d-block py-2 ${location.pathname === "/account/profile" ? "fw-bold" : "text-secondary"}`}
+                    to="/account/profile/settings"
+                    className={`text-decoration-none d-block py-2 ${location.pathname === "/account/profile/settings" ? "fw-bold" : "text-secondary"}`}
                     style={{
-                      color: location.pathname === "/account/profile" ? "#8BB0B7" : "#495057",
+                      color:
+                        location.pathname === "/account/profile/settings" ? "#8BB0B7" : "#495057",
                     }}
                   >
                     我的帳戶

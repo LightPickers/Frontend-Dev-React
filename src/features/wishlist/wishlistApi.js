@@ -16,7 +16,9 @@ export const wishlistApi = createApi({
   endpoints: builder => ({
     // 取得收藏列表
     getWishlistProducts: builder.query({
-      query: () => "/users/favorites?sortBy=created_at&orderBy=DESC",
+      query: ({ sortBy = "created_at", orderBy = "DESC" } = {}) => {
+        return `/users/favorites?sortBy=${sortBy}&orderBy=${orderBy}`;
+      },
       providesTags: result =>
         result?.data
           ? [
