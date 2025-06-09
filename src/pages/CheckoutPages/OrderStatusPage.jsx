@@ -116,14 +116,13 @@ function OrderStatusPage() {
                 </BtnPrimary>
               </div>
             ) : (
-              <>
-                <H3Primary className="mb-4">付款失敗！</H3Primary>
-                <p className="text-danger">
-                  尚未完成付款
-                  <br />
-                  請重新嘗試或聯繫客服
-                </p>
-              </>
+              <div className="d-flex flex-column align-items-center gap-15">
+                <H2Primary>付款失敗！</H2Primary>
+
+                <TextLarge className="text-danger fs-2">尚未完成付款</TextLarge>
+
+                <TextLarge>請重新嘗試或聯繫客服</TextLarge>
+              </div>
             )}
           </div>
         </div>
