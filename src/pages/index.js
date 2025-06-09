@@ -4,6 +4,7 @@ export { default as ErrorPage } from "@pages/ErrorPage";
 // AuthPages
 export { default as LoginPage } from "@pages/AuthPages/LoginPage";
 export { default as RegisterPage } from "@pages/AuthPages/RegisterPage";
+export { default as GoogleRedirectPage } from "@pages/AuthPages/GoogleRedirectPage";
 
 // CheckoutPages
 export { default as CartPage } from "@pages/CheckoutPages/CartPage";
