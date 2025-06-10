@@ -9,13 +9,13 @@ function mapWishlistData(apiData) {
   if (!apiData || !Array.isArray(apiData.data)) return [];
 
   return apiData.data.map(item => ({
-    id: item?.product_id,
-    name: item?.product_name,
-    primary_image: item?.product_primary_image,
+    id: item.Products.id,
+    name: item.Products.name,
+    primary_image: item.Products.primary_image,
     liked: true,
-    original_price: item?.product_original_price,
-    selling_price: item?.product_selling_price,
-    created_at: item?.favorites_created_at,
+    original_price: item.Products.original_price,
+    selling_price: item.Products.selling_price,
+    created_at: item.created_at,
   }));
 }
 
