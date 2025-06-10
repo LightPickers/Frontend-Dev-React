@@ -22,7 +22,7 @@ function FavoriteIconToggler({ productId, productName }) {
   const { data: wishlist, refetch } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   // console.log({ wishlist });
   const requireAuth = useRequireAuth();
-  const isFavorited = wishlist?.data.some(item => item.product_id === productId);
+  const isFavorited = wishlist?.data.some(item => item.Products.id === productId);
   const isLoading = isAddingToWishlist || isRemovingFromWishlist;
 
   const handleFavoriteToggle = async () => {
