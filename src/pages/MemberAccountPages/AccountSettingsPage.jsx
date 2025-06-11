@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
-import UserProfileForm from "@features/users/UserProfileForm";
+import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
 function AccountSettingsPage() {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ function AccountSettingsPage() {
   };
 
   if (!isAuthenticated) {
-    return <div className="text-center py-4">請先登入...</div>;
+    return <div className="text-center py-4">請先登入</div>;
   }
 
   if (isLoading) {
@@ -70,13 +70,60 @@ function AccountSettingsPage() {
 
   return (
     <>
+      <div className="container">
+        <div className="row g-4">
+          <div className="col-lg-12">
+            <div className="bg-white rounded p-4">
+              <h4 className="mb-5 py-2 mb-md-0">我的帳戶</h4>
+              <div className="row">
+                {/* 左邊表單欄位 */}
+                <div className="col-md-8">
+                  <hr />
+                  <UserProfileForSettingPage
+                    isEdit={true}
+                    userData={userData}
+                    onSubmit={handleUpdateProfile}
+                    isSubmitting={isUpdating}
+                  />
+                </div>
+
+                {/* 右邊大頭貼 */}
+                <div className="col-md-4 d-flex flex-column align-items-center justify-content-start mt-4 mt-md-0">
+                  <div className="text-center">
+                    <img
+                      src={
+                        // user?.photo ??
+                        "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
+                      }
+                      alt="會員照片"
+                      className="rounded-circle mb-2"
+                      width={190}
+                      height={190}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-link p-0 text-decoration-underline"
+                    style={{
+                      color: "#4A6465",
+                    }}
+                    onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+                    onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+                    onClick={() => toast.info("尚未支援頭像上傳")}
+                  >
+                    更換相片
+                  </button>
+                  <div className="mt-2 text-muted small text-center">
+                    <div>檔案大小上限：5MB</div>
+                    <div>格式支援：JPG、JPEG、PNG</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* {isUpdating && <div className="text-center py-2">正在更新資料...</div>} */}
-      <UserProfileForm
-        isEdit={true}
-        userData={userData}
-        onSubmit={handleUpdateProfile}
-        isSubmitting={isUpdating}
-      />
     </>
   );
 }

@@ -1,15 +1,61 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetOrdersQuery } from "@/features/orders/orderApi";
+
+//import { useGetOrdersQuery } from "@/features/orders/orderApi";
 
 function OrderHistoryPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const { data: orders = [], isLoading, isError } = useGetOrdersQuery();
+
+  //const { data: response, isLoading, isError } = useGetOrdersQuery();
+  //const orders = response?.data ?? [];
+  const isLoading = false;
+  const orders = [
+    {
+      id: "ORD001",
+      createdAt: "2025-06-01",
+      Product: {
+        name: "sony相機",
+        selling_price: 1280,
+      },
+      payment: "信用卡",
+      status: "completed",
+    },
+    {
+      id: "ORD002",
+      createdAt: "2025-06-05",
+      Product: {
+        name: "vc-530 鏡頭",
+        selling_price: 1780,
+      },
+      payment: "貨到付款",
+      status: "canceled",
+    },
+    {
+      id: "ORD003",
+      createdAt: "2025-06-06",
+      Product: {
+        name: "873-NU機身",
+        selling_price: 980,
+      },
+      payment: "信用卡",
+      status: "canceled",
+    },
+    {
+      id: "ORD004",
+      createdAt: "2025-06-06",
+      Product: {
+        name: "873-NU機身",
+        selling_price: 980,
+      },
+      payment: "信用卡",
+      status: "canceled",
+    },
+  ];
 
   const countAll = orders.length;
   const countCompleted = orders.filter(o => o.status === "completed").length;
-  const countCancelled = orders.filter(o => o.status === "cancell").length;
+  const countCanceled = orders.filter(o => o.status === "canceled").length;
   console.log("取得訂單：", orders);
 
   const filteredOrders = orders
@@ -35,7 +81,7 @@ function OrderHistoryPage() {
                 {[
                   { key: "all", label: "全部", count: countAll },
                   { key: "completed", label: "已完成", count: countCompleted },
-                  { key: "cancelled", label: "已取消", count: countCancelled },
+                  { key: "canceled", label: "已取消", count: countCanceled },
                 ].map(tab => (
                   <button
                     key={tab.key}
@@ -95,13 +141,13 @@ function OrderHistoryPage() {
                   >
                     <div className="col-6 col-md-2">{order.createdAt}</div>
                     <div className="col-6 col-md-2">{order.id}</div>
-                    <div className="col-6 col-md-3">{order.product}</div>
-                    <div className="col-6 col-md-1">{order.total}</div>
+                    <div className="col-6 col-md-3">{order.Product.name}</div>
+                    <div className="col-6 col-md-1">{order.Product.selling_price}</div>
                     <div className="col-6 col-md-2">{order.payment}</div>
                     <div className="col-6 col-md-2">
                       {order.status === "completed" ? (
                         <span className="text-muted">已完成</span>
-                      ) : order.status === "cancelled" ? (
+                      ) : order.status === "canceled" ? (
                         <span className="text-muted">已取消</span>
                       ) : (
                         <span className="text-muted">處理中</span>
