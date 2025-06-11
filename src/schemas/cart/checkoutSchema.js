@@ -2,17 +2,19 @@ import { z } from "zod";
 
 export const getCheckoutSchema = (couponsList = []) =>
   z.object({
-    shippingMethod: z.string().refine(val => val === "宅配到府", { message: "請選擇配送方式" }),
+    shippingMethod: z
+      .string()
+      .refine(val => val === "home_delivery", { message: "請選擇配送方式" }),
 
     recipient: z.string().refine(val => val === "self", { message: "請選擇配送方式" }),
 
-    paymentMethod: z.string().refine(val => val === "信用卡付款", { message: "請選擇配送方式" }),
+    paymentMethod: z.string().refine(val => val === "credit_card", { message: "請選擇配送方式" }),
 
     deliveryDate: z.string().min(1, "請選擇配送日期"),
 
     deliveryTime: z
       .string()
-      .refine(val => ["無希望時間", "8點～13點前", "14點～18點"].includes(val), {
+      .refine(val => ["無希望時間", "8 點 ~ 13 點前", "14 點 ~ 18 點"].includes(val), {
         message: "請選擇配送時段",
       }),
 

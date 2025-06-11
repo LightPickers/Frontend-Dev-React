@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { useGetCartQuery, useDeleteCartProductMutation } from "@/features/cart/cartApi";
-import { BtnPrimary } from "@/components/Buttons";
-import { CloseIcon } from "@/components/icons";
-import { H3Primary, H5Primary } from "@/components/Headings";
+import { useGetCartQuery, useDeleteCartProductMutation } from "@features/cart/cartApi";
+import { BtnPrimary } from "@components/Buttons";
+import { CloseIcon } from "@components/icons";
+import { H3Primary, H5Primary } from "@components/Headings";
+import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ function CartPage() {
     if (!confirmDelete) return;
     try {
       await deleteCartProduct(id).unwrap();
-    } catch (err) {
-      toast.error("刪除失敗，請稍後再試");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "刪除失敗，請稍後再試"));
     }
   };
   // 按下前往結帳手續按鈕
@@ -42,7 +43,7 @@ function CartPage() {
     navigate("/checkout"); // 有商品才導到結帳頁
   };
 
-  if (isLoading) return <p>載入中...</p>;
+  if (isLoading) return <div className="text-center py-10">載入中...</div>;
 
   return (
     <>
@@ -142,8 +143,7 @@ function CartPage() {
                             >
                               <div className="d-flex align-items-center gap-3 p-3">
                                 <img
-                                  // 先放假圖 要改回去item.primary_image
-                                  src={"https://fakeimg.pl/60"}
+                                  src={item.primary_image}
                                   alt={item.name}
                                   className="rounded-1"
                                   width="60"
@@ -241,7 +241,12 @@ function CartPage() {
                     <div className="d-flex flex-column gap-4">
                       {cartItems.map(item => (
                         <div key={item.id} className="d-flex flex-row gap-3">
-                          <img className="rounded-1" src="https://fakeimg.pl/90" alt={item.name} />
+                          <img
+                            className="rounded-1"
+                            src={item.primary_image}
+                            alt={item.name}
+                            width="90px"
+                          />
                           <div className="d-flex flex-column justify-content-between w-100">
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="text-gray-600 text-multiline-truncate">

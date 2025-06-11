@@ -10,7 +10,15 @@ export const productApi = createApi({
   endpoints: builder => ({
     // 取得商品列表
     getProducts: builder.query({
-      query: () => "/products",
+      query: params => {
+        const searchParams = new URLSearchParams();
+        Object.entries(params || {}).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            searchParams.set(key, value);
+          }
+        });
+        return `products?${searchParams.toString()}`;
+      },
       providesTags: ["Product"],
     }),
     // 取得精選商品

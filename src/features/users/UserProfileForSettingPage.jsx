@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import useTaiwanDistricts from "@hooks/useTaiwanDistricts";
 import { BtnPrimary } from "@components/Buttons";
-import TaiwanAddressSelector from "@components/TaiwanAddressSelector";
+import TaiwanAddressSelectorForSettingPage from "@components/TaiwanAddressSelectorForSettingPage";
 import { profileSchema } from "@schemas/users/profileSchema";
 import { registerSchema } from "@schemas/users/registerSchema";
 
@@ -119,7 +119,7 @@ function UserProfileForSettingPage({
   return (
     <div className="container py-0 mt-0">
       <div className="row">
-        <div className="col-12 col-md-8 col-lg-6">
+        <div className="col-12">
           {/* <div className="card shadow rounded-4">
             <div className="card-body">
               <h2 className="card-title text-center mb-4">
@@ -194,7 +194,7 @@ function UserProfileForSettingPage({
                 </div>
 
                 {/* 頭像 */}
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label className="form-label" htmlFor="avatar">
                     頭像
                   </label>
@@ -206,7 +206,7 @@ function UserProfileForSettingPage({
                     {...register("photo")}
                   />
                   {errors.photo && <div className="invalid-feedback">{errors.photo.message}</div>}
-                </div>
+                </div> */}
 
                 {/* 性別 */}
                 <div className="mb-3">
@@ -272,10 +272,10 @@ function UserProfileForSettingPage({
 
                 {/* 台灣地址選擇器 */}
                 {/* 保持地址選擇器的引用，確保重置後也保留值 */}
-                <TaiwanAddressSelector errors={errors} key="address-selector" />
+                <TaiwanAddressSelectorForSettingPage errors={errors} key="address-selector" />
 
                 {/* 詳細地址 */}
-                <div className="mb-4">
+                <div className="mb-3">
                   <label htmlFor="address" className="form-label required">
                     地址
                   </label>

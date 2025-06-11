@@ -92,7 +92,7 @@ function AccountSettingsPage() {
                   <div className="text-center">
                     <img
                       src={
-                        user?.photo ??
+                        // user?.photo ??
                         "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
                       }
                       alt="會員照片"

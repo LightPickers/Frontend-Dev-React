@@ -1,5 +1,6 @@
 import { string } from "prop-types";
 import { toast } from "react-toastify";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 import { FavoriteIcon, FavoriteFilledIcon } from "@components/icons";
 import {
@@ -10,13 +11,15 @@ import {
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 import useRequireAuth from "@hooks/useRequireAuth";
 import IconActionButton from "@components/IconActionButton";
+import useDecodedId from "@hooks/useDecodedId";
 
 function FavoriteIconToggler({ productId, productName }) {
+  const userId = useDecodedId();
   const [addProductToWishlist, { isLoading: isAddingToWishlist }] =
     useAddProductToWishlistMutation();
   const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
     useDeleteWishlistProductMutation();
-  const { data: wishlist, refetch } = useGetWishlistProductsQuery();
+  const { data: wishlist, refetch } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   // console.log({ wishlist });
   const requireAuth = useRequireAuth();
   const isFavorited = wishlist?.data.some(item => item.Products.id === productId);

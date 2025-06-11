@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { useGetOrderByIdQuery } from "@/features/orders/orderApi";
+import { useGetPaidOrderByIdQuery } from "@/features/orders/orderApi";
 import { useGetCartQuery, useDeleteCartMutation } from "@/features/cart/cartApi";
 import { BtnPrimary } from "@/components/Buttons";
 import { H2Primary, H3Primary, H5Primary } from "@/components/Headings";
@@ -11,7 +11,7 @@ import { TextLarge, TextSmall } from "@/components/TextTypography";
 function OrderStatusPage() {
   // 取得訂單資料
   const { orderId } = useParams();
-  const { data: orderData, isLoading: isOrderLoading, error } = useGetOrderByIdQuery(orderId);
+  const { data: orderData, isLoading: isOrderLoading, error } = useGetPaidOrderByIdQuery(orderId);
 
   const { data: cartData } = useGetCartQuery();
   const [deleteCart] = useDeleteCartMutation();
@@ -34,11 +34,11 @@ function OrderStatusPage() {
   }, [orderData, cartData, deleteCart]);
 
   if (isOrderLoading) return <p className="text-center py-10">載入中...</p>;
-  if (error || !orderData?.order)
+  if (error || !orderData?.data)
     return <p className="text-center py-10 text-danger">查無訂單資訊</p>;
 
-  const status = orderData.order.status;
-  const orderNumber = orderData.order.merchant_order_no;
+  const status = orderData.data.status;
+  const orderNumber = orderData.data.merchant_order_no;
 
   return (
     <>
@@ -105,7 +105,7 @@ function OrderStatusPage() {
             </div>
             {status === "已付款" ? (
               <div className="d-flex flex-column align-items-center gap-15">
-                <H2Primary className="">付款成功！</H2Primary>
+                <H2Primary>付款成功！</H2Primary>
 
                 <TextLarge className="text-gray-500 fs-2">感謝您的購買，敬請再度光臨。</TextLarge>
 
@@ -116,14 +116,13 @@ function OrderStatusPage() {
                 </BtnPrimary>
               </div>
             ) : (
-              <>
-                <H3Primary className="mb-4">付款失敗！</H3Primary>
-                <p className="text-danger">
-                  尚未完成付款
-                  <br />
-                  請重新嘗試或聯繫客服
-                </p>
-              </>
+              <div className="d-flex flex-column align-items-center gap-15">
+                <H2Primary>付款失敗！</H2Primary>
+
+                <TextLarge className="text-danger fs-2">尚未完成付款</TextLarge>
+
+                <TextLarge>請重新嘗試或聯繫客服</TextLarge>
+              </div>
             )}
           </div>
         </div>

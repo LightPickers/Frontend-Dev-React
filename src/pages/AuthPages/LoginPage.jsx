@@ -12,6 +12,7 @@ import useAuthRedirect from "@hooks/useAuthRedirect";
 import RedirectIfAuthenticated from "@components/RedirectIfAuthenticated";
 
 function LoginPage() {
+  const APP_BASE = import.meta.env.VITE_APP_BASE;
   const {
     register,
     handleSubmit,
@@ -25,6 +26,11 @@ function LoginPage() {
   const navigate = useNavigate();
   const { redirectToPage } = useAuthRedirect();
 
+  const handleGoogleLogin = () => {
+    const GOOGLE_LOGIN_URL = `${import.meta.env.VITE_API_BASE}/auth/google`;
+    window.location.href = GOOGLE_LOGIN_URL;
+  };
+
   const onSubmit = async loginData => {
     try {
       await loginAndRedirect({
@@ -34,67 +40,88 @@ function LoginPage() {
         loginData,
         onSuccess: redirectToPage,
       });
-    } catch {
-      toast.error("登入發生錯誤，請稍後再試");
+    } catch (err) {
+      const message = err?.data?.message || "登入失敗，請稍後再試";
+      toast.error(message);
     }
   };
 
   return (
     <>
       <RedirectIfAuthenticated />
-      <div className="container py-5 mt-25">
+      <div className="container py-20">
         <div className="row">
-          <div className="col-12 col-md-8 col-lg-6 mx-auto">
-            <div className="card shadow rounded-4">
-              <div className="card-body">
-                <h2 className="card-title text-center mb-4">會員登入</h2>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <fieldset disabled={isLoading}>
-                    {/* email */}
-                    <div className="mb-3">
-                      <label htmlFor="loginEmail" className="form-label required">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                        id="loginEmail"
-                        placeholder="請輸入 Email"
-                        {...register("email")}
-                      />
-                      {errors.email && (
-                        <div className="invalid-feedback">{errors.email.message}</div>
-                      )}
-                    </div>
-
-                    {/* 密碼 */}
-                    <div className="mb-3">
-                      <label htmlFor="loginPassword" className="form-label required">
-                        密碼
-                      </label>
-                      <input
-                        type="password"
-                        id="loginPassword"
-                        className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                        placeholder="請輸入密碼"
-                        {...register("password")}
-                      />
-                      {errors.password && (
-                        <div className="invalid-feedback">{errors.password.message}</div>
-                      )}
-                    </div>
-                    <p className="text-sans text-m text-end">
-                      還沒有會員？前往<Link to="/register">註冊</Link>
-                    </p>
-
-                    {/* 提交按鈕 */}
-                    <BtnPrimary type="submit" size="large" className="w-100" disabled={isLoading}>
-                      {isLoading ? "登入中..." : "登入"}
-                    </BtnPrimary>
-                  </fieldset>
-                </form>
+          {/* 登入表單 */}
+          <div className="col-lg-6">
+            <div className="d-flex flex-column gap-5">
+              <h2>會員登入</h2>
+              <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column gap-7">
+                <div>
+                  {/* Email */}
+                  <label htmlFor="loginEmail" className="form-label required">
+                    Email
+                  </label>
+                  <input
+                    id="loginEmail"
+                    type="email"
+                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                    placeholder="請輸入 Email"
+                    {...register("email")}
+                  />
+                  {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+                </div>
+                <div>
+                  {/* 密碼 */}
+                  <label htmlFor="loginPassword" className="form-label required">
+                    密碼
+                  </label>
+                  <input
+                    id="loginPassword"
+                    type="password"
+                    className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                    placeholder="請輸入密碼"
+                    {...register("password")}
+                  />
+                  {errors.password && (
+                    <div className="invalid-feedback">{errors.password.message}</div>
+                  )}
+                </div>
+                {/* 提交按鈕 */}
+                <BtnPrimary type="submit" size="large" className="w-100" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <div className="spinner-border spinner-border-sm me-3" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                      登入中...
+                    </>
+                  ) : (
+                    "登入"
+                  )}
+                </BtnPrimary>
+              </form>
+              {/* Google 登入 */}
+              <div className="d-flex align-items-center">
+                <hr className="flex-grow-1" />
+                <div className="px-3 text-nowrap">或用以下方式登入</div>
+                <hr className="flex-grow-1" />
               </div>
+              <BtnPrimary type="button" className="w-100" onClick={handleGoogleLogin}>
+                <img src={`${APP_BASE}GoogleIcon.svg`} alt="Google Icon" className="me-2" />
+                使用 Google 登入
+              </BtnPrimary>
+              <p className="text-sans text-m text-end">
+                還沒有會員？立即前往<Link to="/register">註冊</Link>
+              </p>
             </div>
+          </div>
+          {/* 登入圖 */}
+          <div className="col-lg-6 text-center d-none d-lg-block">
+            <img
+              src={`${APP_BASE}loginpage/loginImage.jpg`}
+              alt="拾光堂 User Login"
+              className="rounded-pill w-50"
+            />
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ export { default as ErrorPage } from "@pages/ErrorPage";
 // AuthPages
 export { default as LoginPage } from "@pages/AuthPages/LoginPage";
 export { default as RegisterPage } from "@pages/AuthPages/RegisterPage";
+export { default as GoogleRedirectPage } from "@pages/AuthPages/GoogleRedirectPage";
 
 // CheckoutPages
 export { default as CartPage } from "@pages/CheckoutPages/CartPage";
@@ -19,7 +20,11 @@ export { default as WishlistPage } from "@pages/MemberAccountPages/WishlistPage"
 
 // ShoppingPages
 export { default as ProductCatalogPage } from "@pages/ShoppingPages/ProductCatalogPage";
-export { default as ProductDetailPage } from "@pages/ShoppingPages/ProductDetailPage";
+export { default as ProductDetailPage } from "@pages/ShoppingPages/ProductDetail/ProductDetailPage";
+// ProductDetail/Panels
+export { default as ProductDescriptionPanel } from "@pages/ShoppingPages/ProductDetail/Panels/ProductDescriptionPanel";
+export { default as ProductSpecificationsPanel } from "@pages/ShoppingPages/ProductDetail/Panels/ProductSpecificationsPanel";
+export { default as SellerReviewPanel } from "@pages/ShoppingPages/ProductDetail/Panels/SellerReviewPanel";
 
 // SellPages
 export { default as SellProcessPage } from "@pages/SellPages/SellProcessPage";

@@ -54,6 +54,7 @@ export default [
         Event: "readonly",
         CustomEvent: "readonly",
         MutationObserver: "readonly",
+        URLSearchParams: "readonly",
       },
     },
     plugins: {

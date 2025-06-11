@@ -7,7 +7,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import authReducer from "@features/auth/authSlice";
 import cartReducer from "@features/cart/cartSlice";
 // import wishlistReducer from "@features/wishlist/wishlistSlice";
-import checkoutPageReducer from "@/features/cart/checkoutPageSlice";
+import checkoutPageReducer from "@features/cart/checkoutPageSlice";
 import { userApi } from "@features/users/userApi";
 import { productApi } from "@features/products/productApi";
 import { cartApi } from "@features/cart/cartApi";
@@ -71,16 +71,31 @@ const wishlistPersistConfig = {
   transforms: [setTransform],
 };
 
+const checkoutPersistConfig = {
+  key: "checkoutPage",
+  storage,
+  // 持久化所有 checkout 相關的狀態
+  whitelist: [
+    "shippingMethod",
+    "recipient",
+    "paymentMethod",
+    "deliveryDate",
+    "deliveryTime",
+    "couponCode",
+  ],
+};
+
 // 創建持久化的 reducers（不包含 auth）
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 // const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistReducer);
+const persistedCheckoutReducer = persistReducer(checkoutPersistConfig, checkoutPageReducer);
 
 // 合併所有 reducers
 const rootReducer = combineReducers({
   auth: authReducer, // 保持原有的 auth reducer，不使用 persist
   cart: persistedCartReducer,
   // wishlist: persistedWishlistReducer,
-  checkoutPage: checkoutPageReducer, // checkout 頁面狀態不需要持久化
+  checkoutPage: persistedCheckoutReducer,
   ...apiReducers,
 });
 
@@ -104,7 +119,7 @@ const store = configureStore({
         // ignoredPaths: ["cart.productIds", "wishlist.productIds"],
       },
     }).concat(apiMiddleware),
-  //devTools: process.env.NODE_ENV !== "production", // 只在開發環境啟用 DevTools
+  devTools: import.meta.env.DEV, // 只在開發環境啟用 DevTools
 });
 
 // 設置 RTK Query 監聽器
@@ -112,71 +127,3 @@ setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);
 export default store;
-
-// import { configureStore } from "@reduxjs/toolkit";
-// import { setupListeners } from "@reduxjs/toolkit/query";
-// import persistReducer from "redux-persist/es/persistReducer";
-// import storage from "redux-persist/lib/storage";
-// import persistStore from "redux-persist/es/persistStore";
-
-// import authReducer from "@features/auth/authSlice";
-// import cartReducer from "@features/cart/cartSlice";
-// import wishlistReducer from "@features/wishlist/wishlistSlice";
-// import checkoutPageReducer from "@/features/cart/checkoutPageSlice";
-// import { userApi } from "@features/users/userApi";
-// import { productApi } from "@features/products/productApi";
-// import { cartApi } from "@features/cart/cartApi";
-// import { orderApi } from "@features/orders/orderApi";
-// import { wishlistApi } from "@features/wishlist/wishlistApi";
-// import { couponApi } from "@features/coupons/couponApi";
-
-// const apiReducers = {
-//   [userApi.reducerPath]: userApi.reducer,
-//   [productApi.reducerPath]: productApi.reducer,
-//   [cartApi.reducerPath]: cartApi.reducer,
-//   [couponApi.reducerPath]: couponApi.reducer,
-//   [orderApi.reducerPath]: orderApi.reducer,
-//   [wishlistApi.reducerPath]: wishlistApi.reducer,
-// };
-
-// const apiMiddleware = [
-//   userApi.middleware,
-//   productApi.middleware,
-//   cartApi.middleware,
-//   couponApi.middleware,
-//   orderApi.middleware,
-//   wishlistApi.middleware,
-// ];
-
-// // Redux-persist 配置
-// const cartPersistConfig = {
-//   key: "cart",
-//   storage,
-//   // 只持久化 productIds，其他數據從 API 獲取
-//   whitelist: ["productIds"],
-// };
-
-// const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
-
-// const store = configureStore({
-//   reducer: {
-//     auth: authReducer,
-//     // cart: cartReducer,
-//     cart: persistedCartReducer,
-//     wishlist: wishlistReducer,
-//     checkoutPage: checkoutPageReducer,
-//     ...apiReducers,
-//   },
-//   middleware: getDefaultMiddleware =>
-//     getDefaultMiddleware({
-//       serializableCheck: {
-//         ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
-//         ignoredPaths: ["cart.productIds", "wishlist.productIds"], // 忽略 Set 對象的序列化檢查
-//       },
-//     }).concat(apiMiddleware),
-// });
-
-// setupListeners(store.dispatch);
-
-// export const persistor = persistStore(store);
-// export default store;
