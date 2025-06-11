@@ -1,5 +1,6 @@
+/* global FormData */
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -14,6 +15,76 @@ function AccountSettingsPage() {
   });
   const [updateUser] = useUpdateUserMutation();
   const [isUpdating, setIsUpdating] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handlePhotoUpload = async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("檔案格式錯誤，請上傳 JPG、JPEG、PNG 格式");
+      return;
+    }
+
+    // 檢查檔案大小 (5MB = 5 * 1024 * 1024 bytes)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error("檔案大小超過 5MB 限制");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/upload/image", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      // 檢查回應狀態
+      if (!response.ok) {
+        // 錯誤訊息
+        let errorMessage = "頭像上傳失敗，請稍後再試";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (parseError) {
+          console.error("無法解析錯誤回應:", parseError);
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      const responseData = await response.json();
+      const imageUrl = responseData.data.image_urls[0];
+
+      // 呼叫更新 user 的 API
+      await handleUpdateProfile({ ...userData, photo: imageUrl });
+    } catch (error) {
+      console.error("頭像上傳失敗: ", error);
+
+      // 處理不同類型的錯誤
+      let errorMessage = "頭像上傳失敗，請稍後再試";
+
+      if (error.name === "TypeError" && error.message.includes("fetch")) {
+        // 網路錯誤
+        errorMessage = "網路連線異常，請檢查網路連線";
+      } else if (error.message) {
+        // 使用從伺服器回傳的錯誤訊息
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
+    } finally {
+      // 清空 input
+      event.target.value = "";
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
@@ -92,7 +163,7 @@ function AccountSettingsPage() {
                   <div className="text-center">
                     <img
                       src={
-                        user?.photo ||
+                        userData?.photo ||
                         "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
                       }
                       alt="會員照片"
@@ -109,7 +180,7 @@ function AccountSettingsPage() {
                     }}
                     onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
                     onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
-                    onClick={() => toast.info("尚未支援頭像上傳")}
+                    onClick={() => fileInputRef.current.click()}
                   >
                     更換相片
                   </button>
@@ -117,6 +188,14 @@ function AccountSettingsPage() {
                     <div>檔案大小上限：5MB</div>
                     <div>格式支援：JPG、JPEG、PNG</div>
                   </div>
+                  {/* 隱藏input */}
+                  <input
+                    type="file"
+                    accept=".jpg, .jpeg, .png, "
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                    onChange={handlePhotoUpload}
+                  />
                 </div>
               </div>
             </div>

@@ -143,7 +143,14 @@ function UserProfileForSettingPage({
               <fieldset disabled={isSubmitting || isLoggingin}>
                 {/* Email 無修改模式*/}
                 <div className="mb-3">
-                  <div className="text-muted small mb-1">使用者帳號</div>
+                  <div
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
+                    使用者帳號
+                  </div>
                   <div className="fw-normal">{userData?.email || "未設定"}</div>
                 </div>
 
@@ -168,7 +175,14 @@ function UserProfileForSettingPage({
 
                 {/* 姓名 */}
                 <div className="mb-3">
-                  <div className="text-muted small mb-0 ">姓名</div>
+                  <div
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
+                    姓名
+                  </div>
 
                   {!isEditingName ? (
                     // 顯示模式 - 純文字
@@ -225,7 +239,14 @@ function UserProfileForSettingPage({
 
                 {/* 電話 */}
                 <div className="mb-3">
-                  <div className="text-muted small mb-0">電話</div>
+                  <div
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
+                    電話
+                  </div>
 
                   {!isEditingPhone ? (
                     // 顯示模式 - 純文字
@@ -282,7 +303,14 @@ function UserProfileForSettingPage({
 
                 {/* 性別 */}
                 <div className="mb-3">
-                  <label className="text-muted small mb-0 ">性別</label>
+                  <label
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
+                    性別
+                  </label>
                   <div className="d-flex gap-3">
                     <div className="form-check">
                       <input
@@ -328,7 +356,13 @@ function UserProfileForSettingPage({
 
                 {/* 生日 */}
                 <div className="mb-3">
-                  <div htmlFor="birthDate" className="text-muted small mb-0">
+                  <div
+                    htmlFor="birthDate"
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     生日
                   </div>
                   <input
@@ -348,9 +382,15 @@ function UserProfileForSettingPage({
 
                 {/* 詳細地址 */}
                 <div className="mb-3">
-                  <label htmlFor="address" className="form-label">
+                  <div
+                    htmlFor="address"
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     地址
-                  </label>
+                  </div>
                   <input
                     type="text"
                     className={`form-control ${errors.address_detail ? "is-invalid" : ""}`}

@@ -248,7 +248,13 @@ function TaiwanAddressSelectorForSettingPage({ disabled = false, errors }) {
       {/* 縣市 */}
       <div className=" row mb-3">
         <div className="col-md-4">
-          <div htmlFor="address_city" className="form-label">
+          <div
+            htmlFor="address_city"
+            className=" small mb-0 fw-bold"
+            style={{
+              color: "#939393",
+            }}
+          >
             縣市
           </div>
           <select
@@ -286,7 +292,13 @@ function TaiwanAddressSelectorForSettingPage({ disabled = false, errors }) {
         {/* 鄉鎮區 */}
         <div className="col-md-4">
           {/* <div className="mb-3"> */}
-          <div htmlFor="address_district" className="form-label">
+          <div
+            htmlFor="address_district"
+            className=" small mb-0 fw-bold"
+            style={{
+              color: "#939393",
+            }}
+          >
             鄉鎮區
           </div>
           <select
@@ -319,7 +331,13 @@ function TaiwanAddressSelectorForSettingPage({ disabled = false, errors }) {
         {/* 郵遞區號（手動輸入） */}
         <div className="col-md-4">
           {/* <div className="mb-3"> */}
-          <div htmlFor="address_zipcode" className="form-label">
+          <div
+            htmlFor="address_zipcode"
+            className=" small mb-0 fw-bold"
+            style={{
+              color: "#939393",
+            }}
+          >
             郵遞區號
           </div>
           <input
