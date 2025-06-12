@@ -16,10 +16,18 @@ function ScrollToTop() {
       const isDifferentProduct = !previousProductId || currentProductId !== previousProductId;
 
       if (isDifferentProduct) {
-        window.scrollTo(0, 0);
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "instant", // 避免滾動感
+        });
       }
     } else {
-      window.scrollTo(0, 0);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "instant",
+      });
     }
 
     prevPathnameRef.current = pathname;
