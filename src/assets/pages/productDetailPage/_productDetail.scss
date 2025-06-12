@@ -100,6 +100,7 @@
 
     & li {
       line-height: 1.5;
+      margin-left: 20px;
 
       &::marker {
         font-size: 14px;
@@ -161,3 +162,35 @@
     width: calc(50% - 8px);
   }
 }
+
+.article-content ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  list-style-position: inside;
+}
+
+.article-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  list-style-position: inside;
+}
+.article-content li {
+  margin-bottom: 0.25rem;
+  display: list-item; /* 確保正確顯示為列表項目 */
+}
+
+// .article-content li {
+//   margin-bottom: 0.25rem;
+//   white-space: nowrap; /* 強制單行顯示 */
+//   overflow: hidden; /* 隱藏超出部分 */
+//   text-overflow: ellipsis; /* 超出時顯示省略號 */
+// }
+
+// .article-content p {
+//   white-space: pre-line; /* 保持原有換行，但允許自動換行 */
+// }
+
+// .article-content {
+//   width: 100%;
+//   max-width: none; /* 移除最大寬度限制 */
+// }
