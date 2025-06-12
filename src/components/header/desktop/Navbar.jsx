@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import { array, bool, string } from "prop-types";
 import classNames from "classnames";
 
 import NavMenu from "@components/header/desktop/NavMenu";
 import UserMenu from "@components/header/desktop/UserMenu";
+import { TextLarge } from "@components/TextTypography";
 
-function Navbar({ menuItems, className }) {
+function Navbar({ menuItems, isLoading, isSuccess, className }) {
   const navClasses = classNames(
     className,
     "navbar",
@@ -39,9 +40,15 @@ function Navbar({ menuItems, className }) {
     };
   }, []);
 
+  const renderNavMenu = () => {
+    if (isLoading)
+      return <TextLarge className="me-auto py-2 px-xl-3 px-lg-2">載入精選目錄中…</TextLarge>;
+    if (isSuccess) return <NavMenu menuItems={menuItems} />;
+  };
+
   return (
     <nav ref={navRef} className={navClasses}>
-      <div className="container">
+      <div className="container-xl container-fluid px-xl-0 px-4 d-flex align-items-center">
         {/* Logo */}
         <Link className="navbar-brand" to="/">
           <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" />
@@ -49,7 +56,7 @@ function Navbar({ menuItems, className }) {
 
         <div className="collapse navbar-collapse" id="navbarContent">
           {/* 網頁導航項目 */}
-          <NavMenu menuItems={menuItems} />
+          {renderNavMenu()}
           {/* 使用者項目 */}
           <UserMenu />
         </div>
@@ -59,8 +66,10 @@ function Navbar({ menuItems, className }) {
 }
 
 Navbar.propTypes = {
-  menuItems: PropTypes.array,
-  className: PropTypes.string,
+  menuItems: array.isRequired,
+  className: string,
+  isLoading: bool.isRequired,
+  isSuccess: bool.isRequired,
 };
 
 export default Navbar;

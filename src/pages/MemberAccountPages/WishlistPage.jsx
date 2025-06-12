@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
-import { useState, useMemo } from "react";
 import WishlistCard from "@/components/productpage/WishlistCard";
 
 function mapWishlistData(apiData) {

@@ -17,7 +17,7 @@ import { cartApi } from "@features/cart/cartApi";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 import WishlistItem from "@components/header/desktop/WishlistItem";
 import { useDropdownPosition } from "@hooks/useDropdownPosition";
-import useDecodedId from "@/hooks/useDecodedId";
+import useDecodedId from "@hooks/useDecodedId";
 
 function UserWishlist() {
   const hoverTimeout = useRef(null);
@@ -44,6 +44,7 @@ function UserWishlist() {
   const [addedToCartProductIds, setAddedToCartProductIds] = useState(new Set());
 
   const wishlistItems = useMemo(() => data?.data ?? [], [data]);
+  // console.log({ wishlistItems });
   const totalSellingPrice = data?.totalSellingPrice ?? 0;
   const hasSelectedItems = selectedIds.length > 0;
   const isProcessing = deletingId || isAddingToCart;
@@ -205,7 +206,12 @@ function UserWishlist() {
       onMouseEnter={handleWishlistEnter}
       onMouseLeave={handleWishlistLeave}
     >
-      <TextMedium as="a" role="button" className="p-3">
+      <TextMedium
+        as="a"
+        role="button"
+        //p-xl-3 p-lg-2
+        className="p-3 d-flex justify-content-center align-items-center"
+      >
         <FavoriteIcon title="查看收藏清單" />
       </TextMedium>
 
@@ -227,9 +233,5 @@ function UserWishlist() {
     </section>
   );
 }
-
-// UserWishlist.propTypes = {
-//   user: PropTypes.any,
-// };
 
 export default UserWishlist;

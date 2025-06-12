@@ -26,8 +26,8 @@ import {
 import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
 import AccountLayout from "@layouts/AccountLayout";
-import { TextMedium } from "@/components/TextTypography";
-import { productApi } from "@/features/products/productApi";
+import { TextMedium } from "@components/TextTypography";
+import { productApi } from "@features/products/productApi";
 import store from "@/store";
 
 const ROUTES = {
