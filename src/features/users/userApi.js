@@ -53,6 +53,15 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    // 上傳照片
+    uploadPhoto: builder.mutation({
+      query: formData => ({
+        url: "/upload/image",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -64,4 +73,5 @@ export const {
   useGetUserProfileQuery,
   useLazyGetUserProfileQuery,
   useUpdateUserMutation,
+  useUploadPhotoMutation,
 } = userApi;

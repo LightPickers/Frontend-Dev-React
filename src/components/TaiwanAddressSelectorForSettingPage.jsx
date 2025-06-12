@@ -248,9 +248,15 @@ function TaiwanAddressSelectorForSettingPage({ disabled = false, errors }) {
       {/* 縣市 */}
       <div className=" row mb-3">
         <div className="col-md-4">
-          <label htmlFor="address_city" className="form-label required">
+          <div
+            htmlFor="address_city"
+            className=" small mb-0 fw-bold"
+            style={{
+              color: "#939393",
+            }}
+          >
             縣市
-          </label>
+          </div>
           <select
             id="address_city"
             className={`form-select ${errors.address_zipcode ? "is-invalid" : ""}`}
@@ -286,9 +292,15 @@ function TaiwanAddressSelectorForSettingPage({ disabled = false, errors }) {
         {/* 鄉鎮區 */}
         <div className="col-md-4">
           {/* <div className="mb-3"> */}
-          <label htmlFor="address_district" className="form-label required">
+          <div
+            htmlFor="address_district"
+            className=" small mb-0 fw-bold"
+            style={{
+              color: "#939393",
+            }}
+          >
             鄉鎮區
-          </label>
+          </div>
           <select
             id="address_district"
             className={`form-select ${errors.address_zipcode ? "is-invalid" : ""}`}
@@ -319,9 +331,15 @@ function TaiwanAddressSelectorForSettingPage({ disabled = false, errors }) {
         {/* 郵遞區號（手動輸入） */}
         <div className="col-md-4">
           {/* <div className="mb-3"> */}
-          <label htmlFor="address_zipcode" className="form-label required">
+          <div
+            htmlFor="address_zipcode"
+            className=" small mb-0 fw-bold"
+            style={{
+              color: "#939393",
+            }}
+          >
             郵遞區號
-          </label>
+          </div>
           <input
             id="address_zipcode"
             type="text"
