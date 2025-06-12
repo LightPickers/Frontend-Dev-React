@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { SearchIcon } from "@components/icons";
@@ -12,53 +12,46 @@ function NavSearchBar() {
   const navigate = useNavigate();
 
   // 處理搜尋框開合
-  const handleCollapse = useCallback(() => {
+  const handleCollapse = () => {
     setIsExpanded(false);
     setHasError(false);
-  }, []);
+  };
 
   const searchRef = useOutsideClick(handleCollapse);
 
-  const handleToggle = useCallback(() => {
+  const handleToggle = () => {
     setIsExpanded(prev => !prev);
-  }, []);
+  };
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current?.focus();
     }
   }, [isExpanded]);
 
   // 處理輸入的值 & 搜尋
-  const handleInputChange = useCallback(
-    e => {
-      if (hasError) setHasError(false);
-      setSearchValue(e.target.value);
-    },
-    [hasError]
-  );
+  const handleInputChange = e => {
+    if (hasError) setHasError(false);
+    setSearchValue(e.target.value);
+  };
 
-  const handleSearch = useCallback(() => {
-    if (searchValue.trim()) {
-      navigate(`/products?keyword=${searchValue.trim()}`);
-      setSearchValue("");
-      setIsExpanded(false);
-      setHasError(false);
-    } else {
+  const handleSearch = () => {
+    if (!searchValue.trim()) {
       setSearchValue("");
       setHasError(true);
-      inputRef.current.focus();
+      inputRef.current?.focus();
       return;
     }
-  }, [navigate, searchValue]);
+    navigate(`/products?keyword=${searchValue.trim()}`);
+    setSearchValue("");
+    setIsExpanded(false);
+    setHasError(false);
+  };
 
   // 處理使用 enter 輸入
-  const handleKeyDown = useCallback(
-    e => {
-      if (e.key === "Enter") handleSearch();
-    },
-    [handleSearch]
-  );
+  const handleKeyDown = e => {
+    if (e.key === "Enter") handleSearch();
+  };
 
   return (
     <>
@@ -79,7 +72,7 @@ function NavSearchBar() {
           // p-xl-3 p-lg-2
           onClick={isExpanded ? handleSearch : handleToggle}
           className={`btn fw-bold shadow-none p-3 search-button ${isExpanded ? "search-mode" : "icon-mode"} ${hasError ? "is-invalid" : ""}`}
-          disabled={isExpanded && !searchValue}
+          disabled={isExpanded && !searchValue.trim()}
         >
           <SearchIcon title="搜尋商品" className={`${hasError ? "is-invalid" : ""}`} />
         </button>
