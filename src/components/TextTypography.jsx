@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import PropTypes from "prop-types";
+import { bool, elementType, node, string } from "prop-types";
 import { NavLink } from "react-router-dom";
 
 // Base component
@@ -39,32 +39,39 @@ function TextBase({ as: Component = "span", className, children, disabled = fals
 }
 
 TextBase.propTypes = {
-  as: PropTypes.elementType, // 也支援 React 元件
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  disabled: PropTypes.bool,
+  as: elementType, // 也支援 React 元件
+  className: string,
+  children: node.isRequired,
+  disabled: bool,
+  fluid: bool,
 };
 
 export default TextBase;
 
 // Named variants
-export function TextLarge({ className, ...props }) {
-  return <TextBase {...props} className={classNames("text-l", className)} />;
+export function TextLarge({ className, fluid = false, ...props }) {
+  return (
+    <TextBase {...props} className={classNames(fluid ? "text-l-fluid" : "text-l", className)} />
+  );
 }
 TextLarge.propTypes = TextBase.propTypes;
 
-export function TextMedium({ className, ...props }) {
-  return <TextBase {...props} className={classNames("text-m", className)} />;
+export function TextMedium({ className, fluid = false, ...props }) {
+  return (
+    <TextBase {...props} className={classNames(fluid ? "text-m-fluid" : "text-m", className)} />
+  );
 }
 TextMedium.propTypes = TextBase.propTypes;
 
-export function TextSmall({ className, ...props }) {
-  return <TextBase {...props} className={classNames("text-s", className)} />;
+export function TextSmall({ className, fluid = false, ...props }) {
+  return (
+    <TextBase {...props} className={classNames(fluid ? "text-s-fluid" : "text-s", className)} />
+  );
 }
 TextSmall.propTypes = TextBase.propTypes;
 
-export function LabelText({ className, ...props }) {
-  return <TextBase {...props} className={classNames("label", className)} />;
+export function LabelText({ className, fluid = false, ...props }) {
+  return <TextBase {...props} className={classNames(fluid ? "label-fluid" : "label", className)} />;
 }
 LabelText.propTypes = TextBase.propTypes;
 
