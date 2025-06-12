@@ -21,11 +21,13 @@
 @import "./components/buttons";
 @import "./components/tags";
 @import "./components/dropdowns";
-@import "./components/expandingSearch";
+@import "./components/expanding-search";
+@import "./components/mobile-search";
 @import "./components/product-article-settings";
 
 // layouts
 @import "./layouts/header";
+@import "./layouts/mobile-header";
 @import "./layouts/footer";
 
 // pages

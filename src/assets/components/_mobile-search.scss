@@ -1,0 +1,111 @@
+@use "../stylesheets/fonts" as fonts;
+@use "../stylesheets/sizes" as sizes;
+@use "../stylesheets/colors" as colors;
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.mobile-searchbar {
+  & .searchbar-container {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: 100px;
+    overflow: hidden;
+    background: colors.$gray-100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+
+    @include media-breakpoint-up(md) {
+      height: 60px;
+    }
+
+    @include media-breakpoint-up(sm) {
+      height: 54px;
+    }
+
+    &:focus-within {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      outline: 1.5px solid colors.$gray-200;
+      outline-offset: 0.5px;
+    }
+
+    &.is-invalid {
+      outline: 1.5px solid colors.$danger;
+      outline-offset: 0.5px;
+      animation: shake 0.3s ease;
+      background-image: none;
+      background-color: rgba(colors.$danger, 0.05);
+    }
+
+    & .search-input {
+      width: 100%;
+      flex: 1;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      background: transparent;
+      font-size: sizes.$h6-font-size;
+      letter-spacing: 0.09em;
+
+      @include media-breakpoint-up(sm) {
+        font-size: sizes.$h5-font-size;
+        letter-spacing: 0.1em;
+      }
+
+      &::placeholder {
+        color: colors.$gray-200;
+        font-weight: fonts.$font-weight-bold;
+      }
+
+      &.is-invalid::placeholder {
+        color: colors.$danger;
+      }
+    }
+
+    & .search-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: colors.$gray-600;
+      background: transparent;
+
+      & svg {
+        transition:
+          color 0.3s ease,
+          transform 0.3 ease-in;
+      }
+
+      &:hover svg {
+        color: colors.$gray-800;
+        transform: scale(1.05);
+      }
+
+      &:active svg {
+        color: colors.$gray-1000;
+        transform: scale(1.1);
+      }
+
+      & svg.is-invalid {
+        color: colors.$danger;
+      }
+    }
+  }
+}

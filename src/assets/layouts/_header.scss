@@ -98,26 +98,41 @@
   }
 
   .dropdown-product {
+    padding: 4px;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+
+    & img {
+      transition: transform 0.3s ease-in-out;
+    }
+
     &:hover {
       background-color: colors.$gray-100;
+      & img {
+        transform: scale(1.05);
+      }
     }
   }
 }
 
 .dropdown-content {
-  // min-width: 286px;
+  min-width: 296px;
 
   .product-img {
     height: 50px;
     width: 50px;
-    object-fit: cover;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
   .form-check-input {
     cursor: pointer;
     flex-shrink: 0;
   }
+
   .product-info {
     // width: 120px;
     max-width: 120px;
@@ -174,7 +189,8 @@
   }
 }
 
-.dropdown.show .dropdown-menu.dropdown-content {
+.dropdown.show .dropdown-menu.dropdown-content,
+.dropdown.show .dropdown-menu.nav-avatar-dropdown {
   animation: fadeInDown 0.4s ease-out;
 }
 
