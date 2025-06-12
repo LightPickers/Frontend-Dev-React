@@ -1,25 +1,29 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { array, bool, string } from "prop-types";
 import classNames from "classnames";
 
 import NavMenu from "@components/header/desktop/NavMenu";
-import UserMenu from "@components/header/desktop/UserMenu";
 import { TextLarge } from "@components/TextTypography";
-import { MenuIcon } from "@/components/icons";
+import { MenuIcon } from "@components/icons";
+import FullscreenMenu from "@components/header/mobile/FullscreenMenu";
 
-function Navbar({ menuItems, isLoading, isSuccess, className }) {
+function MobileNavbar({ menuItems, isLoading, isSuccess, className }) {
+  // 互動視窗
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navClasses = classNames(
     className,
+    "mobile-navbar",
     "navbar",
     "navbar-light",
     "navbar-expand-lg",
     "navbar-custom",
-    "py-md-5",
+    "py-sm-5",
     "py-2",
-    "px-md-0",
+    "px-sm-2",
     "px-3",
-    "fixed-top"
+    "fixed-top",
+    { "navbar-hidden": isMenuOpen }
   );
 
   const APP_BASE = import.meta.env.VITE_APP_BASE;
@@ -41,6 +45,14 @@ function Navbar({ menuItems, isLoading, isSuccess, className }) {
     };
   }, []);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const renderNavMenu = () => {
     if (isLoading)
       return <TextLarge className="me-auto py-2 px-xl-3 px-lg-2">載入精選目錄中…</TextLarge>;
@@ -48,41 +60,30 @@ function Navbar({ menuItems, isLoading, isSuccess, className }) {
   };
 
   return (
-    <nav ref={navRef} className={navClasses}>
-      <div className="container-xl container-fluid px-xl-0 px-4 d-flex align-items-center">
-        {/* Logo */}
-        <Link className="navbar-brand" to="/">
-          <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" />
-        </Link>
+    <>
+      <nav ref={navRef} className={navClasses}>
+        <div className="container-fluid d-flex align-items-center">
+          {/* Logo */}
+          <Link className="navbar-brand" to="/">
+            <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" />
+          </Link>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          // data-bs-toggle="collapse"
-          // data-bs-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <MenuIcon />
-        </button>
-
-        <div className="collapse navbar-collapse" id="navbarContent">
-          {/* 網頁導航項目 */}
-          {renderNavMenu()}
-          {/* 使用者項目 */}
-          <UserMenu />
+          <button className="btn btn-link p-0 text-gray-500" type="button" onClick={toggleMenu}>
+            <MenuIcon size={48} />
+          </button>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      <FullscreenMenu isMenuOpen={isMenuOpen} closeMenu={closeMenu} path={APP_BASE} />
+    </>
   );
 }
 
-Navbar.propTypes = {
+MobileNavbar.propTypes = {
   menuItems: array.isRequired,
   className: string,
   isLoading: bool.isRequired,
   isSuccess: bool.isRequired,
 };
 
-export default Navbar;
+export default MobileNavbar;

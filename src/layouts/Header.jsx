@@ -1,4 +1,4 @@
-import MobileNavbar from "@components/header/MobileNavbar";
+import MobileNavbar from "@/components/header/mobile/MobileNavbar";
 import Navbar from "@/components/header/desktop/Navbar";
 import {
   useGetFeaturedCategoryQuery,
@@ -40,7 +40,7 @@ function Header() {
         isLoading={isLoading}
         isSuccess={isSuccess}
       />
-      {/* <MobileNavbar className="d-block d-lg-none" menuItems={menuItems} /> */}
+      <MobileNavbar className="d-block d-lg-none" menuItems={menuItems} />
     </>
   );
 }

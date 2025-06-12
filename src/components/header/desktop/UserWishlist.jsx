@@ -1,5 +1,4 @@
 import { useRef, useState, useCallback, useMemo } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { skipToken } from "@reduxjs/toolkit/query";
@@ -28,7 +27,6 @@ function UserWishlist() {
     refetch: reFetchWishlist,
   } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   const [deleteWishlistProduct] = useDeleteWishlistProductMutation();
-  // console.log({ data });
 
   const { triggerRef, dropdownRef, isOpen, position, open, close } = useDropdownPosition({
     placement: "bottom",
@@ -44,7 +42,7 @@ function UserWishlist() {
   const [addedToCartProductIds, setAddedToCartProductIds] = useState(new Set());
 
   const wishlistItems = useMemo(() => data?.data ?? [], [data]);
-  // console.log({ wishlistItems });
+  console.log({ wishlistItems });
   const totalSellingPrice = data?.totalSellingPrice ?? 0;
   const hasSelectedItems = selectedIds.length > 0;
   const isProcessing = deletingId || isAddingToCart;
@@ -102,7 +100,7 @@ function UserWishlist() {
 
       await Promise.all(addingRequests);
 
-      // 標記這些商品已經加入購物車
+      // // 標記這些商品已經加入購物車
       setAddedToCartProductIds(prev => new Set([...prev, ...selectedProductIds]));
 
       // 取消選擇已加入購物車的商品

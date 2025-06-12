@@ -6,6 +6,7 @@ import UserWishlist from "@components/header/desktop/UserWishlist";
 import UserCartList from "@components/header/desktop/UserCartList";
 import UserAvatar from "@components/header/desktop/UserAvatar";
 import { BtnPrimary } from "@components/Buttons";
+import UserFavList from "@/components/header/desktop/UserFavList";
 // gap-xl-7 gap-lg-5
 // gap-xl-3 gap-lg-2
 function UserMenu() {
@@ -17,6 +18,7 @@ function UserMenu() {
         <NavSearchBar />
 
         <UserWishlist />
+        {/* <UserFavList /> */}
 
         <UserCartList />
       </div>

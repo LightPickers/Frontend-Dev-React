@@ -70,7 +70,7 @@ function UserCartList() {
     if (!hasCartItems) {
       return (
         <section className="d-flex justify-content-center py-10">
-          <TextMedium as="p">購物車空空如也……</TextMedium>
+          <TextMedium as="p">購物車還沒有商品唷</TextMedium>
         </section>
       );
     }

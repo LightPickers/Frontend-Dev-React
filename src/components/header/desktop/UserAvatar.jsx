@@ -49,7 +49,7 @@ function UserAvatar({ user }) {
       {isOpen && (
         <section
           ref={dropdownRef}
-          className="dropdown-menu nav-avatar-dropdown dropdown-content mt-3"
+          className="dropdown-menu nav-avatar-dropdown mt-3"
           style={position}
         >
           <main className="d-flex flex-column">
@@ -61,9 +61,9 @@ function UserAvatar({ user }) {
               {UserMenu.map(item => {
                 const { label, role, path, func } = item;
                 return (
-                  <li key={label} className="py-1 px-2">
+                  <li key={label} className="py-1 px-2 position-relative">
                     {role === "link" && (
-                      <TextMedium as={Link} to={path}>
+                      <TextMedium as={Link} to={path} className="stretched-link">
                         {label}
                       </TextMedium>
                     )}
@@ -71,7 +71,7 @@ function UserAvatar({ user }) {
                       <TextMedium
                         as="button"
                         onClick={func}
-                        className="btn btn-link p-0 shadow-none"
+                        className="btn btn-link p-0 shadow-none stretched-link"
                       >
                         {label}
                       </TextMedium>
