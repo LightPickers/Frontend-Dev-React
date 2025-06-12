@@ -32,6 +32,7 @@ textarea {
 ol,
 ul {
   list-style: none;
+  padding-left: 0;
 }
 
 // 若需要文字底部空間，可置 spacer 設置
@@ -163,6 +164,26 @@ h6 {
 }
 .label {
   font-size: sizes.$label-font-size;
+  letter-spacing: 0.12em;
+}
+
+.text-l-fluid {
+  font-size: sizes.$fluid-font-lg;
+  letter-spacing: clamp(0.09em, 0.5vw, 0.1em);
+}
+
+.text-m-fluid {
+  font-size: sizes.$fluid-font-md;
+  letter-spacing: clamp(0.07em, 0.5vw, 0.09em);
+}
+
+.text-s-fluid {
+  font-size: sizes.$fluid-font-sm;
+  letter-spacing: 0.07em;
+}
+
+.label-fluid {
+  font-size: sizes.$fluid-font-xs;
   letter-spacing: 0.12em;
 }
 
