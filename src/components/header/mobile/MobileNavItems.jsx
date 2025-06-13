@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { func } from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 
 import { TextLarge, TextMedium } from "@/components/TextTypography";
