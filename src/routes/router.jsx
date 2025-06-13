@@ -4,6 +4,7 @@ import {
   HomePage,
   RegisterPage,
   LoginPage,
+  GoogleRedirectPage,
   AccountDashboardPage,
   AccountSettingsPage,
   OrderHistoryPage,
@@ -35,6 +36,7 @@ const ROUTES = {
   AUTH: {
     REGISTER: "/register", // 註冊
     LOGIN: "/login", // 登入
+    GOOGLE_REDIRECT: "/google-callback", // google 登入用
   },
   ACCOUNT: {
     ROOT: "/account/profile", // 會員中心首頁（目前沒線稿）
@@ -73,6 +75,10 @@ const authRoutes = [
   {
     path: ROUTES.AUTH.LOGIN,
     element: <LoginPage />,
+  },
+  {
+    path: ROUTES.AUTH.GOOGLE_REDIRECT,
+    element: <GoogleRedirectPage />,
   },
 ];
 

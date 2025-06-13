@@ -1,10 +1,11 @@
+/* global FormData */
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
-import UserProfileForm from "@features/users/UserProfileForm";
+import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
 function AccountSettingsPage() {
   const navigate = useNavigate();
@@ -14,6 +15,76 @@ function AccountSettingsPage() {
   });
   const [updateUser] = useUpdateUserMutation();
   const [isUpdating, setIsUpdating] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handlePhotoUpload = async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("檔案格式錯誤，請上傳 JPG、JPEG、PNG 格式");
+      return;
+    }
+
+    // 檢查檔案大小 (5MB = 5 * 1024 * 1024 bytes)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error("檔案大小超過 5MB 限制");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/upload/image", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      // 檢查回應狀態
+      if (!response.ok) {
+        // 錯誤訊息
+        let errorMessage = "頭像上傳失敗，請稍後再試";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (parseError) {
+          console.error("無法解析錯誤回應:", parseError);
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      const responseData = await response.json();
+      const imageUrl = responseData.data.image_urls[0];
+
+      // 呼叫更新 user 的 API
+      await handleUpdateProfile({ ...userData, photo: imageUrl });
+    } catch (error) {
+      console.error("頭像上傳失敗: ", error);
+
+      // 處理不同類型的錯誤
+      let errorMessage = "頭像上傳失敗，請稍後再試";
+
+      if (error.name === "TypeError" && error.message.includes("fetch")) {
+        // 網路錯誤
+        errorMessage = "網路連線異常，請檢查網路連線";
+      } else if (error.message) {
+        // 使用從伺服器回傳的錯誤訊息
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
+    } finally {
+      // 清空 input
+      event.target.value = "";
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
@@ -44,7 +115,7 @@ function AccountSettingsPage() {
   };
 
   if (!isAuthenticated) {
-    return <div className="text-center py-4">請先登入...</div>;
+    return <div className="text-center py-4">請先登入</div>;
   }
 
   if (isLoading) {
@@ -70,13 +141,68 @@ function AccountSettingsPage() {
 
   return (
     <>
+      <div className="container">
+        <div className="row g-4">
+          <div className="col-lg-12">
+            <div className="bg-white rounded p-4">
+              <h4 className="mb-5 py-2 mb-md-0">我的帳戶</h4>
+              <div className="row">
+                {/* 左邊表單欄位 */}
+                <div className="col-md-8">
+                  <hr />
+                  <UserProfileForSettingPage
+                    isEdit={true}
+                    userData={userData}
+                    onSubmit={handleUpdateProfile}
+                    isSubmitting={isUpdating}
+                  />
+                </div>
+
+                {/* 右邊大頭貼 */}
+                <div className="col-md-4 d-flex flex-column align-items-center justify-content-start mt-4 mt-md-0">
+                  <div className="text-center">
+                    <img
+                      src={
+                        userData?.photo ||
+                        "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
+                      }
+                      alt="會員照片"
+                      className="rounded-circle mb-2"
+                      width={190}
+                      height={190}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-link p-0 text-decoration-underline"
+                    style={{
+                      color: "#4A6465",
+                    }}
+                    onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+                    onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+                    onClick={() => fileInputRef.current.click()}
+                  >
+                    更換相片
+                  </button>
+                  <div className="mt-2 text-muted small text-center">
+                    <div>檔案大小上限：5MB</div>
+                    <div>格式支援：JPG、JPEG、PNG</div>
+                  </div>
+                  {/* 隱藏input */}
+                  <input
+                    type="file"
+                    accept=".jpg, .jpeg, .png, "
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                    onChange={handlePhotoUpload}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* {isUpdating && <div className="text-center py-2">正在更新資料...</div>} */}
-      <UserProfileForm
-        isEdit={true}
-        userData={userData}
-        onSubmit={handleUpdateProfile}
-        isSubmitting={isUpdating}
-      />
     </>
   );
 }
