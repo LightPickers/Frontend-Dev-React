@@ -45,8 +45,7 @@ function AccountLayout() {
                   }
                   alt="會員照片"
                   className="rounded-circle mb-2"
-                  width={80}
-                  height={80}
+                  style={{ width: "140px", height: "140px", objectFit: "cover" }}
                 />
                 <div>{user?.name || "取得帳戶中"}</div>
                 <div

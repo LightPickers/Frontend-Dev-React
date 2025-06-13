@@ -168,8 +168,7 @@ function AccountSettingsPage() {
                       }
                       alt="會員照片"
                       className="rounded-circle mb-2"
-                      width={190}
-                      height={190}
+                      style={{ width: "250px", height: "250px", objectFit: "cover" }}
                     />
                   </div>
                   <button
