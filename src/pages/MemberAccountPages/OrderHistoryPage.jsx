@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetOrdersQuery, useLazyGetOrderByIdQuery } from "@/features/orders/orderApi";
 import { H3Primary, H3Secondary } from "@/components/Headings";
 
@@ -46,6 +47,7 @@ function OrderHistoryPage() {
   if (isError) {
     return (
       <div className="container">
+        <Breadcrumbs />
         <div className="row g-4">
           <div className="col-lg-12">
             <div className="bg-white rounded p-4">
@@ -68,6 +70,7 @@ function OrderHistoryPage() {
   return (
     <>
       <div className="container">
+        <Breadcrumbs />
         <div className="row g-4">
           <div className="col-lg-12">
             <div className="bg-white rounded p-4">
