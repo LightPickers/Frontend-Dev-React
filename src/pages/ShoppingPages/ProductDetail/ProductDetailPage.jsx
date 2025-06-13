@@ -59,7 +59,7 @@ function ProductDetailPage() {
   } = data ?? {};
   const secondaryImages = imageList?.map(i => i.image);
   const productImages = [primary_image, ...secondaryImages];
-  console.log({ data }, { productImages });
+  // console.log({ data }, { productImages });
   return (
     <div className="product-detail py-20 d-flex flex-column gap-10">
       <Breadcrumbs />
