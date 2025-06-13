@@ -42,7 +42,7 @@ function UserWishlist() {
   const [addedToCartProductIds, setAddedToCartProductIds] = useState(new Set());
 
   const wishlistItems = useMemo(() => data?.data ?? [], [data]);
-  console.log({ wishlistItems });
+  // console.log({ wishlistItems });
   const totalSellingPrice = data?.totalSellingPrice ?? 0;
   const hasSelectedItems = selectedIds.length > 0;
   const isProcessing = deletingId || isAddingToCart;

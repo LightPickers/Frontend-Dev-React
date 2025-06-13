@@ -7,7 +7,7 @@ import NavMenu from "@components/header/desktop/NavMenu";
 import { TextLarge } from "@components/TextTypography";
 import { MenuIcon } from "@components/icons";
 import FullscreenMenu from "@components/header/mobile/FullscreenMenu";
-import SlidingMobileModal from "@/components/header/mobile/SlidingMobileModal";
+// import SlidingMobileModal from "@/components/header/mobile/SlidingMobileModal";
 
 function MobileNavbar({ menuItems, isLoading, isSuccess, className }) {
   // 互動視窗
