@@ -70,6 +70,18 @@ function AccountLayout() {
                       style={{
                         color: location.pathname === item.path ? "#8BB0B7" : "#495057",
                       }}
+                      onMouseOver={e => {
+                        if (location.pathname !== item.path) {
+                          e.currentTarget.style.color = "#4A6465";
+                          e.currentTarget.style.fontWeight = "bold";
+                        }
+                      }}
+                      onMouseOut={e => {
+                        if (location.pathname !== item.path) {
+                          e.currentTarget.style.color = "#495057";
+                          e.currentTarget.style.fontWeight = "normal";
+                        }
+                      }}
                     >
                       {item.label}
                     </Link>
