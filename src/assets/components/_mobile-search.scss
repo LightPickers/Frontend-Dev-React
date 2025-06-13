@@ -24,11 +24,12 @@
   & .searchbar-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 48px;
     border-radius: 100px;
     overflow: hidden;
     background: colors.$gray-100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 
     @include media-breakpoint-up(md) {
@@ -40,7 +41,7 @@
     }
 
     &:focus-within {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       outline: 1.5px solid colors.$gray-200;
       outline-offset: 0.5px;
     }
@@ -54,7 +55,7 @@
     }
 
     & .search-input {
-      width: 100%;
+      width: calc(100% - 24px);
       flex: 1;
       border: none;
       outline: none;
@@ -109,3 +110,6 @@
     }
   }
 }
+// .mobile-searchbar {
+//   padding: 8px;
+// }

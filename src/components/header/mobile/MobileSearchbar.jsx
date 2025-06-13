@@ -20,7 +20,10 @@ function MobileSearchbar({ isMenuOpen, closeMenu }) {
       return () => clearTimeout(timeout);
     }
     // 關閉時清空搜尋框
-    if (!isMenuOpen) setSearchValue("");
+    if (!isMenuOpen) {
+      setSearchValue("");
+      setHasError(false);
+    }
   }, [isMenuOpen]);
 
   // 處理搜尋框輸入的值
