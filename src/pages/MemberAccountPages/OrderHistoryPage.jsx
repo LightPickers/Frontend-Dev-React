@@ -102,12 +102,12 @@ function OrderHistoryPage() {
                     style={{ backgroundColor: "#F2F2F2", fontSize: "0.9rem" }}
                   >
                     <div className="col-6 col-lg-2">訂單成立日期</div>
-                    <div className="col-6 col-lg-4">訂單編號</div>
+                    <div className="col-6 col-lg-3">訂單編號</div>
                     {/* <div className="col-6 col-lg-3">購入商品</div> */}
-                    <div className="col-6 col-lg-2">總金額</div>
-                    <div className="col-6 col-lg-1">付款方式</div>
-                    <div className="col-6 col-lg-1">狀態</div>
-                    <div className="col-6 col-lg-2">操作</div>
+                    <div className="col-6 col-lg-2 text-center">總金額</div>
+                    <div className="col-6 col-lg-2 text-center">付款方式</div>
+                    <div className="col-6 col-lg-1 ">狀態</div>
+                    <div className="col-6 col-lg-2 text-center">操作</div>
                   </div>
 
                   {/* 訂單內容 */}
@@ -128,15 +128,17 @@ function OrderHistoryPage() {
                         <div className="col-6 col-lg-2">
                           {new Date(order.created_at).toLocaleDateString("zh-TW")}
                         </div>
-                        <div className="col-6 col-lg-4 text-truncate">{order.id}</div>
+                        <div className="col-6 col-lg-3 text-truncate">{order.id}</div>
                         {/* 暫無商品名稱欄<div className="col-6 col-lg-3">{order.Product.name}</div> */}
-                        <div className="col-6 col-lg-2">NT$ {order.amount?.toLocaleString()}</div>
-                        <div className="col-6 col-lg-1">
+                        <div className="col-6 col-lg-2 text-center">
+                          NT$ {order.amount?.toLocaleString()}
+                        </div>
+                        <div className="col-6 col-lg-2 text-center">
                           {order.payment_method === "credit_card"
                             ? "信用卡"
                             : order.payment_method === "bank_transfer"
                               ? "銀行轉帳"
-                              : order.payment_method || "待確認"}
+                              : order.payment_method || "未知"}
                         </div>
                         <div className="col-6 col-lg-1">
                           {order.status === "paid" ? (
@@ -150,7 +152,7 @@ function OrderHistoryPage() {
                         <div className="col-6 col-lg-2">
                           <Link
                             to={`/orders/${order.id}`}
-                            className="btn btn-sm btn-outline-primary"
+                            className="btn btn-sm btn-outline-primary mx-auto d-block"
                           >
                             查看訂單
                           </Link>
