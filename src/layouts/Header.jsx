@@ -4,23 +4,27 @@ import {
   useGetFeaturedCategoryQuery,
   useGetProductBrandsQuery,
 } from "@features/products/productApi";
+import getFeaturedData from "@/data/featuredCategoryData";
 
 function Header() {
-  const {
-    data: categories,
-    isLoading: isGettingCategories,
-    isSuccess: hasGotCategories,
-  } = useGetFeaturedCategoryQuery();
+  // const {
+  //   data: categories,
+  //   isLoading: isGettingCategories,
+  //   isSuccess: hasGotCategories,
+  // } = useGetFeaturedCategoryQuery();
   const {
     data: brands,
     isLoading: isGettingBrands,
     isSuccess: hasGotBrands,
   } = useGetProductBrandsQuery();
 
-  const isLoading = isGettingCategories || isGettingBrands;
-  const isSuccess = hasGotCategories && hasGotBrands;
+  const isLoading = isGettingBrands;
+  const isSuccess = hasGotBrands;
+  // const isLoading = isGettingCategories || isGettingBrands;
+  // const isSuccess = hasGotCategories && hasGotBrands;
 
-  const featuredCategoriesList = categories?.data ?? [];
+  const featuredCategoriesList = getFeaturedData();
+  // const featuredCategoriesList = categories?.data ?? [];
   const brandList = brands?.data ?? [];
 
   const menuItems = featuredCategoriesList.map(category => ({
