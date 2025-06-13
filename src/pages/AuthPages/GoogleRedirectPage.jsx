@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+
 import { setCredentials } from "@features/auth/authSlice";
 
 function GoogleRedirectPage() {
