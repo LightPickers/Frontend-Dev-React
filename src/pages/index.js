@@ -5,6 +5,9 @@ export { default as ErrorPage } from "@pages/ErrorPage";
 export { default as LoginPage } from "@pages/AuthPages/LoginPage";
 export { default as RegisterPage } from "@pages/AuthPages/RegisterPage";
 export { default as GoogleRedirectPage } from "@pages/AuthPages/GoogleRedirectPage";
+export { default as GoogleRegisterPage } from "@pages/AuthPages/GoogleRegisterPage";
+export { default as ForgotPasswordPage } from "@pages/AuthPages/ForgotPasswordPage";
+export { default as ResetPasswordPage } from "@pages/AuthPages/ResetPasswordPage";
 
 // CheckoutPages
 export { default as CartPage } from "@pages/CheckoutPages/CartPage";

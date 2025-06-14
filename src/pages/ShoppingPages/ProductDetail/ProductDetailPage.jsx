@@ -139,7 +139,9 @@ function ProductDetailPage() {
               <div className="d-flex flex-column gap-md-5 gap-3">
                 <ProductContentNav id={id} />
 
-                <Outlet context={{ id, title, subtitle, description, primary_image, hashtags }} />
+                <Outlet
+                  context={{ id, title, name, subtitle, description, primary_image, hashtags }}
+                />
               </div>
             </section>
           </div>
