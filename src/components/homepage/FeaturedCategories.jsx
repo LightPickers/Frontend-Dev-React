@@ -56,7 +56,7 @@ function FeaturedCategories() {
   return (
     <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
       <div className="bg-gray-100">
-        <section className="container-sm container-fluid py-sm-30 py-15">
+        <section className="container-md container-fluid py-sm-30 py-15">
           <H2Primary className="heading-em-dash mb-sm-10 mb-5">矚目類別</H2Primary>
           <div className="row g-6">
             {shouldShowSkeleton
