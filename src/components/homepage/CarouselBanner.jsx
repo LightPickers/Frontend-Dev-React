@@ -1,14 +1,12 @@
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay, EffectFade } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Link } from "react-router-dom";
 
 import { H1Primary } from "@components/Headings";
-import SearchIcon from "@components/icons/SearchIcon";
 import getBannerCarouselPics from "@data/bannerCarouselPics";
 import useBreakpoint from "@/hooks/useBreakpoints";
 import BannerSearchBar from "@/components/homepage/BannerSearchBar";
