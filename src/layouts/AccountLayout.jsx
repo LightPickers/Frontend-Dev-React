@@ -45,8 +45,7 @@ function AccountLayout() {
                   }
                   alt="會員照片"
                   className="rounded-circle mb-2"
-                  width={80}
-                  height={80}
+                  style={{ width: "140px", height: "140px", objectFit: "cover" }}
                 />
                 <div>{user?.name || "取得帳戶中"}</div>
                 <div
@@ -69,6 +68,18 @@ function AccountLayout() {
                       }`}
                       style={{
                         color: location.pathname === item.path ? "#8BB0B7" : "#495057",
+                      }}
+                      onMouseOver={e => {
+                        if (location.pathname !== item.path) {
+                          e.currentTarget.style.color = "#4A6465";
+                          e.currentTarget.style.fontWeight = "bold";
+                        }
+                      }}
+                      onMouseOut={e => {
+                        if (location.pathname !== item.path) {
+                          e.currentTarget.style.color = "#495057";
+                          e.currentTarget.style.fontWeight = "normal";
+                        }
                       }}
                     >
                       {item.label}

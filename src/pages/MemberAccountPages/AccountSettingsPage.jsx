@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
 import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
@@ -142,6 +143,7 @@ function AccountSettingsPage() {
   return (
     <>
       <div className="container">
+        <Breadcrumbs />
         <div className="row g-4">
           <div className="col-lg-12">
             <div className="bg-white rounded p-4">
@@ -168,8 +170,7 @@ function AccountSettingsPage() {
                       }
                       alt="會員照片"
                       className="rounded-circle mb-2"
-                      width={190}
-                      height={190}
+                      style={{ width: "250px", height: "250px", objectFit: "cover" }}
                     />
                   </div>
                   <button
