@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
-import { useState, useMemo } from "react";
 import WishlistCard from "@/components/productpage/WishlistCard";
 
 function mapWishlistData(apiData) {
@@ -81,6 +82,7 @@ function WishlistPage() {
   }
   return (
     <div className="container">
+      <Breadcrumbs />
       <div className="row g-4">
         {/* 右側 */}
         <div className="col-lg-12">

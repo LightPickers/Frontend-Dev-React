@@ -53,6 +53,38 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    // 上傳照片
+    uploadPhoto: builder.mutation({
+      query: formData => ({
+        url: "/upload/image",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    // 寄送註冊成功信
+    registerSuccessEmail: builder.mutation({
+      query: () => ({
+        url: "/email/register-success",
+        method: "POST",
+      }),
+    }),
+    // 忘記密碼
+    resetPasswordEmail: builder.mutation({
+      query: body => ({
+        url: "/email/reset-password",
+        method: "POST",
+        body,
+      }),
+    }),
+    // 重設密碼
+    resetPasswordConfirm: builder.mutation({
+      query: ({ token, ...body }) => ({
+        url: `/users/password/reset?token=${token}`,
+        method: "PUT",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -64,4 +96,8 @@ export const {
   useGetUserProfileQuery,
   useLazyGetUserProfileQuery,
   useUpdateUserMutation,
+  useUploadPhotoMutation,
+  useRegisterSuccessEmailMutation,
+  useResetPasswordEmailMutation,
+  useResetPasswordConfirmMutation,
 } = userApi;

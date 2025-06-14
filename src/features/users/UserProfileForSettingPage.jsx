@@ -36,11 +36,29 @@ function UserProfileForSettingPage({
     formState: { isDirty, errors, dirtyFields },
   } = methods;
 
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
+
   // 保存原始表單數據，用於比較是否有實際更改
   const originalDataRef = useRef(null);
 
   // 監聽表單值的變化
   const watchAllFields = watch();
+
+  // 電話號碼格式化函數
+  const formatPhoneForDisplay = phoneNumber => {
+    if (!phoneNumber) return "未設定";
+
+    // 移除所有非數字字符
+    const cleanPhone = phoneNumber.replace(/\D/g, "");
+
+    if (cleanPhone.length === 10 && cleanPhone.startsWith("09")) {
+      const start = cleanPhone.substring(0, 2);
+      const end = cleanPhone.substring(cleanPhone.length - 2);
+      const middleStars = "*".repeat(Math.max(0, cleanPhone.length - 4));
+      return `${start}${middleStars}${end}`;
+    }
+  };
 
   // 實現自己的 "isDirty" 檢查，檢測實際內容是否改變
   const hasRealChanges = () => {
@@ -120,34 +138,26 @@ function UserProfileForSettingPage({
     <div className="container py-0 mt-0">
       <div className="row">
         <div className="col-12">
-          {/* <div className="card shadow rounded-4">
-            <div className="card-body">
-              <h2 className="card-title text-center mb-4">
-                {isEdit ? "編輯個人資料" : "會員註冊"}
-              </h2> */}
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
               <fieldset disabled={isSubmitting || isLoggingin}>
-                {/* Email */}
+                {/* Email 無修改模式*/}
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label required">
+                  <div
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     使用者帳號
-                  </label>
-                  <input
-                    type="email"
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                    id="email"
-                    placeholder="請輸入 Email"
-                    {...register("email")}
-                    disabled={isEdit}
-                  />
-                  {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+                  </div>
+                  <div className="fw-normal">{userData?.email || "未設定"}</div>
                 </div>
 
-                {/* 密碼 */}
+                {/* 密碼 目前只有註冊時才顯示*/}
                 {!isEdit && (
                   <div className="mb-3">
-                    <label htmlFor="password" className="form-label required">
+                    <label htmlFor="password" className="form-label">
                       密碼
                     </label>
                     <input
@@ -165,52 +175,142 @@ function UserProfileForSettingPage({
 
                 {/* 姓名 */}
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label required">
+                  <div
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     姓名
-                  </label>
-                  <input
-                    type="text"
-                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                    id="name"
-                    placeholder="請輸入姓名"
-                    {...register("name")}
-                  />
-                  {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                  </div>
+
+                  {!isEditingName ? (
+                    // 顯示模式 - 純文字
+                    <div className="d-flex align-items-end mb-1" style={{ gap: "8px" }}>
+                      <div className="fw-normal">{watchAllFields.name || "未設定"}</div>
+                      <button
+                        type="button"
+                        className="btn btn-link p-0 text-decoration-underline small"
+                        style={{
+                          color: "#4A6465",
+                          fontSize: "0.75rem",
+                        }}
+                        onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+                        onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+                        onClick={() => setIsEditingName(true)}
+                        disabled={isSubmitting || isLoggingin}
+                      >
+                        修改
+                      </button>
+                    </div>
+                  ) : (
+                    // 編輯模式 - 可input
+                    <div className="d-flex align-items-end gap-2">
+                      <div className="col-3 p-0">
+                        <input
+                          type="text"
+                          className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                          id="name"
+                          placeholder="請輸入姓名"
+                          {...register("name")}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-link p-0 text-decoration-underline small"
+                        style={{
+                          color: "#4A6465",
+                          fontSize: "0.75rem",
+                        }}
+                        onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+                        onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+                        onClick={() => setIsEditingName(false)}
+                        disabled={isSubmitting || isLoggingin}
+                      >
+                        取消
+                      </button>
+                    </div>
+                  )}
+
+                  {errors.name && (
+                    <div className="invalid-feedback d-block">{errors.name.message}</div>
+                  )}
                 </div>
 
                 {/* 電話 */}
                 <div className="mb-3">
-                  <label className="form-label required" htmlFor="registerPhone">
+                  <div
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     電話
-                  </label>
-                  <input
-                    type="text"
-                    className={`form-control ${errors.phone ? "is-invalid" : ""}`}
-                    id="registerPhone"
-                    placeholder="請輸入聯絡電話"
-                    {...register("phone")}
-                  />
-                  {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
-                </div>
+                  </div>
 
-                {/* 頭像 */}
-                {/* <div className="mb-3">
-                  <label className="form-label" htmlFor="avatar">
-                    頭像
-                  </label>
-                  <input
-                    type="text"
-                    className={`form-control ${errors.photo ? "is-invalid" : ""}`}
-                    id="avatar"
-                    placeholder="請輸入頭像網址"
-                    {...register("photo")}
-                  />
-                  {errors.photo && <div className="invalid-feedback">{errors.photo.message}</div>}
-                </div> */}
+                  {!isEditingPhone ? (
+                    // 顯示模式 - 純文字
+                    <div className="d-flex align-items-end mb-1" style={{ gap: "8px" }}>
+                      <div className="fw-normal">{formatPhoneForDisplay(watchAllFields.phone)}</div>
+                      <button
+                        type="button"
+                        className="btn btn-link p-0 text-decoration-underline small"
+                        style={{
+                          color: "#4A6465",
+                          fontSize: "0.75rem",
+                        }}
+                        onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+                        onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+                        onClick={() => setIsEditingPhone(true)}
+                        disabled={isSubmitting || isLoggingin}
+                      >
+                        修改
+                      </button>
+                    </div>
+                  ) : (
+                    // 編輯模式 - 可input
+                    <div className="d-flex align-items-end gap-2">
+                      <div className="col-3 p-0">
+                        <input
+                          type="text"
+                          className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+                          id="registerPhone"
+                          placeholder="請輸入聯絡電話"
+                          {...register("phone")}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-link p-0 text-decoration-underline small"
+                        style={{
+                          color: "#4A6465",
+                          fontSize: "0.75rem",
+                        }}
+                        onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+                        onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+                        onClick={() => setIsEditingPhone(false)}
+                        disabled={isSubmitting || isLoggingin}
+                      >
+                        取消
+                      </button>
+                    </div>
+                  )}
+
+                  {errors.phone && (
+                    <div className="invalid-feedback d-block">{errors.phone.message}</div>
+                  )}
+                </div>
 
                 {/* 性別 */}
                 <div className="mb-3">
-                  <label className="form-label required">性別</label>
+                  <label
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
+                    性別
+                  </label>
                   <div className="d-flex gap-3">
                     <div className="form-check">
                       <input
@@ -220,9 +320,9 @@ function UserProfileForSettingPage({
                         value="male"
                         {...register("gender")}
                       />
-                      <label htmlFor="male" className="form-check-label">
+                      <div htmlFor="male" className="form-check-label">
                         男性
-                      </label>
+                      </div>
                     </div>
                     <div className="form-check">
                       <input
@@ -256,9 +356,15 @@ function UserProfileForSettingPage({
 
                 {/* 生日 */}
                 <div className="mb-3">
-                  <label htmlFor="birthDate" className="form-label required">
+                  <div
+                    htmlFor="birthDate"
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     生日
-                  </label>
+                  </div>
                   <input
                     type="date"
                     className={`form-control ${errors.birth_date ? "is-invalid" : ""}`}
@@ -276,9 +382,15 @@ function UserProfileForSettingPage({
 
                 {/* 詳細地址 */}
                 <div className="mb-3">
-                  <label htmlFor="address" className="form-label required">
+                  <div
+                    htmlFor="address"
+                    className=" small mb-0 fw-bold"
+                    style={{
+                      color: "#939393",
+                    }}
+                  >
                     地址
-                  </label>
+                  </div>
                   <input
                     type="text"
                     className={`form-control ${errors.address_detail ? "is-invalid" : ""}`}
@@ -309,8 +421,6 @@ function UserProfileForSettingPage({
         </div>
       </div>
     </div>
-    //   </div>
-    // </div>
   );
 }
 

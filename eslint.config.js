@@ -35,6 +35,7 @@ export default [
         alert: "readonly",
         confirm: "readonly",
         prompt: "readonly",
+        FormData: "readonly",
 
         // 計時器
         setTimeout: "readonly",
