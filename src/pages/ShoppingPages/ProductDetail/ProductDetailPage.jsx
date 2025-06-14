@@ -2,14 +2,7 @@ import { useParams, Outlet } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 
 import { useLazyGetProductByIdQuery } from "@features/products/productApi";
-import {
-  H3Primary,
-  H4Primary,
-  H5Primary,
-  H5Secondary,
-  H6Primary,
-  H6Secondary,
-} from "@components/Headings";
+import { H3Primary, H4Primary, H5Primary, H5Secondary, H6Primary } from "@components/Headings";
 import { TextMedium } from "@components/TextTypography";
 import { formatPrice } from "@utils/formatPrice";
 import ProductContentNav from "@components/productDetailPage/ProductContentNav";
@@ -17,13 +10,14 @@ import Breadcrumbs from "@components/Breadcrumbs";
 import ProductGalleryCarousel from "@components/productDetailPage/ProductGalleryCarousel";
 import AddToCartBtn from "@components/productDetailPage/AddToCartBtn";
 import AddToWishlistBtn from "@components/productDetailPage/AddToWishlistBtn";
-import { productDetailTestData } from "@data/productDetailTestData";
 import ProductSidebar from "@components/productDetailPage/ProductSidebar";
 import ProductGalleryMobile from "@components/productDetailPage/ProductGalleryMobile";
+import ProductDetailSkeleton from "@/components/loading/ProductDetailSkeleton";
 
 function ProductDetailPage() {
   const { productId } = useParams();
-  const [triggerGetProductById, { data: getProductResponse }] = useLazyGetProductByIdQuery();
+  const [triggerGetProductById, { data: getProductResponse, isLoading: isGettingProduct }] =
+    useLazyGetProductByIdQuery();
 
   const fetchProduct = useCallback(async () => {
     if (productId) {
@@ -38,10 +32,9 @@ function ProductDetailPage() {
   useEffect(() => {
     fetchProduct();
   }, [fetchProduct]);
-  console.log({ getProductResponse });
 
   const { data = {}, imageCount = 0, imageList = [] } = getProductResponse ?? {};
-  // const { data = {}, imageCount = 0, imageList = [] } = productDetailTestData ?? {};
+
   const {
     id = "",
     name = "",
@@ -59,7 +52,9 @@ function ProductDetailPage() {
   } = data ?? {};
   const secondaryImages = imageList?.map(i => i.image);
   const productImages = [primary_image, ...secondaryImages];
-  // console.log({ data }, { productImages });
+
+  if (isGettingProduct) return <ProductDetailSkeleton />;
+
   return (
     <div className="product-detail py-20 d-flex flex-column gap-10">
       <Breadcrumbs />
