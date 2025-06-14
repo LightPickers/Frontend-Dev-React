@@ -5,6 +5,9 @@ import {
   RegisterPage,
   LoginPage,
   GoogleRedirectPage,
+  GoogleRegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
   AccountDashboardPage,
   AccountSettingsPage,
   OrderHistoryPage,
@@ -37,6 +40,9 @@ const ROUTES = {
     REGISTER: "/register", // 註冊
     LOGIN: "/login", // 登入
     GOOGLE_REDIRECT: "/google-callback", // google 登入用
+    GOOGLE_REGISTER: "/google-register", // google 註冊用
+    FORGOT_PASSWORD: "/forgot-password", // 忘記密碼
+    RESET_PASSWORD: "/reset-password", // 重設密碼
   },
   ACCOUNT: {
     ROOT: "/account/profile", // 會員中心首頁（目前沒線稿）
@@ -79,6 +85,18 @@ const authRoutes = [
   {
     path: ROUTES.AUTH.GOOGLE_REDIRECT,
     element: <GoogleRedirectPage />,
+  },
+  {
+    path: ROUTES.AUTH.GOOGLE_REGISTER,
+    element: <GoogleRegisterPage />,
+  },
+  {
+    path: ROUTES.AUTH.FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: ROUTES.AUTH.RESET_PASSWORD,
+    element: <ResetPasswordPage />,
   },
 ];
 
