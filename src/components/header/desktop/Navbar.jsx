@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { array, bool, string } from "prop-types";
 import classNames from "classnames";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import NavMenu from "@components/header/desktop/NavMenu";
 import UserMenu from "@components/header/desktop/UserMenu";
-import { TextLarge } from "@components/TextTypography";
-import { MenuIcon } from "@/components/icons";
+import { MenuIcon } from "@components/icons";
 
 function Navbar({ menuItems, isLoading, isSuccess, className }) {
   const navClasses = classNames(
@@ -43,7 +44,13 @@ function Navbar({ menuItems, isLoading, isSuccess, className }) {
 
   const renderNavMenu = () => {
     if (isLoading)
-      return <TextLarge className="me-auto py-2 px-xl-3 px-lg-2">載入精選目錄中…</TextLarge>;
+      return (
+        <div className="d-flex gap-4">
+          {[...Array(4)].map((_, idx) => (
+            <Skeleton key={idx} height={30} width={80} />
+          ))}
+        </div>
+      );
     if (isSuccess) return <NavMenu menuItems={menuItems} />;
   };
 

@@ -1,11 +1,11 @@
-import PropTypes, { array, bool } from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { array, bool } from "prop-types";
+import { Link } from "react-router-dom";
 import { useRef } from "react";
 
 import { ArrowDownIcon } from "@components/icons";
 import { TextLarge, TextMedium } from "@components/TextTypography";
 
-function NavMenu({ menuItems, isLoading }) {
+function NavMenu({ menuItems }) {
   const hoverTimeouts = useRef({}); // 儲存每個 dropdown 的 timeout ID
 
   const handleMouseEnter = id => {
