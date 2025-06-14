@@ -13,7 +13,15 @@ body {
   line-height: lh.$line-height-base;
   color: colors.$primary-1000;
   background-color: colors.$gray-100;
-  margin-top: 88px; // 預留導覽列空間
+  margin-top: 68px; // 預留導覽列空間
+
+  @include media-breakpoint-up(sm) {
+    margin-top: 92px;
+  }
+
+  @include media-breakpoint-up(md) {
+    margin-top: 88px;
+  }
 }
 
 img {
@@ -46,7 +54,9 @@ h5,
 h6 {
   margin-bottom: 0;
 }
-
+// * {
+//   outline: red solid 1px;
+// }
 // 標題
 .h1 {
   font-size: sizes.$h1-font-size;
