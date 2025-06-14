@@ -52,7 +52,7 @@ function OrderHistoryPage() {
     } else {
       newExpanded.add(orderId);
 
-      // 如果還沒載入過這個訂單的詳細資料，就載入
+      // 如果還沒載入過這個訂單的詳細資料，就載
       if (!orderDetailsCache[orderId]) {
         try {
           const result = await triggerGetOrderById(orderId);
