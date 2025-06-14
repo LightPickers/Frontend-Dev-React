@@ -1,4 +1,3 @@
-/* global FormData */
 import { toast } from "react-toastify";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
