@@ -1,8 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 
 import { H3Primary, H5Secondary } from "@components/Headings";
-import DeltaRenderer from "@components/DeltaRenderer";
-import ProductArticle from "@/components/productDetailPage/ProductArticle";
+import DeltaToHtmlRenderer from "@components/productDetailPage/DeltaToHtmlRenderer";
 
 function ProductDescriptionPanel() {
   const { id, title, subtitle, description, primary_image, hashtags } = useOutletContext();
@@ -31,8 +30,7 @@ function ProductDescriptionPanel() {
             );
           })}
         </div>
-        {/* {description && <DeltaRenderer delta={description} />} */}
-        {description && <ProductArticle delta={description} />}
+        {description && <DeltaToHtmlRenderer delta={description} />}
       </section>
     </article>
   );

@@ -5,7 +5,7 @@
 // productCard
 .product-card {
   height: auto;
-  width: 280px;
+  min-width: 280px;
   border: 1px solid colors.$gray-100;
   border-radius: 8px;
   overflow: hidden;
@@ -65,7 +65,7 @@
       height: 100%;
       background-color: rgba(110, 132, 133, 0.3);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
       z-index: 1;
       pointer-events: none;
     }
@@ -135,7 +135,7 @@
       transform: translate(-50%, -50%);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
       z-index: 2;
     }
   }

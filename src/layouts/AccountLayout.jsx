@@ -1,7 +1,7 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
+import { useState } from "react";
 
 import { useGetUserProfileQuery } from "@/features/users/userApi";
-import { useState } from "react";
 import { ArrowDownIcon } from "@/components/icons";
 import {
   H3Primary,

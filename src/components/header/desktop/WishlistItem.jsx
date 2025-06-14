@@ -77,16 +77,18 @@ function WishlistItem({
           cursor: isCheckboxDisabled ? "not-allowed" : "pointer",
         }}
       >
-        <img
-          src={primary_image}
-          alt={name}
-          className="product-img"
-          // className={`product-img ${isAddedToCart ? "added-to-cart-img" : ""}`}
-          loading="lazy"
-          style={{
-            opacity: isAddedToCart ? 0.7 : 1,
-          }}
-        />
+        <div className="product-img">
+          <img
+            src={primary_image}
+            alt={name}
+            className="product-img"
+            // className={`product-img ${isAddedToCart ? "added-to-cart-img" : ""}`}
+            loading="lazy"
+            style={{
+              opacity: isAddedToCart ? 0.7 : 1,
+            }}
+          />
+        </div>
         <div className="product-info text-truncate">
           <H6Secondary
             isBold={false}
