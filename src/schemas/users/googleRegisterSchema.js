@@ -5,7 +5,6 @@ import {
   addressDistrictSchema,
   addressCitySchema,
   emailSchema,
-  passwordSchema,
   genderSchema,
   nameSchema,
   phoneSchema,
@@ -13,7 +12,7 @@ import {
   zipcodeSchema,
 } from "@schemas/users/userSchema";
 
-export const registerSchema = z.object({
+export const googleRegisterSchema = z.object({
   email: emailSchema,
   name: nameSchema,
   phone: phoneSchema,
@@ -22,7 +21,6 @@ export const registerSchema = z.object({
   address_district: addressDistrictSchema,
   address_zipcode: zipcodeSchema,
   address_detail: addressDetailSchema,
-  password: passwordSchema,
   address_city: addressCitySchema,
   birth_year: z.string().min(1, "請選擇年份"),
   birth_month: z.string().min(1, "請選擇月份"),
