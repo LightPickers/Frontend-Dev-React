@@ -194,21 +194,21 @@ const accountRoutes = [
         path: ROUTES.ACCOUNT.SETTINGS,
         element: <AccountSettingsPage />,
         handle: {
-          crumb: () => <TextMedium>會員資料</TextMedium>,
+          crumb: () => <TextMedium>我的帳戶</TextMedium>,
         },
       },
       {
         path: ROUTES.ACCOUNT.ORDERS,
         element: <OrderHistoryPage />,
         handle: {
-          crumb: () => <TextMedium>訂單紀錄</TextMedium>,
+          crumb: () => <TextMedium>訂單資訊</TextMedium>,
         },
       },
       {
         path: ROUTES.ACCOUNT.WISHLISTS,
         element: <WishlistPage />,
         handle: {
-          crumb: () => <TextMedium>願望清單</TextMedium>,
+          crumb: () => <TextMedium>收藏資訊</TextMedium>,
         },
       },
     ],
