@@ -3,6 +3,7 @@
 @use "../../stylesheets/sizes" as sizes;
 
 .category-card {
+  position: relative;
   max-width: 320px;
   min-width: 163.5px;
   border: 2px solid colors.$gray-200;
