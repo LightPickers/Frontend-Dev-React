@@ -8,7 +8,7 @@ import { SearchIcon } from "@/components/icons";
 function MobileSearchbar({ isMenuOpen, closeMenu }) {
   const [searchValue, setSearchValue] = useState("");
   const [hasError, setHasError] = useState(false);
-  const inputRef = useRef();
+  const inputRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,6 +71,7 @@ function MobileSearchbar({ isMenuOpen, closeMenu }) {
               "is-invalid": hasError,
             }
           )}
+          aria-label="Search"
         />
         <button
           type="button"
