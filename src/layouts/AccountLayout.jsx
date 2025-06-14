@@ -3,6 +3,16 @@ import { Outlet, useLocation, Link } from "react-router-dom";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import { useState } from "react";
 import { ArrowDownIcon } from "@/components/icons";
+import {
+  H3Primary,
+  H3Secondary,
+  H4Primary,
+  H5Primary,
+  H5Secondary,
+  H6Primary,
+  H6Secondary,
+} from "@/components/Headings";
+import { TextMedium } from "@/components/TextTypography";
 
 function AccountLayout() {
   const { data: userData, isLoading } = useGetUserProfileQuery();
@@ -63,8 +73,8 @@ function AccountLayout() {
                   <li key={item.path}>
                     <Link
                       to={item.path}
-                      className={`text-decoration-none d-inline-block py-2 ${
-                        location.pathname === item.path ? "fw-bold" : "text-secondary"
+                      className={`text-decoration-none d-inline-block py-2 fw-bold ${
+                        location.pathname === item.path ? "text-primary-custom" : "text-secondary"
                       }`}
                       style={{
                         color: location.pathname === item.path ? "#8BB0B7" : "#495057",
@@ -72,13 +82,11 @@ function AccountLayout() {
                       onMouseOver={e => {
                         if (location.pathname !== item.path) {
                           e.currentTarget.style.color = "#4A6465";
-                          e.currentTarget.style.fontWeight = "bold";
                         }
                       }}
                       onMouseOut={e => {
                         if (location.pathname !== item.path) {
                           e.currentTarget.style.color = "#495057";
-                          e.currentTarget.style.fontWeight = "normal";
                         }
                       }}
                     >
