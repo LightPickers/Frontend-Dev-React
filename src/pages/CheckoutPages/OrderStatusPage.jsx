@@ -20,7 +20,7 @@ function OrderStatusPage() {
 
   useEffect(() => {
     // 當訂單狀態為已付款時
-    if (orderData?.order?.status === "已付款") {
+    if (orderData?.order?.status === "paid") {
       // 清空購物車中的所有商品
       if (cartData?.data?.items) {
         cartData.data.items.forEach(item => {
@@ -103,7 +103,7 @@ function OrderStatusPage() {
                 </div>
               </div>
             </div>
-            {status === "已付款" ? (
+            {status === "paid" ? (
               <div className="d-flex flex-column align-items-center gap-15">
                 <H2Primary>付款成功！</H2Primary>
 
