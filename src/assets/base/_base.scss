@@ -61,11 +61,11 @@ h6 {
 .h1 {
   font-size: sizes.$h1-font-size;
   letter-spacing: 0.16em;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     font-size: sizes.$h2-font-size;
     letter-spacing: 0.14em;
   }
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h3-font-size;
     letter-spacing: 0.13em;
   }
@@ -73,7 +73,7 @@ h6 {
 .h2 {
   font-size: sizes.$h2-font-size;
   letter-spacing: 0.14em;
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h3-font-size;
     letter-spacing: 0.13em;
   }
@@ -81,11 +81,11 @@ h6 {
 .h3 {
   font-size: sizes.$h3-font-size;
   letter-spacing: 0.13em;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     font-size: sizes.$h4-font-size;
     letter-spacing: 0.12em;
   }
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h5-font-size;
     letter-spacing: 0.1em;
   }
@@ -93,11 +93,11 @@ h6 {
 .h4 {
   font-size: sizes.$h4-font-size;
   letter-spacing: 0.12em;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     font-size: sizes.$h5-font-size;
     letter-spacing: 0.1em;
   }
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h6-font-size;
     letter-spacing: 0.09em;
   }
@@ -105,7 +105,7 @@ h6 {
 .h5 {
   font-size: sizes.$h5-font-size;
   letter-spacing: 0.1em;
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h6-font-size;
     letter-spacing: 0.09em;
   }
