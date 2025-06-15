@@ -8,7 +8,7 @@ function WhyUsSection() {
   const isSmUp = useBreakpoint("xs");
   return (
     <div className="bg-white">
-      <section className="container-md container-fluid py-md-30 py-15">
+      <section className="container-md container-fluid py-lg-30 py-15">
         <H2Primary className="heading-em-dash mb-10">為什麼選擇我們</H2Primary>
         <main className="d-flex flex-column gap-md-20 gap-sm-15 gap-10">
           {promotionalData.map((reason, index) => {

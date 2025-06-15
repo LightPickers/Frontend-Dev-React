@@ -12,7 +12,7 @@ import AddToCartBtn from "@components/productDetailPage/AddToCartBtn";
 import AddToWishlistBtn from "@components/productDetailPage/AddToWishlistBtn";
 import ProductSidebar from "@components/productDetailPage/ProductSidebar";
 import ProductGalleryMobile from "@components/productDetailPage/ProductGalleryMobile";
-import ProductDetailSkeleton from "@/components/loading/ProductDetailSkeleton";
+import ProductDetailSkeleton from "@components/loaders/ProductDetailSkeleton";
 
 function ProductDetailPage() {
   const { productId } = useParams();

@@ -61,11 +61,11 @@ h6 {
 .h1 {
   font-size: sizes.$h1-font-size;
   letter-spacing: 0.16em;
-  @include media-breakpoint-down(lg) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h2-font-size;
     letter-spacing: 0.14em;
   }
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(sm) {
     font-size: sizes.$h3-font-size;
     letter-spacing: 0.13em;
   }
