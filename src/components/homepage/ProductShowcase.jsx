@@ -9,7 +9,7 @@ import { HeadingToArrowIcon } from "@components/icons";
 function ProductShowcase({ title, products, isLoading }) {
   return (
     <>
-      <section className="container-md container-fluid py-20">
+      <section className="container-md container-fluid py-20 py-md-15">
         {/* 區塊標題 */}
         <H2Primary className="heading-em-dash mb-md-10 mb-5">{title}</H2Primary>
         {/* 卡片輪播 */}
