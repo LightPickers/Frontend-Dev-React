@@ -388,8 +388,8 @@ function OrderHistoryPage() {
 
                     {/* 桌面-訂單內容 */}
                     {filteredOrders.length === 0 ? (
-                      <div className="text-center text-muted py-5 w-100">
-                        <TextMedium className="mb-3">查無符合條件的訂單</TextMedium>
+                      <div className="text-center py-5 w-100">
+                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
                         <BtnPrimary as={Link} to="/" size="medium">
                           前往首頁探索商品
                         </BtnPrimary>
@@ -454,10 +454,10 @@ function OrderHistoryPage() {
                   {/* 手機版卡片式布局 - 只在小螢幕顯示 */}
                   <div className="d-lg-none">
                     {filteredOrders.length === 0 ? (
-                      <div className="text-center text-muted py-5 w-100">
-                        <TextMedium className="mb-3">查無符合條件的訂單</TextMedium>
+                      <div className="text-center text-muted py-10 w-100">
+                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
                         <div>
-                          <BtnPrimary as={Link} to="/" size="medium">
+                          <BtnPrimary as={Link} to="/" size="small">
                             前往首頁探索商品
                           </BtnPrimary>
                         </div>
