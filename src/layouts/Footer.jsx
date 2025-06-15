@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaLine } from "react-icons/fa";
 
 import { TextLarge, TextMedium } from "@components/TextTypography";
+import { FacebookIcon, InstagramIcon, LineIcon } from "@components/icons";
 
 function Footer() {
   const APP_BASE = import.meta.env.VITE_APP_BASE;
@@ -17,15 +17,15 @@ function Footer() {
               <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" className="footer-logo" />
             </Link>
             <div className="social-links d-flex gap-3">
-              <a href="#" className="social-link" aria-label="Facebook">
-                <FaFacebookF />
-              </a>
-              <a href="#" className="social-link" aria-label="Instagram">
-                <FaInstagram />
-              </a>
-              <a href="#" className="social-link" aria-label="Line">
-                <FaLine />
-              </a>
+              <span className="social-icon" aria-label="Facebook">
+                <FacebookIcon size={20} title="Facebook" />
+              </span>
+              <span className="social-icon" aria-label="Instagram">
+                <InstagramIcon size={20} title="Instagram" />
+              </span>
+              <span className="social-icon" aria-label="Line">
+                <LineIcon size={20} title="Line" />
+              </span>
             </div>
           </div>
 
@@ -34,14 +34,10 @@ function Footer() {
             <TextLarge className="footer-title mb-3">關於「拾光堂」</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium as={Link} to="/faq" className="footer-link">
-                  常見問題
-                </TextMedium>
+                <TextMedium className="footer-link">常見問題</TextMedium>
               </li>
               <li>
-                <TextMedium as={Link} to="/contact" className="footer-link">
-                  聯絡資訊
-                </TextMedium>
+                <TextMedium className="footer-link">聯絡資訊</TextMedium>
               </li>
             </ul>
           </div>
@@ -71,9 +67,7 @@ function Footer() {
             <TextLarge className="footer-title mb-3">收購流程</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium as={Link} to="/selling-guide" className="footer-link">
-                  賣家須知
-                </TextMedium>
+                <TextMedium className="footer-link">賣家須知</TextMedium>
               </li>
             </ul>
           </div>
@@ -82,14 +76,10 @@ function Footer() {
             <TextLarge className="footer-title mb-3">用戶服務</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium as={Link} to="/settings" className="footer-link">
-                  會員中心
-                </TextMedium>
+                <TextMedium className="footer-link">會員中心</TextMedium>
               </li>
               <li>
-                <TextMedium as={Link} to="/orders" className="footer-link">
-                  訂單查詢
-                </TextMedium>
+                <TextMedium className="footer-link">訂單查詢</TextMedium>
               </li>
             </ul>
           </div>
