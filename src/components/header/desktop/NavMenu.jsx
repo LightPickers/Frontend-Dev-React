@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { array, bool } from "prop-types";
+import { Link } from "react-router-dom";
 import { useRef } from "react";
 
 import { ArrowDownIcon } from "@components/icons";
@@ -22,23 +22,28 @@ function NavMenu({ menuItems }) {
   };
 
   return (
-    <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-5">
+    <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-xxl-5 gap-xl-4 gap-lg-3 d-flex">
       {menuItems.map(category => (
         <li
           key={category.id}
           id={`dropdown-${category.id}`}
-          className="nav-item dropdown py-2 px-3"
           onMouseEnter={() => handleMouseEnter(category.id)}
           onMouseLeave={() => handleMouseLeave(category.id)}
+          // px-xl-3 px-lg-2
+          className="nav-item dropdown py-2 px-xl-3 px-lg-2"
         >
           <TextLarge
             as="a"
             className="nav-link d-flex align-items-center"
             role="button"
             aria-expanded="false"
+            fluid
           >
             {category.name}
-            <ArrowDownIcon className="nav-dropdown-icon" />
+            <ArrowDownIcon
+              //d-none d-xl-flex
+              className="nav-dropdown-icon "
+            />
           </TextLarge>
 
           <ul className="dropdown-menu dropdown-wrapper mt-3">
@@ -57,17 +62,19 @@ function NavMenu({ menuItems }) {
         </li>
       ))}
 
-      <li className="nav-item py-2 px-3">
+      {/* <li className="nav-item py-2 px-xl-3 px-lg-2">
         <TextLarge as={NavLink} to="/sell" className="nav-link">
           其他
         </TextLarge>
-      </li>
+      </li> */}
     </ul>
   );
 }
 
 NavMenu.propTypes = {
-  menuItems: PropTypes.array.isRequired,
+  menuItems: array.isRequired,
+  isLoading: bool.isRequired,
+  isSuccess: bool.isRequired,
 };
 
 export default NavMenu;

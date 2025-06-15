@@ -10,12 +10,13 @@ $h6-font-size: $font-size-base; // 16px
 $small-font-size: $font-size-base * 0.875; // 14px
 $label-font-size: $font-size-base * 0.75; //12px
 
-$fluid-font-xs: clamp(#{$label-font-size * 0.85}, 1.5vw, $label-font-size);
-$fluid-font-sm: clamp($label-font-size, 2vw, $h6-font-size);
-$fluid-font-md: clamp($h6-font-size, 2.5vw, $h5-font-size);
-$fluid-font-lg: clamp($h5-font-size, 3vw, $h4-font-size);
-$fluid-font-xl: clamp($h4-font-size, 4vw, $h2-font-size);
-$fluid-font-2xl: clamp($h3-font-size, 5vw, $h1-font-size);
+$fluid-font-xs: clamp(#{$label-font-size * 0.85}, 1vw, $label-font-size);
+$fluid-font-sm: clamp($label-font-size, 1.5vw, $small-font-size);
+$fluid-font-md: clamp($small-font-size, 2vw, $h6-font-size);
+$fluid-font-lg: clamp($h6-font-size, 2.5vw, $h5-font-size);
+$fluid-font-xl: clamp($h5-font-size, 3vw, $h4-font-size);
+$fluid-font-2xl: clamp($h4-font-size, 4vw, $h2-font-size);
+$fluid-font-3xl: clamp($h3-font-size, 5vw, $h1-font-size);
 
 $font-sizes: (
   1: $h1-font-size,
@@ -23,7 +24,9 @@ $font-sizes: (
   3: $h3-font-size,
   4: $h4-font-size,
   5: $h5-font-size,
+  //l
   6: $h6-font-size,
+  //m
   7: $small-font-size,
   8: $label-font-size,
 );

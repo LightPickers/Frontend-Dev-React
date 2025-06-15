@@ -184,10 +184,15 @@ function OrderConfirmationPage() {
                           >
                             <div className="d-flex align-items-center gap-3 p-3">
                               <img
+                                className="rounded-1"
                                 src={item.primary_image}
                                 alt={item.name}
-                                className="rounded-1"
-                                width="60"
+                                style={{
+                                  width: "60px",
+                                  height: "60px",
+                                  objectFit: "cover",
+                                  flexShrink: 0,
+                                }}
                               />
                               <div>
                                 <p
@@ -314,7 +319,12 @@ function OrderConfirmationPage() {
                           className="rounded-1"
                           src={item.primary_image}
                           alt={item.name}
-                          width="90"
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            flexShrink: 0,
+                          }}
                         />
                         <div className="d-flex flex-column gap-3 w-100">
                           <div className="text-gray-600 h-75 text-multiline-truncate">

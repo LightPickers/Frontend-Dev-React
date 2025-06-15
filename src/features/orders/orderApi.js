@@ -50,13 +50,20 @@ export const orderApi = createApi({
       }),
       invalidatesTags: (result, error, { orderId }) => [{ type: "Order", id: orderId }],
     }),
-    // 取得所有訂單
+
+    //取得所有訂單
     getOrders: builder.query({
       query: () => "/orders",
-      providesTags: result =>
-        result
-          ? [...result.map(({ id }) => ({ type: "Order", id })), { type: "Order", id: "LIST" }]
-          : [{ type: "Order", id: "LIST" }],
+      // 修正
+      providesTags: (result, error) => {
+        if (result?.data && Array.isArray(result.data)) {
+          return [
+            ...result.data.map(({ id }) => ({ type: "Order", id })),
+            { type: "Order", id: "LIST" },
+          ];
+        }
+        return [{ type: "Order", id: "LIST" }];
+      },
     }),
   }),
 });

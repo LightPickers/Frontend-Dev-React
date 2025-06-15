@@ -13,7 +13,15 @@ body {
   line-height: lh.$line-height-base;
   color: colors.$primary-1000;
   background-color: colors.$gray-100;
-  margin-top: 88px; // 預留導覽列空間
+  margin-top: 68px; // 預留導覽列空間
+
+  @include media-breakpoint-up(sm) {
+    margin-top: 92px;
+  }
+
+  @include media-breakpoint-up(md) {
+    margin-top: 88px;
+  }
 }
 
 img {
@@ -22,6 +30,7 @@ img {
 }
 
 a {
+  color: inherit;
   text-decoration: none;
 }
 
@@ -32,6 +41,7 @@ textarea {
 ol,
 ul {
   list-style: none;
+  padding-left: 0;
 }
 
 // 若需要文字底部空間，可置 spacer 設置
@@ -44,7 +54,9 @@ h5,
 h6 {
   margin-bottom: 0;
 }
-
+// * {
+//   outline: red solid 1px;
+// }
 // 標題
 .h1 {
   font-size: sizes.$h1-font-size;
@@ -166,6 +178,26 @@ h6 {
   letter-spacing: 0.12em;
 }
 
+.text-l-fluid {
+  font-size: sizes.$fluid-font-lg;
+  letter-spacing: clamp(0.09em, 0.5vw, 0.1em);
+}
+
+.text-m-fluid {
+  font-size: sizes.$fluid-font-md;
+  letter-spacing: clamp(0.07em, 0.5vw, 0.09em);
+}
+
+.text-s-fluid {
+  font-size: sizes.$fluid-font-sm;
+  letter-spacing: 0.07em;
+}
+
+.label-fluid {
+  font-size: sizes.$fluid-font-xs;
+  letter-spacing: 0.12em;
+}
+
 .fw-bold {
   font-weight: fonts.$font-weight-bold;
 }
@@ -237,12 +269,13 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition:
-    color 0.3s ease,
-    transform 0.3 ease;
+  z-index: 10000;
 
   & svg {
     color: colors.$danger;
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
   }
 
   &:hover svg {

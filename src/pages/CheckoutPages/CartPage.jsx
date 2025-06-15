@@ -143,10 +143,15 @@ function CartPage() {
                             >
                               <div className="d-flex align-items-center gap-3 p-3">
                                 <img
+                                  className="rounded-1"
                                   src={item.primary_image}
                                   alt={item.name}
-                                  className="rounded-1"
-                                  width="60"
+                                  style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    objectFit: "cover",
+                                    flexShrink: 0,
+                                  }}
                                 />
                                 <div>
                                   <p
@@ -245,7 +250,12 @@ function CartPage() {
                             className="rounded-1"
                             src={item.primary_image}
                             alt={item.name}
-                            width="90px"
+                            style={{
+                              width: "90px",
+                              height: "90px",
+                              objectFit: "cover",
+                              flexShrink: 0,
+                            }}
                           />
                           <div className="d-flex flex-column justify-content-between w-100">
                             <div className="d-flex justify-content-between align-items-center">

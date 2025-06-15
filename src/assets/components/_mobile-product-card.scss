@@ -1,0 +1,95 @@
+@use "../stylesheets/fonts" as fonts;
+@use "../stylesheets/colors" as colors;
+@use "../stylesheets/sizes" as sizes;
+
+.mobile-product-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 285px;
+  width: 164px;
+  border-radius: 8px;
+  border: 1px solid colors.$gray-100;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover,
+  &:active {
+    .img-container::before {
+      opacity: 1;
+    }
+
+    .img-container img {
+      transform: scale(1.1);
+      filter: blur(2px);
+    }
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(-0.5px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  // 圖片
+  .img-container {
+    position: relative;
+    height: 164px;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(110, 132, 133, 0.3);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: center center;
+      transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+    }
+
+    .card-badge {
+      position: absolute;
+      padding: 4px 12px;
+      background-color: colors.$primary-600;
+      border-radius: 0 100px 100px 0;
+      color: colors.$white;
+      top: 0;
+      left: 0;
+      z-index: 3;
+    }
+    .stretched-link {
+      z-index: 10;
+      cursor: pointer;
+    }
+  }
+
+  .card-content {
+    padding: 8px 8px 12px;
+    background-color: colors.$white;
+    flex-grow: 1;
+  }
+}
