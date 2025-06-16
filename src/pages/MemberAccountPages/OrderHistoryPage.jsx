@@ -16,6 +16,7 @@ import {
   H6Secondary,
 } from "@/components/Headings";
 import { TextMedium } from "@/components/TextTypography";
+import { BtnPrimary } from "@/components/Buttons";
 
 function OrderHistoryPage() {
   const [hoveredTab, setHoveredTab] = useState(null);
@@ -99,12 +100,9 @@ function OrderHistoryPage() {
             <div className="bg-white rounded p-4">
               <div className="text-center text-danger py-5">
                 <TextMedium className="mb-3">載入訂單資料時發生錯誤</TextMedium>
-                <button
-                  className="btn btn-outline-primary"
-                  onClick={() => window.location.reload()}
-                >
+                <BtnPrimary size="medium" onClick={() => window.location.reload()}>
                   重新載入
-                </button>
+                </BtnPrimary>
               </div>
             </div>
           </div>
@@ -285,27 +283,15 @@ function OrderHistoryPage() {
             </div>
 
             <div className="text-center">
-              <button
-                className="btn btn-outline-primary btn-sm"
-                style={{
-                  color: "#4A6465",
-                  borderColor: "#4A6465",
-                }}
+              <BtnPrimary
+                size="small"
                 onClick={e => {
                   e.stopPropagation();
                   handleViewOrder(order.id);
                 }}
-                onMouseOver={e => {
-                  e.currentTarget.style.color = "#8BB0B7";
-                  e.currentTarget.style.borderColor = "#8BB0B7";
-                }}
-                onMouseOut={e => {
-                  e.currentTarget.style.color = "#4A6465";
-                  e.currentTarget.style.borderColor = "#4A6465";
-                }}
               >
-                查看完整訂單
-              </button>
+                查看訂單
+              </BtnPrimary>
             </div>
           </div>
         )}
@@ -349,8 +335,7 @@ function OrderHistoryPage() {
                       { key: "all", label: "全部", count: countAll },
                       { key: "pending", label: "處理中", count: countPending },
                       { key: "paid", label: "已完成", count: countPaid },
-                      // { key: "canceled", label: "已取消", count: countCanceled },
-                      //目前沒有取消訂單功能
+                      { key: "canceled", label: "已取消", count: countCanceled },
                     ].map(tab => (
                       <button
                         key={tab.key}
@@ -403,13 +388,11 @@ function OrderHistoryPage() {
 
                     {/* 桌面-訂單內容 */}
                     {filteredOrders.length === 0 ? (
-                      <div className="text-center text-muted py-5 w-100">
-                        <TextMedium className="mb-3">查無符合條件的訂單</TextMedium>
-                        <div>
-                          <Link to="/" className="btn btn-outline-secondary">
-                            前往首頁探索商品
-                          </Link>
-                        </div>
+                      <div className="text-center py-5 w-100">
+                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
+                        <BtnPrimary as={Link} to="/" size="medium">
+                          前往首頁探索商品
+                        </BtnPrimary>
                       </div>
                     ) : (
                       filteredOrders.map(order => (
@@ -447,27 +430,16 @@ function OrderHistoryPage() {
                             </TextMedium>
                           </div>
                           <div className="col-6 col-lg-2">
-                            <button
-                              className="btn btn-outline-primary btn-sm mx-auto d-block"
-                              style={{
-                                color: "#4A6465",
-                                borderColor: "#4A6465",
-                              }}
+                            <BtnPrimary
+                              size="small"
+                              className="mx-auto d-block"
                               onClick={e => {
                                 e.stopPropagation();
                                 handleViewOrder(order.id);
                               }}
-                              onMouseOver={e => {
-                                e.currentTarget.style.color = "#8BB0B7";
-                                e.currentTarget.style.borderColor = "#8BB0B7";
-                              }}
-                              onMouseOut={e => {
-                                e.currentTarget.style.color = "#4A6465";
-                                e.currentTarget.style.borderColor = "#4A6465";
-                              }}
                             >
                               查看訂單
-                            </button>
+                            </BtnPrimary>
                           </div>
                         </div>
                       ))
@@ -482,12 +454,12 @@ function OrderHistoryPage() {
                   {/* 手機版卡片式布局 - 只在小螢幕顯示 */}
                   <div className="d-lg-none">
                     {filteredOrders.length === 0 ? (
-                      <div className="text-center text-muted py-5 w-100">
-                        <TextMedium className="mb-3">查無符合條件的訂單</TextMedium>
+                      <div className="text-center text-muted py-10 w-100">
+                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
                         <div>
-                          <Link to="/" className="btn btn-outline-secondary">
+                          <BtnPrimary as={Link} to="/" size="small">
                             前往首頁探索商品
-                          </Link>
+                          </BtnPrimary>
                         </div>
                       </div>
                     ) : (
@@ -544,7 +516,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>訂單成立日期</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <TextMedium>
                                   {new Date(order.created_at).toLocaleString("zh-TW")}
                                 </TextMedium>
@@ -554,7 +526,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>訂單編號</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <TextMedium>{order.id}</TextMedium>
                               </td>
                             </tr>
@@ -562,7 +534,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>訂單狀態</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <TextMedium>
                                   {order.status === "paid"
                                     ? "已完成"
@@ -576,7 +548,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>收件地址</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <div>
                                   <TextMedium>{order.user_name} 先生/小姐</TextMedium>
                                 </div>
@@ -594,7 +566,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>寄送方式</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <TextMedium>
                                   {order.shipping_method === "home_delivery"
                                     ? "宅配到府"
@@ -606,7 +578,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>付款方式</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <TextMedium>
                                   {order.payment_method === "credit_card"
                                     ? "信用卡"
@@ -620,7 +592,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>希望配送日期</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 <TextMedium>
                                   {order.desired_date
                                     ? new Date(order.desired_date).toLocaleDateString("zh-TW")
@@ -632,7 +604,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>購物清單</H6Primary>
                               </th>
-                              <td className="modal-td-content">
+                              <td className="modal-td-content ps-5">
                                 {items && items.length > 0 ? (
                                   items.map(item => (
                                     <div
@@ -680,7 +652,7 @@ function OrderHistoryPage() {
                                   </div>
                                   <div>
                                     <TextMedium>
-                                      折扣券折扣總額：NT$
+                                      折扣總額：NT$
                                       {Number(order.discount_price).toLocaleString()}
                                     </TextMedium>
                                   </div>
@@ -705,6 +677,9 @@ function OrderHistoryPage() {
       )}
 
       <style jsx>{`
+        // .modal-td-content {
+        //   padding-left: 2rem;
+        // } 不知為何沒用 先註解
         .mobile-order-card {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           transition: box-shadow 0.2s ease;

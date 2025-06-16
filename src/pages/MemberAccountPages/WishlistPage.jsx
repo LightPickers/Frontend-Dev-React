@@ -5,6 +5,16 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import WishlistCard from "@/components/productpage/WishlistCard";
+import { BtnPrimary } from "@/components/Buttons";
+import {
+  H3Primary,
+  H3Secondary,
+  H4Primary,
+  H5Primary,
+  H5Secondary,
+  H6Primary,
+  H6Secondary,
+} from "@/components/Headings";
 
 function mapWishlistData(apiData) {
   if (!apiData || !Array.isArray(apiData.data)) return [];
@@ -14,6 +24,7 @@ function mapWishlistData(apiData) {
     name: item.Products.name,
     primary_image: item.Products.primary_image,
     liked: true,
+    //condition: item.Products.condition, 後端目前沒有回傳
     original_price: item.Products.original_price,
     selling_price: item.Products.selling_price,
     created_at: item.created_at,
@@ -23,6 +34,8 @@ function mapWishlistData(apiData) {
 function WishlistPage() {
   const { data, error, isLoading } = useGetWishlistProductsQuery();
   const wishlist = mapWishlistData(data);
+  console.log("原始 API 資料:", data);
+  console.log("第一個商品的完整資料:", data?.data?.[0]);
 
   const { data: userData, error: userError, isLoading: isUserLoading } = useGetUserProfileQuery();
   const user = userData?.data?.user;
@@ -101,16 +114,16 @@ function WishlistPage() {
             <div className="row g-4">
               {wishlist.length > 0 ? (
                 sortedWishlist.map(product => (
-                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6" key={product.id}>
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12" key={product.id}>
                     <WishlistCard product={product} />
                   </div>
                 ))
               ) : (
-                <div className="text-center text-muted py-5 w-100">
-                  <p className="mb-3 fs-5">尚未收藏任何商品</p>
-                  <Link to="/" className="btn btn-outline-secondary">
+                <div className="text-center py-5 w-100">
+                  <H6Secondary className="mb-6">尚未收藏任何商品</H6Secondary>
+                  <BtnPrimary as={Link} to="/" size="medium">
                     前往首頁探索商品
-                  </Link>
+                  </BtnPrimary>
                 </div>
               )}
             </div>
