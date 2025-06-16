@@ -1,0 +1,59 @@
+.category-image-wrapper {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  .category-image {
+    width: 100%;
+    height: auto;
+    min-height: 400px; // 較高的最小高度
+    max-height: 500px; // 較高的最大高度
+    object-fit: cover;
+    display: block;
+    margin: 0;
+
+    // 響應式高度調整
+    @media (max-width: 575px) {
+      min-height: 300px;
+      max-height: 400px;
+    }
+
+    @media (min-width: 576px) and (max-width: 991px) {
+      min-height: 350px;
+      max-height: 450px;
+    }
+
+    @media (min-width: 992px) {
+      min-height: 400px;
+      max-height: 500px;
+    }
+
+    @media (min-width: 1400px) {
+      min-height: 450px;
+      max-height: 550px;
+    }
+  }
+}
+
+// 商品目錄頁面佈局調整
+.product-catalog-page {
+  .category-image-wrapper {
+    margin-bottom: 0;
+
+    + .container {
+      margin-top: 2rem; // 在篩選器前添加適當間距
+
+      @media (max-width: 575px) {
+        margin-top: 1.5rem;
+      }
+    }
+  }
+
+  .filter-area {
+    margin-bottom: 2rem;
+
+    @media (max-width: 575px) {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
