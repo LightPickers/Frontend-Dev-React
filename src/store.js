@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 
 import authReducer from "@features/auth/authSlice";
+import loadingReducer from "@features/loading/loadingSlice";
 import cartReducer from "@features/cart/cartSlice";
 // import wishlistReducer from "@features/wishlist/wishlistSlice";
 import checkoutPageReducer from "@features/cart/checkoutPageSlice";
@@ -96,6 +97,7 @@ const persistedCheckoutReducer = persistReducer(checkoutPersistConfig, checkoutP
 // 合併所有 reducers
 const rootReducer = combineReducers({
   auth: authReducer, // 保持原有的 auth reducer，不使用 persist
+  loading: loadingReducer,
   cart: persistedCartReducer,
   // wishlist: persistedWishlistReducer,
   checkoutPage: persistedCheckoutReducer,
