@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import ProductCard from "@components/homepage/ProductCard";
 import MobileProductCard from "@components/homepage/MobileProductCard";
-import ProductCardSkeleton from "@components/loading/ProductCardSkeleton";
+import ProductCardSkeleton from "@/components/loaders/ProductCardSkeleton";
 import useBreakpoint from "@hooks/useBreakpoints";
 
 function ProductCarousel({ products, isLoading }) {

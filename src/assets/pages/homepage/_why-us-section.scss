@@ -1,7 +1,11 @@
 .seafoam-overlay {
   position: relative;
-  display: inline-block;
-  border-radius: 16px;
+  // display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition:
     box-shadow 0.4s ease,
@@ -38,7 +42,8 @@
   img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: inherit;
   }

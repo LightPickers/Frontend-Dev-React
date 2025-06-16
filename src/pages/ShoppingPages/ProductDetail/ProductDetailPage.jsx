@@ -12,19 +12,22 @@ import AddToCartBtn from "@components/productDetailPage/AddToCartBtn";
 import AddToWishlistBtn from "@components/productDetailPage/AddToWishlistBtn";
 import ProductSidebar from "@components/productDetailPage/ProductSidebar";
 import ProductGalleryMobile from "@components/productDetailPage/ProductGalleryMobile";
-import ProductDetailSkeleton from "@/components/loading/ProductDetailSkeleton";
+import ProductDetailSkeleton from "@components/loaders/ProductDetailSkeleton";
+import { useMinimumLoadingTime } from "@/hooks/useMinimunLoadingTime";
+// import GlobalLoader from "@/components/loaders/GlobalLoader";
 
 function ProductDetailPage() {
   const { productId } = useParams();
   const [triggerGetProductById, { data: getProductResponse, isLoading: isGettingProduct }] =
     useLazyGetProductByIdQuery();
+  const shouldShowLoading = useMinimumLoadingTime(isGettingProduct, 500);
 
   const fetchProduct = useCallback(async () => {
     if (productId) {
       try {
         await triggerGetProductById(productId).unwrap();
-      } catch (err) {
-        console.error("載入產品失敗:", err);
+      } catch (error) {
+        console.error("載入產品失敗:", error);
       }
     }
   }, [productId, triggerGetProductById]);
@@ -44,7 +47,7 @@ function ProductDetailPage() {
     subtitle = "",
     summary = [],
     title = "",
-    Brands = {},
+    // Brands = {},
     Categories = {},
     Conditions = {},
     description = "",
@@ -53,9 +56,19 @@ function ProductDetailPage() {
   const secondaryImages = imageList?.map(i => i.image);
   const productImages = [primary_image, ...secondaryImages];
 
-  if (isGettingProduct) return <ProductDetailSkeleton />;
+  const [showLoading, setShowLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isGettingProduct || shouldShowLoading) return <ProductDetailSkeleton />;
 
   return (
+    // <GlobalLoader loading={isGettingProduct || shouldShowLoading} text="載入頁面中...">
     <div className="product-detail py-20 d-flex flex-column gap-10">
       <Breadcrumbs />
       <main>
@@ -148,6 +161,7 @@ function ProductDetailPage() {
         </div>
       </main>
     </div>
+    // </GlobalLoader>
   );
 }
 

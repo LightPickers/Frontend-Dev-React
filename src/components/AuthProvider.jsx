@@ -1,12 +1,12 @@
-// 檢查應用初始化時檢查是否有 token
-
+import { node } from "prop-types";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PropTypes from "prop-types";
 
 import { setVerified } from "@features/auth/authSlice";
 import { useLazyVerifyAuthQuery } from "@features/users/userApi";
+import GlobalLoader from "@components/loaders/GlobalLoader";
 
+// 檢查應用初始化時是否有 token
 export function AuthProvider({ children }) {
   const dispatch = useDispatch();
   const { token, isLoading } = useSelector(state => state.auth);
@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
         try {
           await verifyAuth().unwrap();
         } catch {
-          // console.error("認證驗證失敗:", err);
           dispatch(setVerified());
         }
       } else {
@@ -29,13 +28,15 @@ export function AuthProvider({ children }) {
     checkAuth();
   }, [dispatch, token, verifyAuth]);
 
-  if (isLoading || isVerifying) {
-    return <div className="loading-spinner">載入中...</div>;
-  }
-
-  return <>{children}</>;
+  return (
+    <>
+      <GlobalLoader loading={isLoading || isVerifying} text="驗證身份中...">
+        {children}
+      </GlobalLoader>
+    </>
+  );
 }
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: node.isRequired,
 };

@@ -7,6 +7,7 @@
   & h1 {
     font-size: sizes.$h2-font-size;
     letter-spacing: 0.14em;
+    margin-bottom: 0.5rem;
     @include media-breakpoint-down(xs) {
       font-size: sizes.$h3-font-size;
       letter-spacing: 0.13em;
@@ -15,6 +16,8 @@
   & h2 {
     font-size: sizes.$h3-font-size;
     letter-spacing: 0.13em;
+    margin-bottom: 0.5rem;
+
     @include media-breakpoint-down(md) {
       font-size: sizes.$h4-font-size;
       letter-spacing: 0.12em;
@@ -27,6 +30,8 @@
   & h3 {
     font-size: sizes.$h4-font-size;
     letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+
     @include media-breakpoint-down(md) {
       font-size: sizes.$h5-font-size;
       letter-spacing: 0.1em;
@@ -36,10 +41,15 @@
       letter-spacing: 0.09em;
     }
   }
+  & h4 {
+    margin-bottom: 0.5rem;
+  }
   & p {
     font-size: sizes.$h5-font-size;
     letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
   }
+
   & ol {
     list-style: decimal;
     padding-left: 1rem;
