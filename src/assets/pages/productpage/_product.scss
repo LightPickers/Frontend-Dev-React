@@ -1,6 +1,42 @@
 .product-catalog-page {
-  padding: 50px 0;
+  padding-top: 0; // 移除頂部間距，讓圖片貼齊 header
+
+  // 篩選器區域樣式
+  .filter-area-wrapper {
+    background-color: #ffffff; // 白色背景
+    margin-left: calc(-50vw + 50%); // 貼齊頁面左右
+    margin-right: calc(-50vw + 50%);
+    padding: 2rem 0; // 上下間距
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); // 輕微陰影
+    border-bottom: 1px solid #e9ecef; // 底部邊框
+
+    @media (max-width: 575px) {
+      padding: 1.5rem 0;
+    }
+  }
+
+  .filter-area {
+    margin-bottom: 0; // 移除原本的底部間距
+    background-color: transparent; // 移除原本的背景
+    backdrop-filter: none; // 移除毛玻璃效果
+    border-radius: 0; // 移除圓角
+    padding: 0; // 移除內距
+    box-shadow: none; // 移除陰影
+    border: none; // 移除邊框
+
+    // 確保內容在容器內
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+
+      @media (min-width: 576px) {
+        padding: 0 30px;
+      }
+    }
+  }
 }
+
 // 分頁容器樣式
 .pagination-container {
   .pagination {
@@ -238,18 +274,19 @@
   }
 }
 
-.category-image-wrapper {
-  text-align: center;
-  margin-bottom: 20px;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  width: 100vw;
-}
+// 移除原本的類別圖片樣式，改到 _category-image.scss
+// .category-image-wrapper {
+//   text-align: center;
+//   margin-bottom: 20px;
+//   margin-left: calc(-50vw + 50%);
+//   margin-right: calc(-50vw + 50%);
+//   width: 100vw;
+// }
 
-.category-image {
-  width: 100%;
-  height: auto;
-}
+// .category-image {
+//   width: 100%;
+//   height: auto;
+// }
 
 // 自定義下拉選單樣式
 .custom-dropdown {
@@ -460,6 +497,7 @@
     box-shadow: none;
   }
 }
+
 // 商品篩選器高度調整
 .product-filter {
   .row {
