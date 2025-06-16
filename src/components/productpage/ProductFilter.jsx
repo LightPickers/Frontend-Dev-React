@@ -120,7 +120,7 @@ function ProductFilter({ onFilter, initialBrandId, initialConditionId }) {
         setSelectedBrands([initialBrandId]);
       }
     }
-  }, [initialBrandId, brandOptions]);
+  }, [initialBrandId, brandOptions, selectedBrands]);
 
   useEffect(() => {
     if (initialConditionId && statusOptions.length > 0) {
@@ -130,7 +130,7 @@ function ProductFilter({ onFilter, initialBrandId, initialConditionId }) {
         setSelectedStatuses([initialConditionId]);
       }
     }
-  }, [initialConditionId, statusOptions]);
+  }, [initialConditionId, statusOptions, selectedBrands, selectedStatuses]);
 
   // 處理品牌下拉選單切換
   const handleBrandDropdownToggle = () => {
