@@ -1,40 +1,148 @@
-.product-catalog-page {
-  padding-top: 0; // 移除頂部間距，讓圖片貼齊 header
+// 自定義下拉選單樣式
+.custom-dropdown {
+  position: relative;
 
-  // 篩選器區域樣式
-  .filter-area-wrapper {
-    background-color: #ffffff; // 白色背景
-    margin-left: calc(-50vw + 50%); // 貼齊頁面左右
-    margin-right: calc(-50vw + 50%);
-    padding: 2rem 0; // 上下間距
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); // 輕微陰影
-    border-bottom: 1px solid #e9ecef; // 底部邊框
+  .custom-dropdown-button {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    color: #495057;
+    text-align: left;
+    border-radius: 4px;
+    height: 70px; // 增加高度以容納更多標籤
+    min-height: 70px; // 統一高度
+    padding: 16px; // 調整內距以配合增加的高度
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    @media (max-width: 575px) {
-      padding: 1.5rem 0;
+    // 內容區域
+    .button-content {
+      flex: 1;
+      overflow: hidden;
+      margin-right: 8px;
+
+      .selected-tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        max-height: 46px; // 增加最大高度以容納兩行標籤
+        overflow: hidden;
+        align-items: flex-start; // 改為頂部對齊
+        align-content: flex-start; // 多行時從頂部開始
+
+        .selected-tag {
+          flex-shrink: 0;
+          margin: 1px;
+          max-width: 80px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          background-color: #8bb0b7;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          line-height: 1.2;
+        }
+
+        .more-indicator {
+          background-color: #6c757d;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          border: 1px solid #6c757d;
+          display: inline-block;
+          line-height: 1.2;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+      }
+
+      .placeholder-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+        line-height: 1.2;
+        padding-top: 4px; // 輕微調整對齊
+      }
+    }
+
+    .dropdown-arrow {
+      flex-shrink: 0;
+      font-size: 0.875rem;
+      align-self: flex-start; // 箭頭對齊到頂部
+      margin-top: 4px;
+    }
+
+    &:hover {
+      background-color: #f8f9fa;
+      border-color: #adb5bd;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: #ced4da;
+    }
+
+    &:active {
+      outline: none;
+      box-shadow: none;
+      border-color: #ced4da;
     }
   }
 
-  .filter-area {
-    margin-bottom: 0; // 移除原本的底部間距
-    background-color: transparent; // 移除原本的背景
-    backdrop-filter: none; // 移除毛玻璃效果
-    border-radius: 0; // 移除圓角
-    padding: 0; // 移除內距
-    box-shadow: none; // 移除陰影
-    border: none; // 移除邊框
+  .custom-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 2px;
 
-    // 確保內容在容器內
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 15px;
+    &.show {
+      display: block;
+    }
 
-      @media (min-width: 576px) {
-        padding: 0 30px;
+    .dropdown-item {
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      transition: background-color 0.2s ease;
+      border-radius: 0;
+
+      &:hover {
+        background-color: #e9ecef;
+      }
+
+      &.selected {
+        background-color: #8bb0b7;
+        color: white;
+        border-radius: 20px;
+        margin: 4px 8px;
+        width: fit-content;
+        min-width: calc(100% - 16px);
+        display: inline-block;
+
+        &:hover {
+          background-color: #7a9ea6;
+        }
       }
     }
   }
+}
+
+.product-catalog-page {
+  padding-top: 0; // 移除頂部間距，讓圖片貼齊 header
 }
 
 // 分頁容器樣式
@@ -57,6 +165,11 @@
           box-shadow: none;
           z-index: 3;
         }
+
+        &:hover {
+          background-color: transparent;
+          color: #8bb0b7;
+        }
       }
 
       &.active .page-link {
@@ -71,6 +184,11 @@
           border-color: transparent;
           color: #8bb0b7;
           box-shadow: none;
+        }
+
+        &:hover {
+          background-color: transparent;
+          color: #8bb0b7;
         }
       }
 
@@ -98,7 +216,7 @@
     &.disabled .page-link {
       color: #ced4da;
       pointer-events: none;
-      background-color: transparent; // 移除背景
+      background-color: transparent;
     }
 
     &.active .page-link {
@@ -116,6 +234,16 @@
     color: #000000;
     font-size: 16px;
     cursor: pointer;
+
+    &:hover {
+      background-color: transparent;
+      color: #8bb0b7;
+    }
+
+    &:focus {
+      background-color: transparent;
+      box-shadow: none;
+    }
   }
 }
 
@@ -169,373 +297,6 @@
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   padding: 20px 15px;
-}
-
-.btn-search {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #000000;
-  border-radius: 20px;
-  padding: 8px 12px;
-  width: 120px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #f8f9fa;
-    color: #000000;
-    border-color: #000000;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-}
-
-.dropdown-wrapper {
-  padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.1);
-
-  .dropdown-disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-
-  .dropdown-item {
-    margin-bottom: 12px;
-
-    &:hover {
-      background-color: transparent;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.custom-dropdown-button {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #ced4da;
-  text-align: left;
-  padding: 8px 12px;
-  border-radius: 4px;
-  box-shadow: none;
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #f8f9fa;
-    border-color: #adb5bd;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-}
-
-.pagination {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  .page-item {
-    margin: 0 5px;
-
-    &.disabled .page-link {
-      color: #ced4da;
-      pointer-events: none;
-    }
-
-    &.active .page-link {
-      color: #007bff;
-      background-color: transparent;
-      border: none;
-      text-decoration: underline;
-      pointer-events: none;
-    }
-  }
-
-  .page-link {
-    background: none;
-    border: none;
-    color: #000000;
-    font-size: 16px;
-    cursor: pointer;
-
-    &:hover {
-      color: #007bff;
-    }
-  }
-}
-
-// 移除原本的類別圖片樣式，改到 _category-image.scss
-// .category-image-wrapper {
-//   text-align: center;
-//   margin-bottom: 20px;
-//   margin-left: calc(-50vw + 50%);
-//   margin-right: calc(-50vw + 50%);
-//   width: 100vw;
-// }
-
-// .category-image {
-//   width: 100%;
-//   height: auto;
-// }
-
-// 自定義下拉選單樣式
-.custom-dropdown {
-  position: relative;
-
-  .custom-dropdown-button {
-    background-color: #fff;
-    border: 1px solid #ced4da;
-    color: #495057;
-    text-align: left;
-    border-radius: 4px;
-    min-height: 50px; // 統一高度
-    padding: 15px 16px; // 統一內距
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    // 內容區域
-    .button-content {
-      flex: 1;
-      overflow: hidden;
-      margin-right: 8px;
-
-      .selected-tags-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        max-height: 50px;
-        overflow: hidden;
-        align-items: center;
-
-        .selected-tag {
-          flex-shrink: 0;
-          margin: 1px;
-          max-width: 80px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .more-indicator {
-          background-color: #6c757d;
-          color: white;
-          padding: 2px 6px;
-          border-radius: 25px;
-          font-size: 0.7rem;
-          border: 1px solid #6c757d;
-          display: inline-block;
-          line-height: 1;
-          white-space: nowrap;
-          flex-shrink: 0;
-        }
-      }
-
-      .placeholder-text {
-        color: #6c757d;
-        font-size: 0.875rem;
-      }
-    }
-
-    .dropdown-arrow {
-      flex-shrink: 0;
-      font-size: 0.875rem;
-    }
-
-    &:hover {
-      background-color: #f8f9fa;
-      border-color: #adb5bd;
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: none;
-      border-color: #ced4da;
-    }
-
-    &:active {
-      outline: none;
-      box-shadow: none;
-      border-color: #ced4da;
-    }
-  }
-
-  .custom-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 2px;
-
-    &.show {
-      display: block;
-    }
-
-    .dropdown-item {
-      border: none;
-      background: none;
-      width: 100%;
-      text-align: left;
-      padding: 12px 16px;
-
-      &:hover {
-        background-color: #e9ecef;
-      }
-
-      &.selected {
-        background: none;
-        color: inherit;
-        padding: 12px 16px;
-        margin: 0;
-        width: 100%;
-
-        span {
-          background-color: #8bb0b7;
-          color: white;
-          padding: 2px 10px;
-          border-radius: 25px;
-          font-size: 1rem;
-          border: 1px solid #8bb0b7;
-          display: inline-block;
-          line-height: 1.2;
-          width: fit-content;
-          white-space: nowrap;
-        }
-
-        &:hover {
-          background-color: #e9ecef;
-
-          span {
-            background-color: #7a9ea6;
-            border-color: #7a9ea6;
-          }
-        }
-      }
-    }
-  }
-}
-
-// 選中標籤樣式
-.selected-tag {
-  background-color: #8bb0b7;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 25px;
-  font-size: 0.75rem;
-  border: 1px solid #8bb0b7;
-  display: inline-block;
-  line-height: 1.1;
-  white-space: nowrap;
-}
-
-// 金額輸入框樣式 - 增加高度
-.form-control {
-  border-radius: 0;
-  min-height: 50px;
-  padding: 15px 16px;
-  border: 1px solid #ced4da;
-  background-color: #fff;
-  color: #495057;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-    border-color: #ced4da;
-  }
-
-  &:hover {
-    border-color: #adb5bd;
-  }
-
-  &::placeholder {
-    color: #6c757d;
-    opacity: 1;
-  }
-}
-
-// 搜尋按鈕樣式 - 增加高度
-.btn-search {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #000000;
-  border-radius: 20px;
-  padding: 8px 12px;
-  min-height: 38px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #f8f9fa;
-    color: #000000;
-    border-color: #000000;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  &:active {
-    outline: none;
-    box-shadow: none;
-  }
-}
-
-// 商品篩選器高度調整
-.product-filter {
-  .row {
-    align-items: end;
-  }
-
-  // 金額輸入框容器特別調整
-  .d-flex.align-items-center {
-    min-height: 50px;
-
-    .form-control {
-      height: 50px;
-      flex: 1;
-    }
-
-    // 連接符號樣式
-    .mx-2 {
-      color: #495057;
-      font-weight: 500;
-      line-height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 20px;
-    }
-  }
-}
-
-// 選中標籤樣式
-.selected-tag {
-  background-color: #8bb0b7;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 0.875rem;
-  border: 1px solid #8bb0b7;
-  margin: 2px;
-  display: inline-block;
 }
 
 // 商品列表響應式樣式
@@ -675,6 +436,423 @@
     .col-xl-3 {
       flex: 0 0 25%;
       max-width: 25%;
+    }
+  }
+}
+
+// 通用表單控制項樣式（非篩選器專用）
+.form-control {
+  border-radius: 4px;
+  min-height: 40px;
+  padding: 12px 16px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  color: #495057;
+
+  &:focus {
+    border-color: #8bb0b7;
+    box-shadow: 0 0 0 0.2rem rgba(139, 176, 183, 0.25);
+    outline: 0;
+  }
+
+  &:hover {
+    border-color: #adb5bd;
+  }
+
+  &::placeholder {
+    color: #6c757d;
+    opacity: 1;
+  }
+}
+
+// 商品篩選器高度調整和響應式佈局
+.product-filter {
+  .row {
+    align-items: end;
+  }
+
+  // 統一所有輸入框容器高度
+  .col-12,
+  .col-md-6,
+  .col-lg-3,
+  .col-md-8,
+  .col-lg-4,
+  .col-md-4,
+  .col-lg-2 {
+    display: flex;
+    flex-direction: column;
+
+    .form-label {
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  }
+
+  // 1200-990px 間的響應式調整
+  @media (min-width: 990px) and (max-width: 1199px) {
+    // 品牌和狀態佔滿第一行
+    .col-lg-3 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    // 金額和按鈕換行到第二行
+    .col-lg-4 {
+      flex: 0 0 66.666667%;
+      max-width: 66.666667%;
+    }
+
+    .col-lg-2 {
+      flex: 0 0 33.333333%;
+      max-width: 33.333333%;
+    }
+  }
+}
+
+// 價格範圍選擇器樣式
+.price-range-selector {
+  min-height: 70px; // 增加高度以配合下拉選單
+
+  .form-control {
+    border-radius: 4px;
+    height: 70px; // 增加高度
+    min-height: 70px; // 統一高度
+    padding: 20px 16px; // 調整內距以配合增加的高度
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    color: #495057;
+    box-sizing: border-box; // 確保邊框不影響總高度
+    flex: 1;
+
+    &:focus {
+      border-color: #8bb0b7;
+      box-shadow: 0 0 0 0.2rem rgba(139, 176, 183, 0.25);
+      outline: 0;
+    }
+
+    &:hover {
+      border-color: #8bb0b7;
+    }
+
+    &::placeholder {
+      color: #6c757d;
+      opacity: 1;
+    }
+  }
+
+  // 連接符號樣式
+  .mx-2 {
+    color: #495057;
+    font-weight: 500;
+    line-height: 70px; // 調整行高以配合新高度
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+  }
+}
+
+// 自定義下拉選單樣式
+.custom-dropdown {
+  position: relative;
+
+  .custom-dropdown-button {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    color: #495057;
+    text-align: left;
+    border-radius: 4px;
+    height: 70px; // 增加高度以容納更多標籤
+    min-height: 70px; // 統一高度
+    padding: 16px; // 調整內距以配合增加的高度
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    // 內容區域
+    .button-content {
+      flex: 1;
+      overflow: hidden;
+      margin-right: 8px;
+
+      .selected-tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        max-height: 46px; // 增加最大高度以容納兩行標籤
+        overflow: hidden;
+        align-items: flex-start; // 改為頂部對齊
+        align-content: flex-start; // 多行時從頂部開始
+
+        .selected-tag {
+          flex-shrink: 0;
+          margin: 1px;
+          max-width: 80px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          background-color: #8bb0b7;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          line-height: 1.2;
+        }
+
+        .more-indicator {
+          background-color: #6c757d;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          border: 1px solid #6c757d;
+          display: inline-block;
+          line-height: 1.2;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+      }
+
+      .placeholder-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+        line-height: 1.2;
+        padding-top: 4px; // 輕微調整對齊
+      }
+    }
+
+    .dropdown-arrow {
+      flex-shrink: 0;
+      font-size: 0.875rem;
+      align-self: flex-start; // 箭頭對齊到頂部
+      margin-top: 4px;
+    }
+
+    &:hover {
+      background-color: #f8f9fa;
+      border-color: #adb5bd;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: #ced4da;
+    }
+
+    &:active {
+      outline: none;
+      box-shadow: none;
+      border-color: #ced4da;
+    }
+  }
+
+  .custom-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 2px;
+
+    &.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      transition: background-color 0.2s ease;
+      border-radius: 0;
+
+      &:hover {
+        background-color: #e9ecef;
+      }
+
+      &.selected {
+        background-color: #8bb0b7;
+        color: white;
+        border-radius: 20px;
+        margin: 4px 8px;
+        width: fit-content;
+        min-width: calc(100% - 16px);
+        display: inline-block;
+
+        &:hover {
+          background-color: #7a9ea6;
+        }
+      }
+    }
+  }
+}
+
+// 按鈕組樣式
+.button-group {
+  .btn-search {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    padding: 8px 12px;
+    width: 120px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #f8f9fa;
+      color: #000000;
+      border-color: #000000;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    &:active {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .btn-clear {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    padding: 8px 12px;
+    min-width: 100px; // 設定最小寬度確保文字顯示
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background-color: #f8f9fa;
+      color: #000000;
+      border-color: #000000;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    &:active {
+      outline: none;
+      box-shadow: none;
+    }
+
+    i {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// 選中標籤樣式
+.selected-tag {
+  background-color: #8bb0b7;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.875rem;
+  border: 1px solid #8bb0b7;
+  margin: 2px;
+  display: inline-block;
+}
+
+// 舊版樣式保留（為了向後兼容）
+.btn-search {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  padding: 8px 12px;
+  width: 120px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+    color: #000000;
+    border-color: #000000;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+.dropdown-wrapper {
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.1);
+
+  .dropdown-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .dropdown-item {
+    margin-bottom: 12px;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.custom-dropdown-button {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ced4da;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: none;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+.breadcrumb {
+  .breadcrumb-item {
+    & + .breadcrumb-item::before {
+      color: #6c757d;
+    }
+
+    a {
+      color: #6c757d;
+      text-decoration: none;
+
+      &:hover {
+        color: #8bb0b7;
+        text-decoration: underline;
+      }
+    }
+
+    &.active {
+      color: #495057;
+      font-weight: 500;
     }
   }
 }
