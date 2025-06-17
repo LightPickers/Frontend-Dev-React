@@ -12,21 +12,20 @@ function OrderStatusPage() {
   // 取得訂單資料
   const { orderId } = useParams();
   const { data: orderData, isLoading: isOrderLoading, error } = useGetPaidOrderByIdQuery(orderId);
+  console.log(orderData);
 
   const { data: cartData } = useGetCartQuery();
+  console.log(cartData);
+
   const [deleteCart] = useDeleteCartMutation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     // 當訂單狀態為已付款時
-    if (orderData?.order?.status === "paid") {
+    if (orderData?.data?.status === "paid") {
       // 清空購物車中的所有商品
-      if (cartData?.data?.items) {
-        cartData.data.items.forEach(item => {
-          deleteCart(item.id);
-        });
-      }
+      deleteCart();
 
       // 清除 checkoutForm 暫存
       localStorage.removeItem("checkoutForm");
@@ -35,7 +34,13 @@ function OrderStatusPage() {
 
   if (isOrderLoading) return <p className="text-center py-10">載入中...</p>;
   if (error || !orderData?.data)
-    return <p className="text-center py-10 text-danger">查無訂單資訊</p>;
+    return (
+      <div className="d-flex flex-column align-items-center gap-5 py-20">
+        <TextLarge className="text-danger fs-2">查無訂單資訊</TextLarge>
+
+        <TextLarge>請重新嘗試或聯繫客服</TextLarge>
+      </div>
+    );
 
   const status = orderData.data.status;
   const orderNumber = orderData.data.merchant_order_no;
