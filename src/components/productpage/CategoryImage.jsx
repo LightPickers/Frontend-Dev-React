@@ -5,11 +5,11 @@ const BASE_PATH = import.meta.env.VITE_APP_BASE || "/";
 
 // 使用環境變數構建圖片路徑
 const categoryImages = {
-  lens: `${BASE_PATH}images/category/lens.png`,
-  camera: `${BASE_PATH}images/category/camera.png`,
-  accessories: `${BASE_PATH}images/category/accessories.png`,
-  fuselage: `${BASE_PATH}images/category/fuselage.png`,
-  default: `${BASE_PATH}images/category/default.png`,
+  lens: `${BASE_PATH}images/category/lens.jpg`,
+  camera: `${BASE_PATH}images/category/camera.jpg`,
+  accessories: `${BASE_PATH}images/category/accessories.jpg`,
+  fuselage: `${BASE_PATH}images/category/fuselage.jpg`,
+  default: `${BASE_PATH}images/category/default.jpg`,
 };
 
 // 類別名稱的顯示文字映射
