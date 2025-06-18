@@ -34,3 +34,7 @@ export { default as SellProcessPage } from "@pages/SellPages/SellProcessPage";
 export { default as SellFormPage } from "@pages/SellPages/SellFormPage";
 export { default as SellConfirmationPage } from "@pages/SellPages/SellConfirmationPage";
 export { default as SellApplyStatusPage } from "@pages/SellPages/SellApplyStatusPage";
+
+//footer
+export { default as ContactUsPage } from "@pages/ContactUsPage";
+export { default as FAQPage } from "@pages/FAQPage";

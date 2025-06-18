@@ -26,6 +26,8 @@ import {
   ProductDescriptionPanel,
   ProductSpecificationsPanel,
   SellerReviewPanel,
+  ContactUsPage,
+  FAQPage,
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
@@ -70,6 +72,8 @@ const ROUTES = {
     CONFIRMATION: "confirmation/:applicationId", // 確認出售資訊頁
     STATUS: "status/:applicationId", // 出售狀態頁
   },
+  CONTACT_US: "/contact", // 聯絡我們
+  FAQ: "/faq", // 常見問題
 };
 
 // 註冊、登入 (公開路由)
@@ -273,6 +277,14 @@ const publicRoutes = [
         </TextMedium>
       ),
     },
+  },
+  {
+    path: ROUTES.CONTACT_US,
+    element: <ContactUsPage />,
+  },
+  {
+    path: ROUTES.FAQ,
+    element: <FAQPage />,
   },
   sellPublicRoute,
   ...authRoutes,
