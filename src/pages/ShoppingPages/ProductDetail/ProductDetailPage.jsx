@@ -68,8 +68,6 @@ function ProductDetailPage() {
 
   return (
     <>
-      {/* <PageLoader loading={isGettingProduct} text={"載入商品中"} /> */}
-
       {shouldShowLoading && <ProductDetailSkeleton />}
 
       {isSuccess && (
