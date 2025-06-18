@@ -12,27 +12,10 @@ const GlobalLoader = () => {
 
   return (
     <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "rgba(139, 176, 183, 0.7)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 9999,
-      }}
+      className="fixed-top top-0 start-0 vw-100 vh-100 d-flex justify-content-center align-items-center"
+      style={{ backgroundColor: "rgba(139, 176, 183, 0.7)", zIndex: 9999 }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-        }}
-      >
+      <div className="d-flex flex-column align-items-center text-center">
         <HashLoader
           color="#f5e6a8"
           loading={isLoading}
@@ -40,16 +23,7 @@ const GlobalLoader = () => {
           aria-label="Loading Spinner"
           data-testid="global-loader"
         />
-        <p
-          style={{
-            marginTop: "20px",
-            color: "#f2f2f2",
-            fontSize: "16px",
-            fontWeight: "500",
-          }}
-        >
-          {loadingText}
-        </p>
+        <p className="mt-5 text-gray-100">{loadingText}</p>
       </div>
     </div>
   );

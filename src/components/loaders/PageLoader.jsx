@@ -1,9 +1,11 @@
 import { bool, number, string } from "prop-types";
 import { HashLoader } from "react-spinners";
 
-import { useMinimumLoadingTime } from "@/hooks/useMinimunLoadingTime";
+import { useMinimumLoadingTime } from "@hooks/useMinimunLoadingTime";
+import useBodyScrollLock from "@hooks/useBodyScrollLock";
 function PageLoader({ loading, text = "載入中…", minTime = 500 }) {
   const shouldShowLoading = useMinimumLoadingTime(loading, minTime);
+  useBodyScrollLock(shouldShowLoading);
   if (!shouldShowLoading) return null;
   return (
     <div

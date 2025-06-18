@@ -53,6 +53,7 @@ h6 {
 // * {
 //   outline: red solid 1px;
 // }
+
 // 標題
 .h1 {
   font-size: sizes.$h1-font-size;
@@ -131,7 +132,9 @@ h6 {
   color: colors.$gray-500;
   font-weight: fonts.$font-weight-bold;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition:
+    color 300ms ease,
+    outline 300ms ease;
 
   &:hover {
     color: colors.$primary-600;

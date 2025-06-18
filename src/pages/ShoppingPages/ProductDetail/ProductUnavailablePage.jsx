@@ -1,11 +1,19 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { BtnPrimary } from "@/components/Buttons";
+import { BtnPrimary } from "@components/Buttons";
+// import { ConfirmDialogue } from "@components/Alerts";
 
 const ProductUnavailablePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // const handleCofirm = () => {
+  //   const action = () => {
+  //     navigate("/products");
+  //   };
+  //   ConfirmDialogue({ title: "確定跳轉？", text: "確定前往商品頁面？", action });
+  // };
 
   const handleBackClick = () => {
     // 如果有 history state，使用 back()，否則導航到指定路徑
@@ -67,6 +75,7 @@ const ProductUnavailablePage = () => {
           <BtnPrimary
             className="w-sm-100 w-75"
             onClick={() => {
+              // handleCofirm();
               navigate("/products");
             }}
           >
