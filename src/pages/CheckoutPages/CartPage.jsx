@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 import { useGetCartQuery, useDeleteCartProductMutation } from "@features/cart/cartApi";
 import { BtnPrimary } from "@components/Buttons";
@@ -21,9 +22,16 @@ function CartPage() {
   const hasDiscontinuedProducts = cartItems.some(item => !item.is_available);
   // 刪除品項
   const handleDelete = async id => {
-    const confirmDelete = window.confirm("確定要刪除此商品嗎？");
-
-    if (!confirmDelete) return;
+    const result = await Swal.fire({
+      title: "確定要刪除此商品嗎？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
+    });
+    if (!result.isConfirmed) return;
     try {
       await deleteCartProduct(id).unwrap();
     } catch (error) {
