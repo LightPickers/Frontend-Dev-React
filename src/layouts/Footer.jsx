@@ -17,15 +17,32 @@ function Footer() {
               <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" className="footer-logo" />
             </Link>
             <div className="social-links d-flex gap-3">
-              <span className="social-icon" aria-label="Facebook">
+              <a
+                href="https://www.facebook.com/share/16jKHuUjyT/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-icon"
+                aria-label="Facebook"
+              >
                 <FacebookIcon size={20} title="Facebook" />
-              </span>
-              <span className="social-icon" aria-label="Instagram">
+              </a>
+              <a
+                href="https://www.instagram.com/light_pickers?igsh=Y2NleGdldDB0Z3Np"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-icon"
+                aria-label="Instagram"
+              >
                 <InstagramIcon size={20} title="Instagram" />
-              </span>
-              <span className="social-icon" aria-label="Line">
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-icon"
+                aria-label="Line"
+              >
                 <LineIcon size={20} title="Line" />
-              </span>
+              </a>
             </div>
           </div>
 

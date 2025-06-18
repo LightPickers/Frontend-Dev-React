@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 
 import { useGetProductsQuery } from "@features/products/productApi";
 import ProductFilter from "@components/productpage/ProductFilter";
 import ProductList from "@components/productpage/ProductList";
 import CategoryImage from "@components/productpage/CategoryImage";
+import useBreakpoint from "@hooks/useBreakpoints";
 import { getCurrentCategoryInfo } from "@utils/CategoryImageUtils";
 
 function ProductCatalogPage() {
@@ -12,30 +13,85 @@ function ProductCatalogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  const isXlUp = useBreakpoint("xlUp");
+
   // 獲取當前類別資訊
   const categoryInfo = getCurrentCategoryInfo(searchParams);
 
-  // 從 URL 參數構建 API 查詢參數
+  // 提取搜尋參數為變數 - 包含多選參數
+  const categoryId = searchParams.get("category_id");
+  const brandId = searchParams.get("brand_id");
+  const brandIds = searchParams.get("brand_ids");
+  const conditionId = searchParams.get("condition_id");
+  const conditionIds = searchParams.get("condition_ids");
+  const keyword = searchParams.get("keyword");
+  const minPrice = searchParams.get("min_price");
+  const maxPrice = searchParams.get("max_price");
+  const priceRange = searchParams.get("price_range");
+
+  // 計算初始品牌和條件 IDs
+  const initialBrandIds = useMemo(() => {
+    if (brandIds) {
+      return brandIds;
+    } else if (brandId) {
+      // 將單選轉換為多選格式
+      return brandId;
+    }
+    return null;
+  }, [brandIds, brandId]);
+
+  const initialConditionIds = useMemo(() => {
+    if (conditionIds) {
+      return conditionIds;
+    } else if (conditionId) {
+      // 將單選轉換為多選格式
+      return conditionId;
+    }
+    return null;
+  }, [conditionIds, conditionId]);
+
+  // 從 URL 參數構建 API 查詢參數 - 統一使用多選參數
   const apiQueryParams = useMemo(() => {
     const params = {
       page: currentPage,
       page_size: itemsPerPage,
     };
 
-    const categoryId = searchParams.get("category_id");
-    const brandId = searchParams.get("brand_id");
-    const conditionId = searchParams.get("condition_id");
-    const keyword = searchParams.get("keyword");
-    const priceRange = searchParams.get("price_range");
-
     if (categoryId) params.category_id = categoryId;
-    if (brandId) params.brand_id = brandId;
-    if (conditionId) params.condition_id = conditionId;
+
+    // 統一使用 brand_ids 參數 (同時支援單選和多選)
+    if (brandIds) {
+      params.brand_ids = brandIds;
+    } else if (brandId) {
+      params.brand_ids = brandId; // 將單選值作為多選參數傳遞
+    }
+
+    // 統一使用 condition_ids 參數 (同時支援單選和多選)
+    if (conditionIds) {
+      params.condition_ids = conditionIds;
+    } else if (conditionId) {
+      params.condition_ids = conditionId; // 將單選值作為多選參數傳遞
+    }
+
     if (keyword) params.keyword = keyword;
+    if (minPrice) params.min_price = minPrice;
+    if (maxPrice) params.max_price = maxPrice;
     if (priceRange) params.price_range = priceRange;
 
     return params;
-  }, [searchParams, currentPage, itemsPerPage]);
+  }, [
+    currentPage,
+    itemsPerPage,
+    categoryId,
+    brandIds,
+    brandId,
+    conditionIds,
+    conditionId,
+    keyword,
+    minPrice,
+    maxPrice,
+    priceRange,
+  ]);
 
   const { data: apiResponse = {}, isLoading, isError } = useGetProductsQuery(apiQueryParams);
 
@@ -45,37 +101,40 @@ function ProductCatalogPage() {
 
   const totalPages = apiResponse.total_pages || 0;
 
-  // 提取搜尋參數為變數
-  const categoryId = searchParams.get("category_id");
-  const brandId = searchParams.get("brand_id");
-  const conditionId = searchParams.get("condition_id");
-  const keyword = searchParams.get("keyword");
-  const priceRange = searchParams.get("price_range");
-
-  // 當篩選條件改變時重置到第一頁
+  // 當篩選條件改變時重置到第一頁 - 更新依賴項
   useEffect(() => {
     setCurrentPage(1);
-  }, [categoryId, brandId, conditionId, keyword, priceRange]);
+  }, [categoryId, brandIds, conditionIds, keyword, minPrice, maxPrice, priceRange]);
 
   const handleFilter = filters => {
-    const { brandIds, statusIds, minPrice, maxPrice } = filters;
+    const { brand_ids, condition_ids, minPrice, maxPrice } = filters;
     const newSearchParams = new URLSearchParams(searchParams);
 
+    // 清除舊的篩選參數
     newSearchParams.delete("brand_id");
     newSearchParams.delete("condition_id");
+    newSearchParams.delete("brand_ids");
+    newSearchParams.delete("condition_ids");
+    newSearchParams.delete("min_price");
+    newSearchParams.delete("max_price");
     newSearchParams.delete("price_range");
     newSearchParams.delete("page");
 
-    if (brandIds && brandIds.length > 0) {
-      newSearchParams.set("brand_id", brandIds[0]);
+    // 設置新的多選參數
+    if (brand_ids) {
+      newSearchParams.set("brand_ids", brand_ids);
     }
 
-    if (statusIds && statusIds.length > 0) {
-      newSearchParams.set("condition_id", statusIds[0]);
+    if (condition_ids) {
+      newSearchParams.set("condition_ids", condition_ids);
     }
 
-    if (minPrice !== null && maxPrice !== null) {
-      newSearchParams.set("price_range", JSON.stringify([minPrice, maxPrice]));
+    // 設置價格範圍參數
+    if (minPrice !== null && minPrice !== undefined) {
+      newSearchParams.set("min_price", minPrice.toString());
+    }
+    if (maxPrice !== null && maxPrice !== undefined) {
+      newSearchParams.set("max_price", maxPrice.toString());
     }
 
     setSearchParams(newSearchParams);
@@ -130,12 +189,12 @@ function ProductCatalogPage() {
 
       {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
       <div className="filter-area-wrapper">
-        <div className="container">
+        <div className="container-fluid">
           <div className="filter-area">
             <ProductFilter
               onFilter={handleFilter}
-              initialBrandId={searchParams.get("brand_id")}
-              initialConditionId={searchParams.get("condition_id")}
+              initialBrandIds={initialBrandIds}
+              initialConditionIds={initialConditionIds}
             />
           </div>
         </div>
@@ -143,7 +202,29 @@ function ProductCatalogPage() {
 
       {/* 商品列表 */}
       <div className="product-list-wrapper">
-        <div className="container">
+        <div className="container-fluid">
+          {/* 麵包屑 */}
+          <nav aria-label="breadcrumb" className="mb-3">
+            <ol className="breadcrumb mb-0">
+              <li className="breadcrumb-item">
+                <Link to="/">首頁</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/products">商品列表</Link>
+              </li>
+              {categoryInfo.displayName && (
+                <li className="breadcrumb-item active" aria-current="page">
+                  {categoryInfo.displayName}
+                </li>
+              )}
+              {keyword && (
+                <li className="breadcrumb-item active" aria-current="page">
+                  搜尋：{keyword}
+                </li>
+              )}
+            </ol>
+          </nav>
+
           {products.length === 0 ? (
             <div className="no-products-found">
               <div className="text-center py-5">
@@ -156,13 +237,13 @@ function ProductCatalogPage() {
               </div>
             </div>
           ) : (
-            <ProductList product={products} />
+            <ProductList product={products} useMobileCard={!isXlUp} />
           )}
         </div>
 
         {/* 分頁 */}
         {products.length > 0 && totalPages > 1 && (
-          <div className="container">
+          <div className="container-fluid">
             <div className="pagination-container text-center mt-4">
               <nav aria-label="商品列表分頁">
                 <ul className="pagination justify-content-center">
