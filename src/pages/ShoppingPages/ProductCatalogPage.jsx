@@ -120,6 +120,7 @@ function ProductCatalogPage() {
     newSearchParams.delete("max_price");
     newSearchParams.delete("price_range");
     newSearchParams.delete("page");
+    newSearchParams.delete("keyword");
 
     // 設置新的多選參數
     if (brand_ids) {
@@ -231,9 +232,9 @@ function ProductCatalogPage() {
             {products.length === 0 ? (
               <div className="no-products-found">
                 <div className="text-center py-5">
-                  <h4 className="mb-3">無符合{categoryInfo.displayName}商品</h4>
+                  <h4 className="mb-3">無符合商品</h4>
                   <p className="text-muted">
-                    很抱歉，沒有找到符合您篩選條件的{categoryInfo.displayName}商品。
+                    很抱歉，沒有找到符合您篩選條件的商品。
                     <br />
                     請嘗試調整篩選條件或瀏覽其他商品。
                   </p>

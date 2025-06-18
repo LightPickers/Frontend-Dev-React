@@ -389,65 +389,6 @@
   }
 }
 
-@media (max-width: 359px) {
-  .product-grid-container .row {
-    justify-content: center;
-
-    .col-12 {
-      flex: 0 0 auto;
-      max-width: none;
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
-
-@media (min-width: 360px) and (max-width: 767px) {
-  .product-grid-container .row {
-    justify-content: center;
-
-    .col-360-6 {
-      flex: 0 0 auto;
-      max-width: none;
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .product-grid-container .row {
-    .col-md-3 {
-      flex: 0 0 25%;
-      max-width: 25%;
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .product-grid-container .row {
-    .col-lg-3 {
-      flex: 0 0 25%;
-      max-width: 25%;
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
-
-@media (min-width: 1200px) {
-  .product-grid-container .row {
-    .col-xl-3 {
-      flex: 0 0 25%;
-      max-width: 25%;
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
-
 // 商品篩選器高度調整和響應式佈局
 .product-filter {
   .row {
@@ -860,6 +801,42 @@
       max-width: 50%;
       display: flex;
       justify-content: center;
+    }
+  }
+}
+// 新增無符合商品區塊的樣式
+.no-products-found {
+  min-height: 400px; // 設置最小高度
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin: 20px 0 40px;
+
+  .text-center {
+    width: 100%;
+    padding: 60px 20px; // 增加上下內間距
+
+    h4 {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+  }
+
+  @media (max-width: 767px) {
+    min-height: 300px; // 小螢幕下稍微縮小高度
+
+    .text-center {
+      padding: 40px 15px;
+    }
+
+    p {
+      font-size: 1rem;
     }
   }
 }
