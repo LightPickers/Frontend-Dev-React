@@ -1,29 +1,39 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import ProductCard from "@components/homepage/ProductCard";
+import MobileProductCard from "@components/homepage/MobileProductCard";
 
-function ProductList({ product }) {
+function ProductList({ product, useMobileCard = false }) {
   return (
-    <section className="product-grid-container container">
-      <div className="row g-3 g-md-4">
-        {product.map((product, index) => (
-          <div
-            key={product?.id || index}
-            className="col-12 col-360-6 col-lg-4 col-xl-3 d-flex justify-content-center"
-          >
-            <div className="product-card-wrapper">
-              {product ? <ProductCard product={product} /> : <div>Invalid product data</div>}
+    <div className="product-grid-container">
+      <div className="row">
+        {product &&
+          product.map(item => (
+            <div
+              key={item.id}
+              className={
+                useMobileCard
+                  ? "col-12 col-375-6 col-sm-4 col-md-3 d-flex justify-content-center"
+                  : "col-12 col-375-6 col-md-3 col-lg-3 col-xl-3 d-flex justify-content-center"
+              }
+            >
+              <div className={useMobileCard ? "" : "product-card-wrapper"}>
+                {useMobileCard ? (
+                  <MobileProductCard product={item} />
+                ) : (
+                  <ProductCard product={item} />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
-    </section>
+    </div>
   );
 }
 
 ProductList.propTypes = {
   product: PropTypes.arrayOf(PropTypes.object).isRequired,
+  useMobileCard: PropTypes.bool,
 };
 
 export default ProductList;
