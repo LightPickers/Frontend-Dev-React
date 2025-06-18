@@ -62,7 +62,6 @@ const ProductUnavailablePage = () => {
 
         <div className="action-buttons">
           <BtnPrimary className="w-sm-100 w-75" onClick={handleBackClick}>
-            {" "}
             ← 返回上頁
           </BtnPrimary>
           <BtnPrimary
