@@ -12,6 +12,7 @@ const BREAKPOINTS = {
   lgDown: "(max-width: 1199.98px)",
   mdUp: "(min-width: 768px)",
   lgUp: "(min-width: 992px)",
+  xlUp: "(min-width: 1200px)",
 };
 
 function useBreakpoint(bpName) {
@@ -39,7 +40,7 @@ function useBreakpoint(bpName) {
 
 export default useBreakpoint;
 
-/* 
+/*
 使用範例：
   const isSmDown = useBreakpoint("smDown"); // 小於 768px
   const isMdUp = useBreakpoint("mdUp");     // 大於等於 768px

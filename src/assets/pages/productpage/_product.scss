@@ -343,24 +343,26 @@
   width: 100%;
   max-width: 280px;
   min-width: 160px;
-  @media (max-width: 359px) {
-    max-width: 100%;
-    min-width: 240px;
+
+  @media (max-width: 374px) {
+    max-width: 250px;
+    min-width: 0;
+    margin: 0 auto; // 確保小螢幕下置中顯示
   }
 
-  @media (min-width: 360px) and (max-width: 575px) {
+  @media (min-width: 375px) and (max-width: 767px) {
     max-width: 160px;
   }
 
-  @media (min-width: 576px) and (max-width: 849px) {
-    max-width: 200px;
+  @media (min-width: 768px) and (max-width: 991px) {
+    max-width: 220px;
   }
 
-  @media (min-width: 850px) and (max-width: 1399px) {
-    max-width: 240px;
+  @media (min-width: 992px) and (max-width: 1199px) {
+    max-width: 250px;
   }
 
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     max-width: 280px;
   }
 }
@@ -400,7 +402,7 @@
   }
 }
 
-@media (min-width: 360px) and (max-width: 739px) {
+@media (min-width: 360px) and (max-width: 767px) {
   .product-grid-container .row {
     justify-content: center;
 
@@ -413,55 +415,36 @@
   }
 }
 
-@media (min-width: 740px) and (max-width: 989px) {
+@media (min-width: 768px) and (max-width: 991px) {
   .product-grid-container .row {
-    .col-360-6 {
-      flex: 0 0 50%;
-      max-width: 50%;
+    .col-md-3 {
+      flex: 0 0 25%;
+      max-width: 25%;
+      display: flex;
+      justify-content: center;
     }
   }
 }
 
-@media (min-width: 990px) and (max-width: 1399px) {
+@media (min-width: 992px) and (max-width: 1199px) {
   .product-grid-container .row {
-    .col-lg-4 {
-      flex: 0 0 33.333333%;
-      max-width: 33.333333%;
+    .col-lg-3 {
+      flex: 0 0 25%;
+      max-width: 25%;
+      display: flex;
+      justify-content: center;
     }
   }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1200px) {
   .product-grid-container .row {
     .col-xl-3 {
       flex: 0 0 25%;
       max-width: 25%;
+      display: flex;
+      justify-content: center;
     }
-  }
-}
-
-// 通用表單控制項樣式（非篩選器專用）
-.form-control {
-  border-radius: 4px;
-  min-height: 40px;
-  padding: 12px 16px;
-  border: 1px solid #ced4da;
-  background-color: #fff;
-  color: #495057;
-
-  &:focus {
-    border-color: #8bb0b7;
-    box-shadow: 0 0 0 0.2rem rgba(139, 176, 183, 0.25);
-    outline: 0;
-  }
-
-  &:hover {
-    border-color: #adb5bd;
-  }
-
-  &::placeholder {
-    color: #6c757d;
-    opacity: 1;
   }
 }
 
@@ -853,6 +836,30 @@
     &.active {
       color: #495057;
       font-weight: 500;
+    }
+  }
+}
+// 添加自定義斷點類 - 小於 375px 時為單列，375px 以上為雙列
+@media (max-width: 374px) {
+  .product-grid-container .row {
+    justify-content: center;
+
+    .col-12 {
+      flex: 0 0 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+@media (min-width: 375px) and (max-width: 767px) {
+  .product-grid-container .row {
+    .col-375-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      display: flex;
+      justify-content: center;
     }
   }
 }

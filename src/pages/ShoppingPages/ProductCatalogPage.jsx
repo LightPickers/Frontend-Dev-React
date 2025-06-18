@@ -5,12 +5,15 @@ import { useGetProductsQuery } from "@features/products/productApi";
 import ProductFilter from "@components/productpage/ProductFilter";
 import ProductList from "@components/productpage/ProductList";
 import CategoryImage from "@components/productpage/CategoryImage";
+import useBreakpoint from "@hooks/useBreakpoints";
 import { getCurrentCategoryInfo } from "@utils/CategoryImageUtils";
 
 function ProductCatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+
+  const isXlUp = useBreakpoint("xlUp");
 
   // 獲取當前類別資訊
   const categoryInfo = getCurrentCategoryInfo(searchParams);
@@ -28,26 +31,26 @@ function ProductCatalogPage() {
 
   // 計算初始品牌和條件 IDs
   const initialBrandIds = useMemo(() => {
-    // 優先使用 brand_ids，如果沒有則使用 brand_id
     if (brandIds) {
       return brandIds;
     } else if (brandId) {
+      // 將單選轉換為多選格式
       return brandId;
     }
     return null;
   }, [brandIds, brandId]);
 
   const initialConditionIds = useMemo(() => {
-    // 優先使用 condition_ids，如果沒有則使用 condition_id
     if (conditionIds) {
       return conditionIds;
     } else if (conditionId) {
+      // 將單選轉換為多選格式
       return conditionId;
     }
     return null;
   }, [conditionIds, conditionId]);
 
-  // 從 URL 參數構建 API 查詢參數 - 更新為支援多選
+  // 從 URL 參數構建 API 查詢參數 - 統一使用多選參數
   const apiQueryParams = useMemo(() => {
     const params = {
       page: currentPage,
@@ -56,17 +59,18 @@ function ProductCatalogPage() {
 
     if (categoryId) params.category_id = categoryId;
 
-    // 優先使用多選參數，如果沒有則使用單選參數
+    // 統一使用 brand_ids 參數 (同時支援單選和多選)
     if (brandIds) {
       params.brand_ids = brandIds;
     } else if (brandId) {
-      params.brand_id = brandId;
+      params.brand_ids = brandId; // 將單選值作為多選參數傳遞
     }
 
+    // 統一使用 condition_ids 參數 (同時支援單選和多選)
     if (conditionIds) {
       params.condition_ids = conditionIds;
     } else if (conditionId) {
-      params.condition_id = conditionId;
+      params.condition_ids = conditionId; // 將單選值作為多選參數傳遞
     }
 
     if (keyword) params.keyword = keyword;
@@ -75,7 +79,19 @@ function ProductCatalogPage() {
     if (priceRange) params.price_range = priceRange;
 
     return params;
-  }, [searchParams, currentPage, itemsPerPage]);
+  }, [
+    currentPage,
+    itemsPerPage,
+    categoryId,
+    brandIds,
+    brandId,
+    conditionIds,
+    conditionId,
+    keyword,
+    minPrice,
+    maxPrice,
+    priceRange,
+  ]);
 
   const { data: apiResponse = {}, isLoading, isError } = useGetProductsQuery(apiQueryParams);
 
@@ -88,17 +104,7 @@ function ProductCatalogPage() {
   // 當篩選條件改變時重置到第一頁 - 更新依賴項
   useEffect(() => {
     setCurrentPage(1);
-  }, [
-    categoryId,
-    brandId,
-    brandIds,
-    conditionId,
-    conditionIds,
-    keyword,
-    minPrice,
-    maxPrice,
-    priceRange,
-  ]);
+  }, [categoryId, brandIds, conditionIds, keyword, minPrice, maxPrice, priceRange]);
 
   const handleFilter = filters => {
     const { brand_ids, condition_ids, minPrice, maxPrice } = filters;
@@ -183,7 +189,7 @@ function ProductCatalogPage() {
 
       {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
       <div className="filter-area-wrapper">
-        <div className="container">
+        <div className="container-fluid">
           <div className="filter-area">
             <ProductFilter
               onFilter={handleFilter}
@@ -196,7 +202,7 @@ function ProductCatalogPage() {
 
       {/* 商品列表 */}
       <div className="product-list-wrapper">
-        <div className="container">
+        <div className="container-fluid">
           {/* 麵包屑 */}
           <nav aria-label="breadcrumb" className="mb-3">
             <ol className="breadcrumb mb-0">
@@ -231,13 +237,13 @@ function ProductCatalogPage() {
               </div>
             </div>
           ) : (
-            <ProductList product={products} />
+            <ProductList product={products} useMobileCard={!isXlUp} />
           )}
         </div>
 
         {/* 分頁 */}
         {products.length > 0 && totalPages > 1 && (
-          <div className="container">
+          <div className="container-fluid">
             <div className="pagination-container text-center mt-4">
               <nav aria-label="商品列表分頁">
                 <ul className="pagination justify-content-center">

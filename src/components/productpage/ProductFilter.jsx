@@ -99,7 +99,6 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
             validBrandIds.length !== prev.length || !validBrandIds.every(id => prev.includes(id));
 
           if (isChanged) {
-            console.log("設定初始品牌:", validBrandIds); // 調試用
             return validBrandIds;
           }
           return prev;
@@ -126,7 +125,6 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
             !validConditionIds.every(id => prev.includes(id));
 
           if (isChanged) {
-            console.log("設定初始條件:", validConditionIds); // 調試用
             return validConditionIds;
           }
           return prev;
@@ -354,7 +352,7 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
     }
   };
 
-  // 條件渲染 - 移到所有 Hooks 之後
+  // 條件渲染
   if (brandsLoading || conditionsLoading) {
     return (
       <div className="product-filter mb-4">
