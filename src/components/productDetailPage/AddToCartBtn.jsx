@@ -9,6 +9,7 @@ import useDecodedId from "@hooks/useDecodedId";
 import useRequireAuth from "@hooks/useRequireAuth";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 import { BtnPrimary } from "@components/Buttons";
+import useBreakpoint from "@/hooks/useBreakpoints";
 
 function AddToCartBtn({ id, name, className }) {
   const [AddToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
@@ -16,6 +17,7 @@ function AddToCartBtn({ id, name, className }) {
   const requireAuth = useRequireAuth();
   const { data: cartList } = useGetCartQuery(userId ? userId : skipToken);
   const isInCart = cartList?.data.items.some(item => item.product_id === id);
+  const isXs = useBreakpoint("xs");
 
   const handleAddToCart = async () => {
     try {
@@ -28,7 +30,12 @@ function AddToCartBtn({ id, name, className }) {
 
   if (isInCart) {
     return (
-      <BtnPrimary className={classNames(className)} as={Link} to="/cart" size="large">
+      <BtnPrimary
+        className={classNames(className)}
+        as={Link}
+        to="/cart"
+        size={isXs ? "medium" : "large"}
+      >
         查看購物車
       </BtnPrimary>
     );
@@ -36,12 +43,12 @@ function AddToCartBtn({ id, name, className }) {
 
   return (
     <BtnPrimary
-      size="large"
-      className={classNames(className)}
       onClick={() => requireAuth(handleAddToCart)}
       disabled={isAddingToCart}
+      className={classNames(className)}
+      size={isXs ? "medium" : "large"}
     >
-      {!isAddingToCart ? "加入購物車" : "放入購物車中…"}
+      {!isAddingToCart ? "加入購物車" : "放入購物車中"}
     </BtnPrimary>
   );
 }

@@ -20,7 +20,7 @@ function ProductShowcase({ title, products, isLoading }) {
             as={Link}
             to="/products"
             title="前往商品頁面"
-            className="py-2 d-flex align-items-center text-gray-500 text-md-gray-600 fw-md-5 fw-6"
+            className="py-2 d-flex align-items-center fw-md-5 fw-6 link-hover"
           >
             查看更多
             <HeadingToArrowIcon size={44} title="前往商品頁面" className="ms-3" />

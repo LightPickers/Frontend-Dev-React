@@ -1,12 +1,16 @@
 import { object } from "prop-types";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { H6Secondary } from "@components/Headings";
 import { TextSmall, TextMedium, LabelText } from "@components/TextTypography";
 import { formatPrice } from "@utils/formatPrice";
+import { showLoading } from "@features/loading/loadingSlice";
 
 function MobileProductCard({ product }) {
   const { id, name, condition, primary_image, original_price, selling_price } = product;
+  const dispatch = useDispatch();
+
   return (
     <main className="mobile-product-card">
       <section className="img-container">
@@ -25,7 +29,14 @@ function MobileProductCard({ product }) {
           </p>
         </div>
       </section>
-      <Link to={`/products/${id}`} className="stretched-link" title={`前往查看 ${name}`} />
+      <Link
+        to={`/products/${id}`}
+        className="stretched-link"
+        title={`前往查看 ${name}`}
+        onClick={() => {
+          dispatch(showLoading());
+        }}
+      />
     </main>
   );
 }

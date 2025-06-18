@@ -7,6 +7,7 @@ import ProductList from "@components/productpage/ProductList";
 import CategoryImage from "@components/productpage/CategoryImage";
 import useBreakpoint from "@hooks/useBreakpoints";
 import { getCurrentCategoryInfo } from "@utils/CategoryImageUtils";
+import PageLoader from "@components/loaders/PageLoader";
 
 function ProductCatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -162,15 +163,15 @@ function ProductCatalogPage() {
     }
   }, [searchParams]);
 
-  if (isLoading) {
-    return (
-      <div className="d-flex justify-content-center py-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="d-flex justify-content-center py-5">
+  //       <div className="spinner-border" role="status">
+  //         <span className="visually-hidden">Loading...</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (isError) {
     return (
@@ -183,143 +184,148 @@ function ProductCatalogPage() {
   }
 
   return (
-    <div className="product-catalog-page">
-      {/* Category Image - 完全貼齊 header，撐滿寬度 */}
-      <CategoryImage category={categoryInfo.categoryName} />
+    <>
+      <PageLoader loading={isLoading} text="載入商品列表中" />
+      <div className="product-catalog-page">
+        {/* Category Image - 完全貼齊 header，撐滿寬度 */}
+        <CategoryImage category={categoryInfo.categoryName} />
 
-      {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
-      <div className="filter-area-wrapper">
-        <div className="container-fluid">
-          <div className="filter-area">
-            <ProductFilter
-              onFilter={handleFilter}
-              initialBrandIds={initialBrandIds}
-              initialConditionIds={initialConditionIds}
-            />
+        {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
+        <div className="filter-area-wrapper">
+          <div className="container-fluid">
+            <div className="filter-area">
+              <ProductFilter
+                onFilter={handleFilter}
+                initialBrandIds={initialBrandIds}
+                initialConditionIds={initialConditionIds}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* 商品列表 */}
-      <div className="product-list-wrapper">
-        <div className="container-fluid">
-          {/* 麵包屑 */}
-          <nav aria-label="breadcrumb" className="mb-3">
-            <ol className="breadcrumb mb-0">
-              <li className="breadcrumb-item">
-                <Link to="/">首頁</Link>
-              </li>
-              <li className="breadcrumb-item">
-                <Link to="/products">商品列表</Link>
-              </li>
-              {categoryInfo.displayName && (
-                <li className="breadcrumb-item active" aria-current="page">
-                  {categoryInfo.displayName}
+        {/* 商品列表 */}
+        <div className="product-list-wrapper">
+          <div className="container-fluid">
+            {/* 麵包屑 */}
+            <nav aria-label="breadcrumb" className="mb-3">
+              <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item">
+                  <Link to="/">首頁</Link>
                 </li>
-              )}
-              {keyword && (
-                <li className="breadcrumb-item active" aria-current="page">
-                  搜尋：{keyword}
+                <li className="breadcrumb-item">
+                  <Link to="/products">商品列表</Link>
                 </li>
-              )}
-            </ol>
-          </nav>
+                {categoryInfo.displayName && (
+                  <li className="breadcrumb-item active" aria-current="page">
+                    {categoryInfo.displayName}
+                  </li>
+                )}
+                {keyword && (
+                  <li className="breadcrumb-item active" aria-current="page">
+                    搜尋：{keyword}
+                  </li>
+                )}
+              </ol>
+            </nav>
 
-          {products.length === 0 ? (
-            <div className="no-products-found">
-              <div className="text-center py-5">
-                <h4 className="mb-3">無符合{categoryInfo.displayName}商品</h4>
-                <p className="text-muted">
-                  很抱歉，沒有找到符合您篩選條件的{categoryInfo.displayName}商品。
-                  <br />
-                  請嘗試調整篩選條件或瀏覽其他商品。
-                </p>
+            {products.length === 0 ? (
+              <div className="no-products-found">
+                <div className="text-center py-5">
+                  <h4 className="mb-3">無符合{categoryInfo.displayName}商品</h4>
+                  <p className="text-muted">
+                    很抱歉，沒有找到符合您篩選條件的{categoryInfo.displayName}商品。
+                    <br />
+                    請嘗試調整篩選條件或瀏覽其他商品。
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <ProductList product={products} useMobileCard={!isXlUp} />
+            )}
+          </div>
+
+          {/* 分頁 */}
+          {products.length > 0 && totalPages > 1 && (
+            <div className="container-fluid">
+              <div className="pagination-container text-center mt-4">
+                <nav aria-label="商品列表分頁">
+                  <ul className="pagination justify-content-center">
+                    <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                      <button
+                        className="page-link"
+                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        aria-label="上一頁"
+                      >
+                        &lt;
+                      </button>
+                    </li>
+
+                    {(() => {
+                      const maxVisiblePages = 10;
+                      const pages = [];
+
+                      if (totalPages <= maxVisiblePages) {
+                        for (let i = 1; i <= totalPages; i++) {
+                          pages.push(i);
+                        }
+                      } else {
+                        const halfVisible = Math.floor(maxVisiblePages / 2);
+                        let startPage = Math.max(1, currentPage - halfVisible);
+                        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+                        if (endPage - startPage + 1 < maxVisiblePages) {
+                          startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                        }
+
+                        for (let i = startPage; i <= endPage; i++) {
+                          pages.push(i);
+                        }
+                      }
+
+                      return pages.map(pageNumber => (
+                        <li
+                          key={pageNumber}
+                          className={`page-item ${currentPage === pageNumber ? "active" : ""}`}
+                        >
+                          <button
+                            className="page-link"
+                            onClick={() => handlePageChange(pageNumber)}
+                            aria-label={`第 ${pageNumber} 頁`}
+                            aria-current={currentPage === pageNumber ? "page" : undefined}
+                          >
+                            {pageNumber}
+                          </button>
+                        </li>
+                      ));
+                    })()}
+
+                    <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                      <button
+                        className="page-link"
+                        onClick={() =>
+                          currentPage < totalPages && handlePageChange(currentPage + 1)
+                        }
+                        disabled={currentPage === totalPages}
+                        aria-label="下一頁"
+                      >
+                        &gt;
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+
+                <div className="pagination-info mt-2">
+                  <small className="text-muted">
+                    第 {currentPage} 頁，共 {totalPages} 頁
+                  </small>
+                </div>
               </div>
             </div>
-          ) : (
-            <ProductList product={products} useMobileCard={!isXlUp} />
           )}
         </div>
-
-        {/* 分頁 */}
-        {products.length > 0 && totalPages > 1 && (
-          <div className="container-fluid">
-            <div className="pagination-container text-center mt-4">
-              <nav aria-label="商品列表分頁">
-                <ul className="pagination justify-content-center">
-                  <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                    <button
-                      className="page-link"
-                      onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      aria-label="上一頁"
-                    >
-                      &lt;
-                    </button>
-                  </li>
-
-                  {(() => {
-                    const maxVisiblePages = 10;
-                    const pages = [];
-
-                    if (totalPages <= maxVisiblePages) {
-                      for (let i = 1; i <= totalPages; i++) {
-                        pages.push(i);
-                      }
-                    } else {
-                      const halfVisible = Math.floor(maxVisiblePages / 2);
-                      let startPage = Math.max(1, currentPage - halfVisible);
-                      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-                      if (endPage - startPage + 1 < maxVisiblePages) {
-                        startPage = Math.max(1, endPage - maxVisiblePages + 1);
-                      }
-
-                      for (let i = startPage; i <= endPage; i++) {
-                        pages.push(i);
-                      }
-                    }
-
-                    return pages.map(pageNumber => (
-                      <li
-                        key={pageNumber}
-                        className={`page-item ${currentPage === pageNumber ? "active" : ""}`}
-                      >
-                        <button
-                          className="page-link"
-                          onClick={() => handlePageChange(pageNumber)}
-                          aria-label={`第 ${pageNumber} 頁`}
-                          aria-current={currentPage === pageNumber ? "page" : undefined}
-                        >
-                          {pageNumber}
-                        </button>
-                      </li>
-                    ));
-                  })()}
-
-                  <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-                    <button
-                      className="page-link"
-                      onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      aria-label="下一頁"
-                    >
-                      &gt;
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="pagination-info mt-2">
-                <small className="text-muted">
-                  第 {currentPage} 頁，共 {totalPages} 頁
-                </small>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+    </>
   );
 }
 

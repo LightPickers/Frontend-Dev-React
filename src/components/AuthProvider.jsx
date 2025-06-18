@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setVerified } from "@features/auth/authSlice";
 import { useLazyVerifyAuthQuery } from "@features/users/userApi";
-import GlobalLoader from "@components/loaders/GlobalLoader";
+import PageLoader from "@components/loaders/PageLoader";
 
 // 檢查應用初始化時是否有 token
 export function AuthProvider({ children }) {
@@ -30,9 +30,8 @@ export function AuthProvider({ children }) {
 
   return (
     <>
-      <GlobalLoader loading={isLoading || isVerifying} text="驗證身份中...">
-        {children}
-      </GlobalLoader>
+      <PageLoader loading={isLoading || isVerifying} text="身分驗證中…" minTime={1000} />
+      {children}
     </>
   );
 }

@@ -8,7 +8,7 @@ function ProductContentNav({ id }) {
   const navItems = [
     { label: "商品介紹", path: "" },
     { label: "詳細規格", path: `${PRODUCT_PATH}/specification` },
-    { label: "會員評價", path: `${PRODUCT_PATH}/review` },
+    // { label: "會員評價", path: `${PRODUCT_PATH}/review` },
   ];
   return (
     <nav className="product-nav row">

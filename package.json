@@ -38,6 +38,7 @@
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
     "sweetalert2": "^11.22.0",
+    "sweetalert2-react-content": "^5.1.0",
     "swiper": "^11.2.6",
     "zod": "^3.24.3"
   },

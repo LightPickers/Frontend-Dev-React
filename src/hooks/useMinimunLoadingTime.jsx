@@ -21,6 +21,45 @@ export function useMinimumLoadingTime(isLoading, minTime = 500) {
   return isLoading || !minTimeElapsed;
 }
 
+// // v2
+// export function useMinimumLoadingTime(isLoading, minTime = 500) {
+//   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+
+//   useEffect(() => {
+//     let timer;
+
+//     if (isLoading) {
+//       setMinTimeElapsed(false); // 重設
+//       timer = setTimeout(() => {
+//         setMinTimeElapsed(true);
+//       }, minTime);
+//     } else {
+//       setMinTimeElapsed(false); // 若 loading 停止也重設狀態
+//     }
+
+//     return () => clearTimeout(timer);
+//   }, [isLoading, minTime]);
+
+//   return isLoading && !minTimeElapsed;
+// }
+
+// // v3
+// export function useMinimumLoadingTime(isLoading, minTime = 500) {
+//   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+
+//   useEffect(() => {
+//     if (isLoading) {
+//       setMinTimeElapsed(false); // reset
+//       const timer = setTimeout(() => setMinTimeElapsed(true), minTime);
+//       return () => clearTimeout(timer);
+//     } else {
+//       setMinTimeElapsed(false); // loading 已完成，結束 timer
+//     }
+//   }, [isLoading, minTime]);
+
+//   return isLoading && !minTimeElapsed;
+// }
+
 /**
  * 更進階的版本 - 支援數據依賴
  * @param {boolean} isLoading - API 載入狀態

@@ -19,6 +19,7 @@
 
 // custom components
 @import "./components/buttons";
+@import "./components/alerts";
 @import "./components/tags";
 @import "./components/dropdowns";
 @import "./components/expanding-search";
@@ -50,6 +51,7 @@
 @import "./pages/productpage/filter";
 // productDetailPage
 @import "./pages/productDetailPage/productDetail";
+@import "./pages/productDetailPage/productUnavailable";
 
 // orderHistory
 @import "./pages/accountPage/orderHistory";
