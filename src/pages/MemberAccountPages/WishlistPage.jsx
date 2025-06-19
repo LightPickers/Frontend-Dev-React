@@ -23,7 +23,7 @@ function mapWishlistData(apiData) {
     name: item.Products.name,
     primary_image: item.Products.primary_image,
     liked: true,
-    //condition: item.Products.condition, 後端目前沒有回傳
+    condition: item.Products.condition_name,
     original_price: item.Products.original_price,
     selling_price: item.Products.selling_price,
     created_at: item.created_at,
@@ -33,8 +33,6 @@ function mapWishlistData(apiData) {
 function WishlistPage() {
   const { data, error, isLoading } = useGetWishlistProductsQuery();
   const wishlist = mapWishlistData(data);
-  console.log("原始 API 資料:", data);
-  console.log("第一個商品的完整資料:", data?.data?.[0]);
 
   const { data: userData, error: userError, isLoading: isUserLoading } = useGetUserProfileQuery();
   const user = userData?.data?.user;
