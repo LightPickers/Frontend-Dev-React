@@ -32,10 +32,8 @@ function OrderHistoryPage() {
     useLazyGetOrderByIdQuery();
 
   const handleViewOrder = async orderId => {
-    console.log("觸發查看訂單", orderId);
     setSelectedOrderId(orderId);
     const result = await triggerGetOrderById(orderId);
-    console.log("查詢結果：", result);
   };
 
   const closeModal = () => {
@@ -109,59 +107,34 @@ function OrderHistoryPage() {
     const items = orderDetails?.order_items || [];
 
     return (
-      <div className="mobile-order-card border rounded mb-3 bg-white overflow-hidden">
-        {/* 收合時顯示的主要資訊 */}
+      <div className="mobile-order-card border rounded mb-3 bg-white overflow-hidden shadow-sm">
         <div
-          className="p-3 cursor-pointer position-relative"
+          className="p-3 position-relative d-flex flex-column"
           onClick={() => toggleOrderExpansion(order.id)}
           style={{ cursor: "pointer" }}
         >
-          {/* 訂單編號 */}
-          <div className="mb-1">
+          {/* 訂單資訊區塊 */}
+          <div className="mb-2">
             <TextMedium
-              className="mb-0 text-break order-number-text"
-              style={{
-                wordBreak: "break-all",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-              }}
+              className=" mb-1"
+              style={{ fontSize: "1rem", fontWeight: "600", color: "#212529" }}
             >
-              訂單編號: {order.merchant_order_no}
+              訂單編號：{order.merchant_order_no}
+            </TextMedium>
+            <br />
+            <TextMedium className="text-muted mb-1" style={{ fontSize: "0.75rem" }}>
+              成立日期：{new Date(order.created_at).toLocaleDateString("zh-TW")}
             </TextMedium>
           </div>
 
-          {/* 狀態，固定在右下角 */}
-          <span
-            className={`badge position-absolute ${
-              order.status === "paid"
-                ? "bg-success"
-                : order.status === "canceled"
-                  ? "bg-danger"
-                  : "bg-warning"
-            }`}
-            style={{ bottom: "12px", right: "12px", zIndex: 1 }}
-          >
-            {order.status === "paid" ? "已完成" : order.status === "canceled" ? "已取消" : "處理中"}
-          </span>
+          {/* 金額+箭頭 */}
+          <div className="d-flex justify-content-between align-items-center">
+            <TextMedium style={{ fontSize: "0.8rem" }}>
+              NT$ {order.amount?.toLocaleString()}
+            </TextMedium>
 
-          <div className="d-flex justify-content-between align-items-start mb-2">
-            <div className="flex-grow-1 min-width-0" style={{ paddingRight: "80px" }}>
-              {/* 訂單成立日期 */}
-              <div className="mb-2">
-                <TextMedium className="text-muted mb-0" style={{ fontSize: "0.8rem" }}>
-                  訂單成立日期：{new Date(order.created_at).toLocaleDateString("zh-TW")}
-                </TextMedium>
-              </div>
-
-              {/* 金額 */}
-              <div>
-                <TextMedium className="fw-bold mb-0">
-                  NT$ {order.amount?.toLocaleString()}
-                </TextMedium>
-              </div>
-            </div>
-
-            <div className="ms-2 d-flex align-items-center flex-shrink-0">
+            {/* 展開箭頭 */}
+            <div className="d-flex align-items-center">
               <ArrowDownIcon
                 size={20}
                 className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
@@ -172,6 +145,25 @@ function OrderHistoryPage() {
               />
             </div>
           </div>
+
+          {/* 訂單狀態移到右上角 */}
+          <span
+            className={`badge position-absolute rounded-pill text-white px-2 py-1 ${
+              order.status === "paid"
+                ? "bg-success"
+                : order.status === "canceled"
+                  ? "bg-danger"
+                  : "bg-warning text-dark"
+            }`}
+            style={{
+              top: "12px",
+              right: "12px",
+              fontSize: "0.75rem",
+              fontWeight: "500",
+            }}
+          >
+            {order.status === "paid" ? "已完成" : order.status === "canceled" ? "已取消" : "處理中"}
+          </span>
         </div>
 
         {/* 展開時顯示的詳細資訊 */}
@@ -282,6 +274,7 @@ function OrderHistoryPage() {
             <div className="text-center">
               <BtnPrimary
                 size="small"
+                className="w-100"
                 onClick={e => {
                   e.stopPropagation();
                   handleViewOrder(order.id);
@@ -418,17 +411,17 @@ function OrderHistoryPage() {
                           : "處理中"}
                     </TextMedium>
                   </div>
-                  <div className="col-6 col-lg-2">
-                    <BtnPrimary
-                      size="small"
-                      className="mx-auto d-block"
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium
+                      className="text-primary text-decoration-underline cursor-pointer hover-text"
                       onClick={e => {
                         e.stopPropagation();
                         handleViewOrder(order.id);
                       }}
+                      style={{ fontSize: "0.875rem", fontWeight: "500" }}
                     >
                       查看訂單
-                    </BtnPrimary>
+                    </TextMedium>
                   </div>
                 </div>
               ))
@@ -668,7 +661,9 @@ function OrderHistoryPage() {
       )}
 
       <style jsx>{`
-        /* ... styles remain the same ... */
+        .hover-text:hover {
+          color: #4a6465;
+        }
         .mobile-order-card {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           transition: box-shadow 0.2s ease;
@@ -729,15 +724,6 @@ function OrderHistoryPage() {
           line-height: 1;
         }
 
-        @media (max-width: 530px) {
-          .order-number-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1;
-            display: block;
-            width: 100%;
-          }
         }
       `}</style>
     </>
