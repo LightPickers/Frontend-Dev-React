@@ -17,8 +17,8 @@ function UserMenu() {
       <div className="d-flex align-items-center gap-3">
         <NavSearchBar />
 
-        <UserWishlist />
-        {/* <UserFavList /> */}
+        {/* <UserWishlist /> */}
+        <UserFavList />
 
         <UserCartList />
       </div>
