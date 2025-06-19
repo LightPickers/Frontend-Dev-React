@@ -24,7 +24,7 @@ function MobileFilterButton({ onFilter, initialBrandIds, initialConditionIds }) 
 
   return (
     <>
-      {/* 手機版篩選按鈕 */}
+      {/* 手機版篩選按鈕 - 移除外框 */}
       <button
         className="mobile-filter-button d-flex align-items-center"
         onClick={toggleFilter}

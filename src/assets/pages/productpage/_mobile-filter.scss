@@ -1,20 +1,33 @@
 // 手機版篩選按鈕樣式
 .mobile-filter-button {
-  background-color: #ffffff;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
+  background-color: transparent; // 透明背景
+  border: none; // 移除邊框
   padding: 8px 12px;
   transition: all 0.3s ease;
   color: #333;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  height: 40px; // 固定高度
 
   &:hover {
-    background-color: #f8f9fa;
+    color: #8bb0b7; // 懸停時改變文字顏色而非背景
   }
 
   svg {
     transition: transform 0.3s ease;
   }
+}
+
+// 移除過濾區域的背景和多餘高度
+.filter-area-wrapper {
+  background-color: transparent; // 移除背景色
+}
+
+.filter-area {
+  background-color: transparent; // 移除背景色
+  min-height: unset; // 移除最小高度
+  height: 40px; // 設定只與篩選按鈕同高
+  padding: 0; // 移除padding
+  margin: 8px 0; // 只保留上下小間距
 }
 
 // 篩選器彈出視窗遮罩層
@@ -38,17 +51,17 @@
   position: absolute;
   width: 100%;
   max-width: 500px;
-  max-height: 90vh;
-  background-color: #ffffff;
+  max-height: 80vh;
+  background-color: #ffffff; // 彈出視窗保持白色背景
   border-radius: 8px;
   overflow-y: auto;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   animation: slideUp 0.3s ease;
-  margin: 10vh auto 0;
+  margin: 15vh auto 0;
 
   @media (max-width: 576px) {
     max-width: 95%;
-    margin-top: 5vh;
+    margin-top: 10vh;
   }
 }
 
@@ -56,33 +69,38 @@
 .mobile-filter-header {
   border-bottom: 1px solid #e5e5e5;
   background-color: #f8f9fa;
+  padding: 12px 16px;
 }
 
 // 篩選器彈出視窗內容區
 .mobile-filter-body {
-  max-height: 70vh;
+  max-height: 60vh;
   overflow-y: auto;
+  padding: 16px;
 
   // 手機版篩選器布局調整
   .product-filter {
+    margin-bottom: 0 !important;
+
     .row {
       margin: 0 -8px;
     }
 
     [class*="col-"] {
       padding: 0 8px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .form-label {
       font-weight: 500;
+      margin-bottom: 4px;
     }
 
     .button-group {
       margin-top: 8px;
 
       .btn {
-        padding: 10px 20px;
+        padding: 8px 16px;
       }
     }
   }
@@ -107,14 +125,4 @@
     transform: translateY(0);
     opacity: 1;
   }
-}
-
-// 手機版篩選器中的標題顯示樣式
-.category-name {
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 70%;
 }
