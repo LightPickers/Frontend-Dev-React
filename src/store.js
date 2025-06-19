@@ -16,6 +16,7 @@ import { orderApi } from "@features/orders/orderApi";
 import { wishlistApi } from "@features/wishlist/wishlistApi";
 import { couponApi } from "@features/coupons/couponApi";
 import { uploadApi } from "@features/upload/uploadApi";
+import { aiCustomerServiceApi } from "@features/aiCustomerService/aiCustomerServiceApi";
 
 // API reducers 配置
 const apiReducers = {
@@ -26,6 +27,7 @@ const apiReducers = {
   [orderApi.reducerPath]: orderApi.reducer,
   [wishlistApi.reducerPath]: wishlistApi.reducer,
   [uploadApi.reducerPath]: uploadApi.reducer,
+  [aiCustomerServiceApi.reducerPath]: aiCustomerServiceApi.reducer,
 };
 
 // API middleware 配置
@@ -37,6 +39,7 @@ const apiMiddleware = [
   orderApi.middleware,
   wishlistApi.middleware,
   uploadApi.middleware,
+  aiCustomerServiceApi.middleware,
 ];
 
 // 自定義 transform 來處理 Set 對象
