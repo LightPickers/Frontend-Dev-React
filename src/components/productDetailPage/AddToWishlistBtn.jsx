@@ -12,6 +12,7 @@ import useDecodedId from "@hooks/useDecodedId";
 import { BtnPrimary } from "@components/Buttons";
 import useRequireAuth from "@hooks/useRequireAuth";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
+import useBreakpoint from "@/hooks/useBreakpoints";
 
 function AddToWishlistBtn({ id, name, className }) {
   const userId = useDecodedId();
@@ -20,6 +21,7 @@ function AddToWishlistBtn({ id, name, className }) {
   const { data: wishlist } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
   const requireAuth = useRequireAuth();
   const isFavorited = wishlist?.data.some(item => item.Products.id === id);
+  const isXs = useBreakpoint("xs");
 
   const handleAddToWishlist = async () => {
     try {
@@ -36,7 +38,7 @@ function AddToWishlistBtn({ id, name, className }) {
         as={Link}
         className={classNames(className)}
         to="/account/profile/wishlists"
-        size="large"
+        size={isXs ? "medium" : "large"}
       >
         查看收藏清單
       </BtnPrimary>
@@ -45,10 +47,10 @@ function AddToWishlistBtn({ id, name, className }) {
 
   return (
     <BtnPrimary
-      size="large"
       className={classNames(className)}
       onClick={() => requireAuth(handleAddToWishlist)}
       disabled={isAddingToWishlist}
+      size={isXs ? "medium" : "large"}
     >
       {!isAddingToWishlist ? "加入收藏" : "放入收藏中…"}
     </BtnPrimary>

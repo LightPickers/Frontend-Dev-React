@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { useLoginUserMutation, useRegisterUserMutation } from "@features/users/userApi";
+import {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useRegisterSuccessEmailMutation,
+} from "@features/users/userApi";
 import UserProfileForm from "@features/users/UserProfileForm";
 import loginAndRedirect from "@features/auth/loginAndRedirect";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
@@ -12,6 +16,7 @@ import RedirectIfAuthenticated from "@components/RedirectIfAuthenticated";
 
 function RegisterPage() {
   const [registerUser] = useRegisterUserMutation();
+  const [sendRegisterSuccessEmail] = useRegisterSuccessEmailMutation();
   const [loginUser] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,7 +38,10 @@ function RegisterPage() {
         dispatch,
         navigate,
         loginData,
-        onSuccess: redirectToPage,
+        onSuccess: async () => {
+          await sendRegisterSuccessEmail().unwrap();
+          redirectToPage();
+        },
       });
     } catch (error) {
       toast.error(getApiErrorMessage(error, "註冊失敗，請稍後再試"));

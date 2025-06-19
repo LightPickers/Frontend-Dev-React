@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useMemo } from "react";
 
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import { useGetCartQuery } from "@/features/cart/cartApi";
@@ -8,15 +8,19 @@ import { useGetCouponsQuery } from "@/features/coupons/couponApi";
 import { useCreateNewOrderMutation } from "@/features/orders/orderApi";
 import { BtnPrimary } from "@/components/Buttons";
 import { H3Primary, H5Primary } from "@/components/Headings";
+import { InfoAlert } from "@/components/Alerts";
+import PageLoader from "@/components/loaders/PageLoader";
+import { showLoading, hideLoading } from "@features/loading/loadingSlice";
 
 // 4-2 訂單確認頁面
 function OrderConfirmationPage() {
   const checkoutForm = useSelector(state => state.checkoutPage);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // 取得購物車資料
-  const { data, isLoading } = useGetCartQuery();
+  const { data, isLoading: isCartLoading } = useGetCartQuery();
 
   // 取得會員資料
   const { data: userData, isLoading: isUserLoading } = useGetUserProfileQuery();
@@ -41,10 +45,27 @@ function OrderConfirmationPage() {
   // 取得token
   const token = useSelector(state => state.auth.token);
 
+  // 退貨流程說明彈窗
+  const showReturnInfo = () => {
+    InfoAlert({
+      title: "退貨流程說明",
+      html: `
+        <ol style="text-align: left; padding-left: 1.5em; list-style: decimal;">
+          <li>完成訂單後，如需退貨，請聯繫客服。</li>
+          <li>客服審核後將提供退貨方式與寄件地址。</li>
+          <li>請於指定時間內寄回商品並保留寄件證明。</li>
+          <li>驗收無誤後，我們將進行退款或換貨。</li>
+        </ol>
+      `,
+    });
+  };
+
   const handleCreateOrder = async () => {
     const cartIds = cartItems.map(item => item.id);
 
     try {
+      dispatch(showLoading({ text: "訂單建立中，請稍候..." }));
+
       const res = await fetch(`${import.meta.env.VITE_API_BASE}/orders`, {
         method: "POST",
         headers: {
@@ -81,7 +102,15 @@ function OrderConfirmationPage() {
 
   const finalTotal = subtotal + shipping - discountAmount;
 
-  if (isLoading) return <div className="text-center py-10">載入中...</div>;
+  const isDataReady = !isUserLoading && !isCartLoading && !!userInfo;
+
+  useEffect(() => {
+    if (isDataReady) {
+      dispatch(hideLoading());
+    }
+  }, [isDataReady, dispatch]);
+
+  if (!isDataReady) return null;
 
   return (
     <>
@@ -103,9 +132,7 @@ function OrderConfirmationPage() {
                 <li className="breadcrumb-item">
                   <Link to="/checkout">填寫訂單資料</Link>
                 </li>
-                <li className="breadcrumb-item active">
-                  <Link to="/checkout/confirmation/test-id">訂單確認</Link>
-                </li>
+                <li className="breadcrumb-item active">訂單確認</li>
               </ol>
             </nav>
             {/* 步驟進度條 */}
@@ -184,10 +211,15 @@ function OrderConfirmationPage() {
                           >
                             <div className="d-flex align-items-center gap-3 p-3">
                               <img
+                                className="rounded-1"
                                 src={item.primary_image}
                                 alt={item.name}
-                                className="rounded-1"
-                                width="60"
+                                style={{
+                                  width: "60px",
+                                  height: "60px",
+                                  objectFit: "cover",
+                                  flexShrink: 0,
+                                }}
                               />
                               <div>
                                 <p
@@ -314,7 +346,12 @@ function OrderConfirmationPage() {
                           className="rounded-1"
                           src={item.primary_image}
                           alt={item.name}
-                          width="90"
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            flexShrink: 0,
+                          }}
                         />
                         <div className="d-flex flex-column gap-3 w-100">
                           <div className="text-gray-600 h-75 text-multiline-truncate">
@@ -414,9 +451,13 @@ function OrderConfirmationPage() {
                     <div className="d-flex align-items-center gap-3">
                       <H3Primary className="text-gray-600 fs-1">確認出貨內容</H3Primary>
                       <div className="px-2 py-1">
-                        <Link className="text-primary-800 fw-bold text-decoration-underline">
+                        <button
+                          type="button"
+                          className="text-primary-800 fw-bold text-decoration-underline border-0 bg-transparent p-0"
+                          onClick={showReturnInfo}
+                        >
                           關於退貨...
-                        </Link>
+                        </button>
                       </div>
                     </div>
                     <div className="divider-line"></div>
@@ -436,12 +477,12 @@ function OrderConfirmationPage() {
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
                             <div className="text-gray-500 fw-bold">{userInfo.name}</div>
-                            <div className="text-gray-500">
+                            {/* <div className="text-gray-500">
                               地址：{userInfo.address_zipcode}
                               {userInfo.address_district}
                               {userInfo.address_detail}
                             </div>
-                            <div className="text-gray-500">電話：{userInfo.phone}</div>
+                            <div className="text-gray-500">電話：{userInfo.phone}</div> */}
                           </div>
                         </div>
                       </div>

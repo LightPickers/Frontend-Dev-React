@@ -110,9 +110,17 @@ function LoginPage() {
                 <img src={`${APP_BASE}GoogleIcon.svg`} alt="Google Icon" className="me-2" />
                 使用 Google 登入
               </BtnPrimary>
-              <p className="text-sans text-m text-end">
-                還沒有會員？立即前往<Link to="/register">註冊</Link>
-              </p>
+              <div className="d-flex justify-content-between">
+                <Link to="/forgot-password" className="fw-bold text-m text-primary-600">
+                  忘記密碼？
+                </Link>
+                <p className="text-sans text-m">
+                  還沒有會員？立即前往
+                  <Link to="/register" className="text-primary-600">
+                    註冊
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
           {/* 登入圖 */}

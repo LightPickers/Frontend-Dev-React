@@ -5,7 +5,7 @@
 // productCard
 .product-card {
   height: auto;
-  width: 280px;
+  min-width: 280px;
   border: 1px solid colors.$gray-100;
   border-radius: 8px;
   overflow: hidden;
@@ -65,7 +65,7 @@
       height: 100%;
       background-color: rgba(110, 132, 133, 0.3);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
       z-index: 1;
       pointer-events: none;
     }
@@ -135,11 +135,26 @@
       transform: translate(-50%, -50%);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
       z-index: 2;
     }
   }
 }
+
+.link-hover {
+  color: colors.$gray-600;
+  transition: color 300ms ease;
+
+  @include media-breakpoint-down(md) {
+    color: colors.$gray-500;
+  }
+
+  &:hover,
+  &:active {
+    color: colors.$primary-600;
+  }
+}
+
 // 在對應的 SCSS 檔案中確保
 .product-card .heading-sans {
   font-family: fonts.$font-family-sans-serif;

@@ -56,7 +56,14 @@ export default defineConfig(({ mode }) => {
     },
     // 優化依賴處理
     optimizeDeps: {
-      include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit"],
+      include: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "react-redux",
+        "@reduxjs/toolkit",
+        "form-data",
+      ],
       exclude: ["@vitejs/plugin-react"],
     },
     // 開發伺服器配置

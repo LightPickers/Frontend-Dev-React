@@ -14,7 +14,7 @@ import { AuthProvider } from "@components/AuthProvider";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+      <PersistGate loading={<div>載入中…</div>} persistor={persistor}>
         <AuthProvider>
           <RouterProvider router={appRouter} fallbackElement={null} />
           <ToastContainer position="bottom-center" autoClose={3000} />

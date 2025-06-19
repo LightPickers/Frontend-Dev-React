@@ -19,12 +19,14 @@
 
 // custom components
 @import "./components/buttons";
+@import "./components/alerts";
 @import "./components/tags";
 @import "./components/dropdowns";
 @import "./components/expanding-search";
 @import "./components/mobile-search";
 @import "./components/mobile-menu";
 @import "./components/mobile-nav-modal";
+@import "./components/mobile-product-card";
 @import "./components/product-article-settings";
 
 // layouts
@@ -45,6 +47,16 @@
 
 // productpage
 @import "./pages/productpage/product";
-
+@import "./pages/productpage/category-image";
+@import "./pages/productpage/filter";
+@import "./pages/productpage/mobile-filter";
 // productDetailPage
 @import "./pages/productDetailPage/productDetail";
+@import "./pages/productDetailPage/productUnavailable";
+
+// orderHistory
+@import "./pages/accountPage/orderHistory";
+
+//footer
+@import "./pages/footer/contact-us";
+@import "./pages/footer/faq";

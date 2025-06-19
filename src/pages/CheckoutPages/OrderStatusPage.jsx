@@ -1,41 +1,58 @@
 // 4-3 付款結果頁面
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useGetPaidOrderByIdQuery } from "@/features/orders/orderApi";
 import { useGetCartQuery, useDeleteCartMutation } from "@/features/cart/cartApi";
 import { BtnPrimary } from "@/components/Buttons";
-import { H2Primary, H3Primary, H5Primary } from "@/components/Headings";
-import { TextLarge, TextSmall } from "@/components/TextTypography";
+import { H1Primary, H2Primary, H3Primary, H5Primary } from "@/components/Headings";
+import { TextLarge, TextMedium } from "@/components/TextTypography";
+import PageLoader from "@/components/loaders/PageLoader";
 
 function OrderStatusPage() {
   // 取得訂單資料
   const { orderId } = useParams();
   const { data: orderData, isLoading: isOrderLoading, error } = useGetPaidOrderByIdQuery(orderId);
+  const [showLoading, setShowLoading] = useState(false);
 
   const { data: cartData } = useGetCartQuery();
+
   const [deleteCart] = useDeleteCartMutation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     // 當訂單狀態為已付款時
-    if (orderData?.order?.status === "已付款") {
+    if (orderData?.data?.status === "paid") {
       // 清空購物車中的所有商品
-      if (cartData?.data?.items) {
-        cartData.data.items.forEach(item => {
-          deleteCart(item.id);
-        });
-      }
+      deleteCart();
 
       // 清除 checkoutForm 暫存
       localStorage.removeItem("checkoutForm");
     }
   }, [orderData, cartData, deleteCart]);
 
-  if (isOrderLoading) return <p className="text-center py-10">載入中...</p>;
+  useEffect(() => {
+    let timer;
+
+    if (isOrderLoading) {
+      timer = setTimeout(() => setShowLoading(true), 1000);
+    } else {
+      setShowLoading(false);
+      clearTimeout(timer);
+    }
+    return () => clearTimeout(timer);
+  }, [isOrderLoading]);
+
+  if (isOrderLoading) return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
   if (error || !orderData?.data)
-    return <p className="text-center py-10 text-danger">查無訂單資訊</p>;
+    return (
+      <div className="d-flex flex-column align-items-center gap-5 py-20">
+        <TextLarge className="text-danger fs-2">查無訂單資訊</TextLarge>
+
+        <TextLarge>請重新嘗試或聯繫客服</TextLarge>
+      </div>
+    );
 
   const status = orderData.data.status;
   const orderNumber = orderData.data.merchant_order_no;
@@ -44,7 +61,7 @@ function OrderStatusPage() {
     <>
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
-          <div className="container d-flex flex-column gap-10">
+          <div className="container d-flex flex-column gap-12">
             {/* 麵包屑 */}
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb mb-0">
@@ -103,15 +120,21 @@ function OrderStatusPage() {
                 </div>
               </div>
             </div>
-            {status === "已付款" ? (
+            {status === "paid" ? (
               <div className="d-flex flex-column align-items-center gap-15">
-                <H2Primary>付款成功！</H2Primary>
+                <H1Primary className="fs-1">付款成功！</H1Primary>
+                <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-0">
+                  <TextLarge className="text-gray-500 fs-2">感謝您的購買，</TextLarge>
+                  <TextLarge className="text-gray-500 fs-2">敬請再度光臨。</TextLarge>
+                </div>
+                <TextMedium>（訂單編號：{orderNumber}）</TextMedium>
 
-                <TextLarge className="text-gray-500 fs-2">感謝您的購買，敬請再度光臨。</TextLarge>
-
-                <TextSmall>（訂單編號：{orderNumber}）</TextSmall>
-
-                <BtnPrimary size="large" type="button" onClick={() => navigate("/")}>
+                <BtnPrimary
+                  size="cta"
+                  type="button"
+                  className="fs-4 px-11 py-3"
+                  onClick={() => navigate("/")}
+                >
                   回到首頁
                 </BtnPrimary>
               </div>

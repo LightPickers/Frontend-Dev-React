@@ -65,6 +65,7 @@ function NavSearchBar() {
             value={searchValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            aria-label="Search"
             // autoFocus={isExpanded}
           />
         </div>

@@ -5,6 +5,9 @@ import {
   RegisterPage,
   LoginPage,
   GoogleRedirectPage,
+  GoogleRegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
   AccountDashboardPage,
   AccountSettingsPage,
   OrderHistoryPage,
@@ -23,6 +26,8 @@ import {
   ProductDescriptionPanel,
   ProductSpecificationsPanel,
   SellerReviewPanel,
+  ContactUsPage,
+  FAQPage,
 } from "@pages"; // @pages/index.js
 import LightPickersApp from "@/LightPickersApp";
 import ProtectedRoute from "@components/ProtectedRoute";
@@ -37,6 +42,9 @@ const ROUTES = {
     REGISTER: "/register", // 註冊
     LOGIN: "/login", // 登入
     GOOGLE_REDIRECT: "/google-callback", // google 登入用
+    GOOGLE_REGISTER: "/google-register", // google 註冊用
+    FORGOT_PASSWORD: "/forgot-password", // 忘記密碼
+    RESET_PASSWORD: "/reset-password", // 重設密碼
   },
   ACCOUNT: {
     ROOT: "/account/profile", // 會員中心首頁（目前沒線稿）
@@ -64,6 +72,8 @@ const ROUTES = {
     CONFIRMATION: "confirmation/:applicationId", // 確認出售資訊頁
     STATUS: "status/:applicationId", // 出售狀態頁
   },
+  CONTACT_US: "/contact", // 聯絡我們
+  FAQ: "/faq", // 常見問題
 };
 
 // 註冊、登入 (公開路由)
@@ -79,6 +89,18 @@ const authRoutes = [
   {
     path: ROUTES.AUTH.GOOGLE_REDIRECT,
     element: <GoogleRedirectPage />,
+  },
+  {
+    path: ROUTES.AUTH.GOOGLE_REGISTER,
+    element: <GoogleRegisterPage />,
+  },
+  {
+    path: ROUTES.AUTH.FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: ROUTES.AUTH.RESET_PASSWORD,
+    element: <ResetPasswordPage />,
   },
 ];
 
@@ -168,29 +190,29 @@ const accountRoutes = [
       ),
     },
     children: [
+      // {
+      //   element: <AccountDashboardPage />,
+      // },
       {
         index: true,
-        element: <AccountDashboardPage />,
-      },
-      {
         path: ROUTES.ACCOUNT.SETTINGS,
         element: <AccountSettingsPage />,
         handle: {
-          crumb: () => <TextMedium>會員資料</TextMedium>,
+          crumb: () => <TextMedium>我的帳戶</TextMedium>,
         },
       },
       {
         path: ROUTES.ACCOUNT.ORDERS,
         element: <OrderHistoryPage />,
         handle: {
-          crumb: () => <TextMedium>訂單紀錄</TextMedium>,
+          crumb: () => <TextMedium>訂單資訊</TextMedium>,
         },
       },
       {
         path: ROUTES.ACCOUNT.WISHLISTS,
         element: <WishlistPage />,
         handle: {
-          crumb: () => <TextMedium>願望清單</TextMedium>,
+          crumb: () => <TextMedium>收藏資訊</TextMedium>,
         },
       },
     ],
@@ -255,6 +277,14 @@ const publicRoutes = [
         </TextMedium>
       ),
     },
+  },
+  {
+    path: ROUTES.CONTACT_US,
+    element: <ContactUsPage />,
+  },
+  {
+    path: ROUTES.FAQ,
+    element: <FAQPage />,
   },
   sellPublicRoute,
   ...authRoutes,

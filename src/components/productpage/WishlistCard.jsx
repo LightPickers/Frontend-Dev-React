@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { H5Secondary } from "@components/Headings";
-import { TextSmall, TextLarge, LabelText } from "@components/TextTypography";
+import { TextSmall, TextMedium, TextLarge, LabelText } from "@components/TextTypography";
 import { SearchIcon, CartIcon, FavoriteFilledIcon } from "@components/icons";
 import { formatPrice } from "@utils/formatPrice";
 import {
@@ -44,78 +44,66 @@ function WishlistCard({ product }) {
   };
 
   return (
-    <div className="card wishlist-card h-100 shadow-sm border-0 position-relative overflow-hidden">
-      {/* 商品圖 */}
-      <div className="position-relative">
+    <main className="card product-card h-100 mb-4">
+      {/* 圖片區域 */}
+      <section className="card-image-container">
+        {/* 商品主圖 */}
         <img
           src={primary_image || "https://fakeimg.pl/300/"}
+          className="product-image object-fit-cover"
           alt={name}
-          className="card-img-top object-fit-cover"
-          style={{ height: "200px", transition: "transform 0.3s" }}
         />
-        {/* 放大與查看按鈕 */}
-        <div
-          className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-          style={{ opacity: 0, transition: "opacity 0.3s", backgroundColor: "rgba(0,0,0,0.3)" }}
-        >
-          <Link to={`/products/${id}`} className="btn btn-light rounded-circle">
-            <SearchIcon />
+
+        {/* 機況標籤/ 後端目前沒回傳 */}
+        {/* <LabelText className="card-badge mt-5">{condition}</LabelText> */}
+
+        {/* 懸停按鈕 */}
+        <div className="icon-group">
+          <Link to={`/products/${id}`} className="icon-btn">
+            <SearchIcon title="查看商品" strokeWidth={1} />
           </Link>
+
+          <button
+            className="icon-btn"
+            onClick={handleAddToCart}
+            disabled={isAddingToCart}
+            title="放入購物車"
+          >
+            <CartIcon strokeWidth={1} />
+          </button>
+
+          <button
+            className="icon-btn text-danger"
+            onClick={handleDeleteWishlistProduct}
+            disabled={isRemovingFromWishlist}
+            title="取消收藏"
+          >
+            <FavoriteFilledIcon strokeWidth={1} />
+          </button>
         </div>
+      </section>
 
-        {/* 機況 */}
-        <LabelText className="position-absolute top-0 start-0 m-2 bg-secondary text-white px-2 py-1 rounded small">
-          {condition}
-        </LabelText>
-      </div>
-
-      {/* 內容 */}
-      <div className="card-body d-flex flex-column justify-content-between">
-        {/* 名稱 */}
-        <div className="line-clamp-2 mb-2" style={{ minHeight: "48px" }}>
-          <H5Secondary isBold={false} className="text-gray-700">
+      <section className="card-body d-flex flex-column gap-1">
+        {/* 卡片標題容器 => 限定兩行 */}
+        <div
+          className="line-clamp-2"
+          style={{
+            minHeight: "72px",
+          }}
+        >
+          <H5Secondary isBold={false} className="text-gray-600">
             {name}
           </H5Secondary>
         </div>
-
-        {/* 價格 */}
-        <TextSmall as="del" className="text-gray-400">
-          NT$ {formatPrice(original_price, false)}
+        <TextSmall as="del" className="card-text text-gray-400">
+          {`NT$ ${formatPrice(original_price, false)}`}
         </TextSmall>
-        <TextLarge className="text-gray-800">NT$ {formatPrice(selling_price, false)}</TextLarge>
-
-        {/* 按鈕*/}
-        <div className="d-flex justify-content-end align-items-center gap-2 mt-3">
-          {/*  加入購物車 */}
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            onClick={handleAddToCart}
-            disabled={isAddingToCart}
-          >
-            <CartIcon />
-          </button>
-
-          {/* 取消收藏 */}
-          <button
-            className="btn btn-outline-danger btn-sm"
-            onClick={handleDeleteWishlistProduct}
-            disabled={isRemovingFromWishlist}
-          >
-            <FavoriteFilledIcon />
-          </button>
-        </div>
-      </div>
-
-      {/* hover */}
-      <style>{`
-        .wishlist-card:hover img {
-          transform: scale(1.05);
-        }
-        .wishlist-card:hover .position-absolute.top-0.start-0.w-100.h-100 {
-          opacity: 1;
-        }
-      `}</style>
-    </div>
+        <p className="card-text">
+          <TextMedium>NT$ </TextMedium>
+          <TextLarge>{formatPrice(selling_price, false)}</TextLarge>
+        </p>
+      </section>
+    </main>
   );
 }
 

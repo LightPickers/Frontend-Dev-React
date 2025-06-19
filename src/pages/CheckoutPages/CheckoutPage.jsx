@@ -17,6 +17,9 @@ import {
   getDefaultDeliveryDate,
 } from "@features/cart/checkoutPageSlice";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
+import { InfoAlert } from "@/components/Alerts";
+import PageLoader from "@/components/loaders/PageLoader";
+import { showLoading, hideLoading } from "@features/loading/loadingSlice";
 
 // 4-1 結帳頁面
 function CheckoutPage() {
@@ -97,6 +100,21 @@ function CheckoutPage() {
 
   const [confirmOrderInfo, { isLoading: isConfirming }] = useConfirmOrderInfoMutation();
 
+  // 退貨流程說明彈窗
+  const showReturnInfo = () => {
+    InfoAlert({
+      title: "退貨流程說明",
+      html: `
+        <ol style="text-align: left; padding-left: 1.5em; list-style: decimal;">
+          <li>完成訂單後，如需退貨，請聯繫客服。</li>
+          <li>客服審核後將提供退貨方式與寄件地址。</li>
+          <li>請於指定時間內寄回商品並保留寄件證明。</li>
+          <li>驗收無誤後，我們將進行退款或換貨。</li>
+        </ol>
+      `,
+    });
+  };
+
   const onSubmit = async formData => {
     const matchedCoupon = coupons.find(
       c => c.code.toLowerCase() === formData.couponCode.trim().toLowerCase()
@@ -120,16 +138,19 @@ function CheckoutPage() {
     };
 
     try {
+      dispatch(showLoading({ text: "正在準備訂單資料，請稍候..." }));
+
       await confirmOrderInfo(payload).unwrap();
-      navigate("/checkout/confirmation");
+
+      navigate("/checkout/confirmation", { replace: true });
     } catch (error) {
       toast.error(getApiErrorMessage(error, "訂單送出失敗，請稍後再試"));
+
+      dispatch(hideLoading());
     }
   };
 
-  if (isLoading || !couponsData) return <div className="text-center py-10">載入中...</div>;
-  if (error || !userInfo)
-    return <div className="text-center py-10 text-danger">載入會員資料失敗</div>;
+  if (isLoading || !userInfo) return <PageLoader text={"載入結帳資料中，請稍候..."} />;
 
   return (
     <>
@@ -145,9 +166,7 @@ function CheckoutPage() {
                 <li className="breadcrumb-item">
                   <Link to="/cart">購物車</Link>
                 </li>
-                <li className="breadcrumb-item active">
-                  <Link to="/checkout">填寫訂單資料</Link>
-                </li>
+                <li className="breadcrumb-item active">填寫訂單資料</li>
               </ol>
             </nav>
             {/* 步驟進度條 */}
@@ -198,9 +217,13 @@ function CheckoutPage() {
                     <div className="d-flex align-items-center gap-3">
                       <H3Primary className="text-gray-600 fs-1">確認出貨內容</H3Primary>
                       <div className="px-2 py-1">
-                        <Link className="text-primary-800 fw-bold text-decoration-underline">
+                        <button
+                          type="button"
+                          className="text-primary-800 fw-bold text-decoration-underline border-0 bg-transparent p-0"
+                          onClick={showReturnInfo}
+                        >
                           關於退貨...
-                        </Link>
+                        </button>
                       </div>
                     </div>
                     <div className="divider-line"></div>
@@ -220,12 +243,12 @@ function CheckoutPage() {
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
                             <div className="text-gray-500 fw-bold">{userInfo.name}</div>
-                            <div className="text-gray-500">
+                            {/* <div className="text-gray-500">
                               地址：{userInfo.address_zipcode}
                               {userInfo.address_district}
                               {userInfo.address_detail}
                             </div>
-                            <div className="text-gray-500">電話：{userInfo.phone}</div>
+                            <div className="text-gray-500">電話：{userInfo.phone}</div> */}
                           </div>
                         </div>
                       </div>
@@ -274,7 +297,7 @@ function CheckoutPage() {
                             className="text-gray-500 fs-5 fw-bold"
                             style={{ letterSpacing: "0.1em" }}
                           >
-                            收件者
+                            收件資訊
                           </div>
                         </div>
                         <div className="col-12 col-lg-7">
@@ -291,25 +314,24 @@ function CheckoutPage() {
                                 id="recipient-default"
                               />
                               <label
-                                className={`form-check-label ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
+                                className={`form-check-label d-flex flex-column gap-1 ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
                                 htmlFor="recipient-default"
                               >
                                 <div className="fw-bold">{userInfo.name}</div>
                                 <div>
-                                  {userInfo.address_zipcode}
+                                  收件地址：{userInfo.address_zipcode}
                                   {userInfo.address_district}
                                   {userInfo.address_detail}
                                 </div>
-                                <div>{userInfo.phone}</div>
-                                <div>
-                                  <Link
-                                    to="/account/profile/settings"
-                                    className="text-gray-500 text-decoration-underline"
-                                    style={{ position: "absolute", right: "12px", bottom: 0 }}
-                                  >
-                                    更改收件地址
-                                  </Link>
-                                </div>
+                                <div>電話：{userInfo.phone}</div>
+
+                                <Link
+                                  to="/account/profile/settings"
+                                  className="text-gray-500 text-decoration-underline"
+                                  style={{ position: "absolute", right: "12px", bottom: 0 }}
+                                >
+                                  更改收件地址
+                                </Link>
                               </label>
                               {errors.recipient && (
                                 <p className="invalid-feedback m-0">{errors.recipient.message}</p>
@@ -480,9 +502,7 @@ function CheckoutPage() {
                       回到購物車
                     </Link>
                   </div>
-                  <BtnPrimary className="cart-button" type="submit" disabled={isConfirming}>
-                    確認訂單內容
-                  </BtnPrimary>
+                  <BtnPrimary type="submit">確認訂單內容</BtnPrimary>
                 </div>
               </div>
             </form>

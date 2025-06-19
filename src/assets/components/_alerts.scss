@@ -1,0 +1,90 @@
+@use "../stylesheets/fonts" as fonts;
+@use "../stylesheets/colors" as colors;
+@use "../stylesheets/sizes" as sizes;
+
+.alert-title {
+  color: colors.$gray-800;
+}
+
+.alert-popup {
+  background-color: colors.$white;
+  backdrop-filter: blur(16px);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.alert-confirm-button {
+  border: none;
+  padding: 12px 20px;
+  margin: 4px;
+  color: colors.$gray-100;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: colors.$success;
+  transition:
+    background-color 300ms ease-in,
+    transform 300ms ease-in-out,
+    box-shadow 300ms ease-in;
+
+  &:hover {
+    transform: translateY(-1px);
+    background-color: green;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.alert-cancel-button,
+.alert-error-button {
+  border: none;
+  padding: 12px 20px;
+  margin: 4px;
+  color: colors.$gray-100;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: colors.$danger;
+  transition:
+    background-color 300ms ease-in,
+    transform 300ms ease-in-out,
+    box-shadow 300ms ease-in;
+
+  &:hover {
+    transform: translateY(-1px);
+    background-color: red;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+  &:focus {
+    transform: translateY(1px);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.alert-info-button {
+  border: none;
+  padding: 12px 20px;
+  margin: 4px;
+  color: colors.$gray-100;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: colors.$success;
+  transition:
+    background-color 300ms ease-in,
+    transform 300ms ease-in-out,
+    box-shadow 300ms ease-in;
+
+  &:hover {
+    transform: translateY(-1px);
+    background-color: green;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+}

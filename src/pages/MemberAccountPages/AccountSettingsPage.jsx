@@ -1,9 +1,10 @@
-/* global FormData */
 import { toast } from "react-toastify";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
 import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
@@ -139,63 +140,86 @@ function AccountSettingsPage() {
   // console.log("API 返回的原始資料:", data);
   // console.log("傳給表單的資料:", userData);
 
+  // 大頭貼
+  const PhotoSection = ({ className = "" }) => (
+    <div className={`d-flex flex-column align-items-center justify-content-start ${className}`}>
+      <div className="text-center">
+        <img
+          src={
+            userData?.photo ||
+            "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
+          }
+          alt="會員照片"
+          className="rounded-circle mb-2"
+          style={{ width: "250px", height: "250px", objectFit: "cover" }}
+        />
+      </div>
+      <button
+        type="button"
+        className="btn btn-link p-0 text-decoration-underline"
+        style={{
+          color: "#4A6465",
+        }}
+        onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+        onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+        onClick={() => fileInputRef.current.click()}
+      >
+        更換相片
+      </button>
+      <div className="mt-2 text-muted small text-center">
+        <div>檔案大小上限：5MB</div>
+        <div>格式支援：JPG、JPEG、PNG</div>
+      </div>
+      {/* 隱藏input */}
+      <input
+        type="file"
+        accept=".jpg, .jpeg, .png, "
+        style={{ display: "none" }}
+        ref={fileInputRef}
+        onChange={handlePhotoUpload}
+      />
+    </div>
+  );
+
+  // PropTypes 驗證
+  PhotoSection.propTypes = {
+    className: PropTypes.string,
+  };
+
   return (
     <>
       <div className="container">
+        <Breadcrumbs />
         <div className="row g-4">
           <div className="col-lg-12">
             <div className="bg-white rounded p-4">
               <h4 className="mb-5 py-2 mb-md-0">我的帳戶</h4>
-              <div className="row">
-                {/* 左邊表單欄位 */}
-                <div className="col-md-8">
-                  <hr />
-                  <UserProfileForSettingPage
-                    isEdit={true}
-                    userData={userData}
-                    onSubmit={handleUpdateProfile}
-                    isSubmitting={isUpdating}
-                  />
-                </div>
 
-                {/* 右邊大頭貼 */}
-                <div className="col-md-4 d-flex flex-column align-items-center justify-content-start mt-4 mt-md-0">
-                  <div className="text-center">
-                    <img
-                      src={
-                        userData?.photo ||
-                        "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
-                      }
-                      alt="會員照片"
-                      className="rounded-circle mb-2"
-                      width={190}
-                      height={190}
+              {/* 手機版大頭貼 - 顯示在最上方 */}
+              <div className="d-lg-none mb-4">
+                <PhotoSection />
+                <hr className="mt-4" />
+              </div>
+
+              <div className="row justify-content-center">
+                {/* 左邊表單欄位 - 調整響應式類別 */}
+                <div className="col-12 col-lg-8">
+                  <hr className="d-none d-lg-block" />
+
+                  {/* 確保表單內容對齊 */}
+                  <div className="w-100">
+                    <UserProfileForSettingPage
+                      isEdit={true}
+                      userData={userData}
+                      onSubmit={handleUpdateProfile}
+                      isSubmitting={isUpdating}
                     />
                   </div>
-                  <button
-                    type="button"
-                    className="btn btn-link p-0 text-decoration-underline"
-                    style={{
-                      color: "#4A6465",
-                    }}
-                    onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
-                    onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
-                    onClick={() => fileInputRef.current.click()}
-                  >
-                    更換相片
-                  </button>
-                  <div className="mt-2 text-muted small text-center">
-                    <div>檔案大小上限：5MB</div>
-                    <div>格式支援：JPG、JPEG、PNG</div>
-                  </div>
-                  {/* 隱藏input */}
-                  <input
-                    type="file"
-                    accept=".jpg, .jpeg, .png, "
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                    onChange={handlePhotoUpload}
-                  />
+                </div>
+
+                {/* 桌面版大頭貼 - 右邊欄位 */}
+                <div className="col-lg-4 d-none d-lg-flex">
+                  <PhotoSection className="mt-4 mt-lg-0" />
                 </div>
               </div>
             </div>

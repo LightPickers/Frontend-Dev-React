@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 
 import authReducer from "@features/auth/authSlice";
+import loadingReducer from "@features/loading/loadingSlice";
 import cartReducer from "@features/cart/cartSlice";
 // import wishlistReducer from "@features/wishlist/wishlistSlice";
 import checkoutPageReducer from "@features/cart/checkoutPageSlice";
@@ -14,6 +15,7 @@ import { cartApi } from "@features/cart/cartApi";
 import { orderApi } from "@features/orders/orderApi";
 import { wishlistApi } from "@features/wishlist/wishlistApi";
 import { couponApi } from "@features/coupons/couponApi";
+import { uploadApi } from "@features/upload/uploadApi";
 
 // API reducers 配置
 const apiReducers = {
@@ -23,6 +25,7 @@ const apiReducers = {
   [couponApi.reducerPath]: couponApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
   [wishlistApi.reducerPath]: wishlistApi.reducer,
+  [uploadApi.reducerPath]: uploadApi.reducer,
 };
 
 // API middleware 配置
@@ -33,6 +36,7 @@ const apiMiddleware = [
   couponApi.middleware,
   orderApi.middleware,
   wishlistApi.middleware,
+  uploadApi.middleware,
 ];
 
 // 自定義 transform 來處理 Set 對象
@@ -93,6 +97,7 @@ const persistedCheckoutReducer = persistReducer(checkoutPersistConfig, checkoutP
 // 合併所有 reducers
 const rootReducer = combineReducers({
   auth: authReducer, // 保持原有的 auth reducer，不使用 persist
+  loading: loadingReducer,
   cart: persistedCartReducer,
   // wishlist: persistedWishlistReducer,
   checkoutPage: persistedCheckoutReducer,

@@ -6,6 +6,8 @@ import { BtnPrimary } from "@components/Buttons";
 import { CloseIcon } from "@components/icons";
 import { H3Primary, H5Primary } from "@components/Headings";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
+import { ConfirmDialogue, SuccessAlert } from "@/components/Alerts";
+import PageLoader from "@/components/loaders/PageLoader";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -20,15 +22,16 @@ function CartPage() {
 
   const hasDiscontinuedProducts = cartItems.some(item => !item.is_available);
   // 刪除品項
-  const handleDelete = async id => {
-    const confirmDelete = window.confirm("確定要刪除此商品嗎？");
-
-    if (!confirmDelete) return;
-    try {
-      await deleteCartProduct(id).unwrap();
-    } catch (error) {
-      toast.error(getApiErrorMessage(error, "刪除失敗，請稍後再試"));
-    }
+  const handleDeleteCartItem = (itemName, onDelete) => {
+    ConfirmDialogue({
+      title: "確定要刪除？",
+      text: `即將刪除「${itemName.slice(0, 14)}...」這項商品，是否繼續？`,
+      icon: "warning",
+      action: async () => {
+        await onDelete(); // 傳入的刪除函式
+        SuccessAlert({ text: "已成功刪除該商品。" });
+      },
+    });
   };
   // 按下前往結帳手續按鈕
   const handleCheckout = () => {
@@ -43,7 +46,7 @@ function CartPage() {
     navigate("/checkout"); // 有商品才導到結帳頁
   };
 
-  if (isLoading) return <div className="text-center py-10">載入中...</div>;
+  if (isLoading) return <PageLoader text={"載入購物車資料中，請稍候..."} loading={isLoading} />;
 
   return (
     <>
@@ -59,9 +62,7 @@ function CartPage() {
                 <li className="breadcrumb-item">
                   <Link to="/">首頁</Link>
                 </li>
-                <li className="breadcrumb-item active">
-                  <Link to="/cart">購物車</Link>
-                </li>
+                <li className="breadcrumb-item active">購物車</li>
               </ol>
             </nav>
 
@@ -143,10 +144,15 @@ function CartPage() {
                             >
                               <div className="d-flex align-items-center gap-3 p-3">
                                 <img
+                                  className="rounded-1"
                                   src={item.primary_image}
                                   alt={item.name}
-                                  className="rounded-1"
-                                  width="60"
+                                  style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    objectFit: "cover",
+                                    flexShrink: 0,
+                                  }}
                                 />
                                 <div>
                                   <p
@@ -190,7 +196,11 @@ function CartPage() {
                                   type="button"
                                   size="small"
                                   className="text-danger border-danger hover:bg-danger-subtle"
-                                  onClick={() => handleDelete(item.id)}
+                                  onClick={() =>
+                                    handleDeleteCartItem(item.name, () =>
+                                      deleteCartProduct(item.id)
+                                    )
+                                  }
                                 >
                                   刪除
                                 </BtnPrimary>
@@ -245,7 +255,12 @@ function CartPage() {
                             className="rounded-1"
                             src={item.primary_image}
                             alt={item.name}
-                            width="90px"
+                            style={{
+                              width: "90px",
+                              height: "90px",
+                              objectFit: "cover",
+                              flexShrink: 0,
+                            }}
                           />
                           <div className="d-flex flex-column justify-content-between w-100">
                             <div className="d-flex justify-content-between align-items-center">
@@ -259,7 +274,9 @@ function CartPage() {
                                 type="button"
                                 title="刪除商品"
                                 className="icon-btn text-danger border-0 bg-gray-100 pe-0"
-                                onClick={() => handleDelete(item.id)}
+                                onClick={() =>
+                                  handleDeleteCartItem(item.name, () => deleteCartProduct(item.id))
+                                }
                                 style={{ transition: "transform 0.2s" }}
                                 onMouseEnter={e =>
                                   (e.currentTarget.style.transform = "scale(1.25)")

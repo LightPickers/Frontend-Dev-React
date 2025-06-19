@@ -5,6 +5,9 @@ export { default as ErrorPage } from "@pages/ErrorPage";
 export { default as LoginPage } from "@pages/AuthPages/LoginPage";
 export { default as RegisterPage } from "@pages/AuthPages/RegisterPage";
 export { default as GoogleRedirectPage } from "@pages/AuthPages/GoogleRedirectPage";
+export { default as GoogleRegisterPage } from "@pages/AuthPages/GoogleRegisterPage";
+export { default as ForgotPasswordPage } from "@pages/AuthPages/ForgotPasswordPage";
+export { default as ResetPasswordPage } from "@pages/AuthPages/ResetPasswordPage";
 
 // CheckoutPages
 export { default as CartPage } from "@pages/CheckoutPages/CartPage";
@@ -31,3 +34,7 @@ export { default as SellProcessPage } from "@pages/SellPages/SellProcessPage";
 export { default as SellFormPage } from "@pages/SellPages/SellFormPage";
 export { default as SellConfirmationPage } from "@pages/SellPages/SellConfirmationPage";
 export { default as SellApplyStatusPage } from "@pages/SellPages/SellApplyStatusPage";
+
+//footer
+export { default as ContactUsPage } from "@pages/ContactUsPage";
+export { default as FAQPage } from "@pages/FAQPage";

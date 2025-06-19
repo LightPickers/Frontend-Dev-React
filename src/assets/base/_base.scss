@@ -13,7 +13,11 @@ body {
   line-height: lh.$line-height-base;
   color: colors.$primary-1000;
   background-color: colors.$gray-100;
-  margin-top: 88px; // 預留導覽列空間
+  margin-top: 68px; // 預留導覽列空間
+
+  @include media-breakpoint-up(sm) {
+    margin-top: 92px;
+  }
 }
 
 img {
@@ -46,6 +50,9 @@ h5,
 h6 {
   margin-bottom: 0;
 }
+// * {
+//   outline: red solid 1px;
+// }
 
 // 標題
 .h1 {
@@ -55,7 +62,7 @@ h6 {
     font-size: sizes.$h2-font-size;
     letter-spacing: 0.14em;
   }
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(sm) {
     font-size: sizes.$h3-font-size;
     letter-spacing: 0.13em;
   }
@@ -63,7 +70,7 @@ h6 {
 .h2 {
   font-size: sizes.$h2-font-size;
   letter-spacing: 0.14em;
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h3-font-size;
     letter-spacing: 0.13em;
   }
@@ -71,11 +78,11 @@ h6 {
 .h3 {
   font-size: sizes.$h3-font-size;
   letter-spacing: 0.13em;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     font-size: sizes.$h4-font-size;
     letter-spacing: 0.12em;
   }
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h5-font-size;
     letter-spacing: 0.1em;
   }
@@ -83,11 +90,11 @@ h6 {
 .h4 {
   font-size: sizes.$h4-font-size;
   letter-spacing: 0.12em;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     font-size: sizes.$h5-font-size;
     letter-spacing: 0.1em;
   }
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h6-font-size;
     letter-spacing: 0.09em;
   }
@@ -95,7 +102,7 @@ h6 {
 .h5 {
   font-size: sizes.$h5-font-size;
   letter-spacing: 0.1em;
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     font-size: sizes.$h6-font-size;
     letter-spacing: 0.09em;
   }
@@ -125,7 +132,9 @@ h6 {
   color: colors.$gray-500;
   font-weight: fonts.$font-weight-bold;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition:
+    color 300ms ease,
+    outline 300ms ease;
 
   &:hover {
     color: colors.$primary-600;

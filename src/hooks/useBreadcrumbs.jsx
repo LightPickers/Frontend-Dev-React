@@ -6,7 +6,7 @@ import { TextMedium } from "@/components/TextTypography";
 const useBreadcrumbs = () => {
   const matches = useMatches();
   const location = useLocation();
-  console.log(matches);
+  // console.log(matches);
 
   const crumbs = matches
     .filter(match => typeof match.handle?.crumb === "function")
