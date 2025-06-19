@@ -34,7 +34,6 @@ function OrderHistoryPage() {
   const handleViewOrder = async orderId => {
     console.log("觸發查看訂單", orderId);
     setSelectedOrderId(orderId);
-    //triggerGetOrderById(orderId);
     const result = await triggerGetOrderById(orderId);
     console.log("查詢結果：", result);
   };
@@ -78,16 +77,18 @@ function OrderHistoryPage() {
   const countPaid = orders.filter(o => o.status === "paid").length;
   const countCanceled = orders.filter(o => o.status === "canceled").length;
   const countPending = orders.filter(o => o.status === "pending").length;
-  console.log("取得訂單：", orders);
 
   const filteredOrders = orders
     //狀態篩選
     .filter(order => activeTab === "all" || order.status === activeTab)
     //文字篩選
     .filter(
-      order => order.id.toLowerCase().includes(searchTerm.toLowerCase())
-      //暫時沒有回傳商品名稱，先備註
-      //order.product.toLowerCase().includes(searchTerm.toLowerCase())
+      order =>
+        // 如果搜尋框是空的，就直接回傳 true
+        !searchTerm ||
+        // 進行搜尋文字的比對
+        (order.merchant_order_no &&
+          order.merchant_order_no.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
   if (isError) {
@@ -125,7 +126,7 @@ function OrderHistoryPage() {
                 fontWeight: "500",
               }}
             >
-              訂單編號: {order.id}
+              訂單編號: {order.merchant_order_no}
             </TextMedium>
           </div>
 
@@ -239,7 +240,13 @@ function OrderHistoryPage() {
                     <div className="d-flex justify-content-between align-items-center mb-1">
                       <TextMedium style={{ fontSize: "0.875rem" }}>商品總計：</TextMedium>
                       <TextMedium style={{ fontSize: "0.875rem" }}>
-                        NT$ {Number(orderDetails.order.amount).toLocaleString()}
+                        NT$ {Number(orderDetails.order.final_amount).toLocaleString()}
+                      </TextMedium>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mb-1">
+                      <TextMedium style={{ fontSize: "0.875rem" }}>運費：</TextMedium>
+                      <TextMedium style={{ fontSize: "0.875rem" }}>
+                        NT$ {Number(orderDetails.order.shippingFee).toLocaleString()}
                       </TextMedium>
                     </div>
 
@@ -259,7 +266,7 @@ function OrderHistoryPage() {
                         支付總額：
                       </TextMedium>
                       <TextMedium className="fw-bold" style={{ fontSize: "0.9rem" }}>
-                        NT$ {Number(orderDetails.order.final_amount).toLocaleString()}
+                        NT$ {Number(orderDetails.order.amount).toLocaleString()}
                       </TextMedium>
                     </div>
                   </div>
@@ -289,10 +296,10 @@ function OrderHistoryPage() {
     );
   };
 
-  // PropTypes 驗證
   MobileOrderCard.propTypes = {
     order: PropTypes.shape({
       id: PropTypes.string.isRequired,
+      merchant_order_no: PropTypes.string,
       status: PropTypes.string.isRequired,
       created_at: PropTypes.string.isRequired,
       amount: PropTypes.number,
@@ -387,8 +394,8 @@ function OrderHistoryPage() {
                       {new Date(order.created_at).toLocaleDateString("zh-TW")}
                     </TextMedium>
                   </div>
-                  <div className="col-6 col-lg-2 text-truncate">
-                    <TextMedium>{order.id}</TextMedium>
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium>{order.merchant_order_no}</TextMedium>
                   </div>
                   <div className="col-6 col-lg-2 text-center">
                     <TextMedium>NT$ {order.amount?.toLocaleString()}</TextMedium>
@@ -505,7 +512,7 @@ function OrderHistoryPage() {
                                 <H6Primary>訂單編號</H6Primary>
                               </th>
                               <td className="modal-td-content ps-5">
-                                <TextMedium>{order.id}</TextMedium>
+                                <TextMedium>{order.merchant_order_no}</TextMedium>
                               </td>
                             </tr>
                             <tr>
@@ -625,7 +632,7 @@ function OrderHistoryPage() {
                                 <div>
                                   <div>
                                     <TextMedium>
-                                      總計：NT$ {Number(order.amount).toLocaleString()}
+                                      總計：NT$ {Number(order.final_amount).toLocaleString()}
                                     </TextMedium>
                                   </div>
                                   <div>
@@ -634,9 +641,15 @@ function OrderHistoryPage() {
                                       {Number(order.discount_price).toLocaleString()}
                                     </TextMedium>
                                   </div>
+                                  <div>
+                                    <TextMedium>
+                                      運費：NT$
+                                      {Number(order.shippingFee).toLocaleString()}
+                                    </TextMedium>
+                                  </div>
                                   <div style={{ marginTop: " 0.75rem" }}>
                                     <TextMedium>
-                                      支付總額：NT$ {Number(order.final_amount).toLocaleString()}
+                                      支付總額：NT$ {Number(order.amount).toLocaleString()}
                                     </TextMedium>
                                   </div>
                                 </div>
@@ -655,9 +668,7 @@ function OrderHistoryPage() {
       )}
 
       <style jsx>{`
-        // .modal-td-content {
-        //   padding-left: 2rem;
-        // } 不知為何沒用 先註解
+        /* ... styles remain the same ... */
         .mobile-order-card {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           transition: box-shadow 0.2s ease;
