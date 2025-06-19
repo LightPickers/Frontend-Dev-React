@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
 import { ArrowDownIcon } from "@/components/icons";
 import "../../assets/pages/accountPage/orderHistory.scss";
-import Breadcrumbs from "@/components/Breadcrumbs";
+
 import { useGetOrdersQuery, useLazyGetOrderByIdQuery } from "@/features/orders/orderApi";
 import {
   H3Primary,
@@ -93,20 +92,11 @@ function OrderHistoryPage() {
 
   if (isError) {
     return (
-      <div className="container">
-        <Breadcrumbs />
-        <div className="row g-4">
-          <div className="col-lg-12">
-            <div className="bg-white rounded p-4">
-              <div className="text-center text-danger py-5">
-                <TextMedium className="mb-3">載入訂單資料時發生錯誤</TextMedium>
-                <BtnPrimary size="medium" onClick={() => window.location.reload()}>
-                  重新載入
-                </BtnPrimary>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="text-center text-danger py-5">
+        <TextMedium className="mb-3">載入訂單資料時發生錯誤</TextMedium>
+        <BtnPrimary size="medium" onClick={() => window.location.reload()}>
+          重新載入
+        </BtnPrimary>
       </div>
     );
   }
@@ -313,174 +303,162 @@ function OrderHistoryPage() {
 
   return (
     <>
-      <div className="container">
-        <Breadcrumbs />
-        <div className="row g-4">
-          <div className="col-lg-12">
-            <div className="bg-white rounded p-4">
-              <H4Primary className="mb-5 py-2 mb-md-0">訂單資訊</H4Primary>
+      <H4Primary className="mb-5 py-2 mb-md-0">訂單資訊</H4Primary>
 
-              {isLoading ? (
-                <div className="text-center py-5">
-                  <div className="spinner-border text-secondary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                  <TextMedium className="mt-2 text-muted">載入中...</TextMedium>
-                </div>
-              ) : (
-                <>
-                  {/* 切換按鈕區 */}
-                  <div className="d-flex gap-4 border-bottom mb-4 flex-wrap">
-                    {[
-                      { key: "all", label: "全部", count: countAll },
-                      { key: "pending", label: "處理中", count: countPending },
-                      { key: "paid", label: "已完成", count: countPaid },
-                      { key: "canceled", label: "已取消", count: countCanceled },
-                    ].map(tab => (
-                      <button
-                        key={tab.key}
-                        className={`btn btn-link px-0 flex-shrink-0 ${activeTab === tab.key ? "fw-bold" : "text-muted"}`}
-                        style={activeTab === tab.key ? { color: "#8BB0B7" } : {}}
-                        onClick={() => setActiveTab(tab.key)}
-                      >
-                        {tab.label} <sup>{tab.count}</sup>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* search space */}
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="搜尋訂單編號"
-                      value={searchTerm}
-                      onChange={e => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-
-                  {/* 桌面-大螢幕顯示 */}
-                  <div className="d-none d-lg-block">
-                    {/* 表頭欄位名稱 */}
-                    <div
-                      className="row text-muted px-2 mb-2 py-2 bg-light"
-                      style={{ backgroundColor: "#F2F2F2" }}
-                    >
-                      <div className="col-6 col-lg-2">
-                        <H6Secondary className="text-muted">訂單成立日期</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">訂單編號</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">總金額</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">付款方式</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">狀態</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">操作</H6Secondary>
-                      </div>
-                    </div>
-
-                    {/* 桌面-訂單內容 */}
-                    {filteredOrders.length === 0 ? (
-                      <div className="text-center py-5 w-100">
-                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
-                        <BtnPrimary as={Link} to="/" size="medium">
-                          前往首頁探索商品
-                        </BtnPrimary>
-                      </div>
-                    ) : (
-                      filteredOrders.map(order => (
-                        <div
-                          key={order.id}
-                          className="row align-items-center px-2 py-3 border-bottom"
-                        >
-                          <div className="col-6 col-lg-2">
-                            <TextMedium>
-                              {new Date(order.created_at).toLocaleDateString("zh-TW")}
-                            </TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-truncate">
-                            <TextMedium>{order.id}</TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-center">
-                            <TextMedium>NT$ {order.amount?.toLocaleString()}</TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-center">
-                            <TextMedium>
-                              {order.payment_method === "credit_card"
-                                ? "信用卡"
-                                : order.payment_method === "bank_transfer"
-                                  ? "銀行轉帳"
-                                  : order.payment_method || "未知"}
-                            </TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-center">
-                            <TextMedium className="text-muted">
-                              {order.status === "paid"
-                                ? "已完成"
-                                : order.status === "canceled"
-                                  ? "已取消"
-                                  : "處理中"}
-                            </TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2">
-                            <BtnPrimary
-                              size="small"
-                              className="mx-auto d-block"
-                              onClick={e => {
-                                e.stopPropagation();
-                                handleViewOrder(order.id);
-                              }}
-                            >
-                              查看訂單
-                            </BtnPrimary>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                    {filteredOrders.length > 0 && (
-                      <div className="text-center text-muted py-4">
-                        <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 手機版卡片式布局 - 只在小螢幕顯示 */}
-                  <div className="d-lg-none">
-                    {filteredOrders.length === 0 ? (
-                      <div className="text-center text-muted py-10 w-100">
-                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
-                        <div>
-                          <BtnPrimary as={Link} to="/" size="small">
-                            前往首頁探索商品
-                          </BtnPrimary>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        {filteredOrders.map(order => (
-                          <MobileOrderCard key={order.id} order={order} />
-                        ))}
-                        {filteredOrders.length > 0 && (
-                          <div className="text-center text-muted py-4">
-                            <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+      {isLoading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-secondary" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
+          <TextMedium className="mt-2 text-muted">載入中...</TextMedium>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* 切換按鈕區 */}
+          <div className="d-flex gap-4 border-bottom mb-4 flex-wrap">
+            {[
+              { key: "all", label: "全部", count: countAll },
+              { key: "pending", label: "處理中", count: countPending },
+              { key: "paid", label: "已完成", count: countPaid },
+              { key: "canceled", label: "已取消", count: countCanceled },
+            ].map(tab => (
+              <button
+                key={tab.key}
+                className={`btn btn-link px-0 flex-shrink-0 ${activeTab === tab.key ? "fw-bold" : "text-muted"}`}
+                style={activeTab === tab.key ? { color: "#8BB0B7" } : {}}
+                onClick={() => setActiveTab(tab.key)}
+              >
+                {tab.label} <sup>{tab.count}</sup>
+              </button>
+            ))}
+          </div>
+
+          {/* search space */}
+          <div className="mb-4">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="搜尋訂單編號"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* 桌面-大螢幕顯示 */}
+          <div className="d-none d-lg-block">
+            {/* 表頭欄位名稱 */}
+            <div
+              className="row text-muted px-2 mb-2 py-2 bg-light"
+              style={{ backgroundColor: "#F2F2F2" }}
+            >
+              <div className="col-6 col-lg-2">
+                <H6Secondary className="text-muted">訂單成立日期</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">訂單編號</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">總金額</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">付款方式</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">狀態</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">操作</H6Secondary>
+              </div>
+            </div>
+
+            {/* 桌面-訂單內容 */}
+            {filteredOrders.length === 0 ? (
+              <div className="text-center py-5 w-100">
+                <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
+                <BtnPrimary as={Link} to="/" size="medium">
+                  前往首頁探索商品
+                </BtnPrimary>
+              </div>
+            ) : (
+              filteredOrders.map(order => (
+                <div key={order.id} className="row align-items-center px-2 py-3 border-bottom">
+                  <div className="col-6 col-lg-2">
+                    <TextMedium>
+                      {new Date(order.created_at).toLocaleDateString("zh-TW")}
+                    </TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2 text-truncate">
+                    <TextMedium>{order.id}</TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium>NT$ {order.amount?.toLocaleString()}</TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium>
+                      {order.payment_method === "credit_card"
+                        ? "信用卡"
+                        : order.payment_method === "bank_transfer"
+                          ? "銀行轉帳"
+                          : order.payment_method || "未知"}
+                    </TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium className="text-muted">
+                      {order.status === "paid"
+                        ? "已完成"
+                        : order.status === "canceled"
+                          ? "已取消"
+                          : "處理中"}
+                    </TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2">
+                    <BtnPrimary
+                      size="small"
+                      className="mx-auto d-block"
+                      onClick={e => {
+                        e.stopPropagation();
+                        handleViewOrder(order.id);
+                      }}
+                    >
+                      查看訂單
+                    </BtnPrimary>
+                  </div>
+                </div>
+              ))
+            )}
+            {filteredOrders.length > 0 && (
+              <div className="text-center text-muted py-4">
+                <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
+              </div>
+            )}
+          </div>
+
+          {/* 手機版卡片式布局 - 只在小螢幕顯示 */}
+          <div className="d-lg-none">
+            {filteredOrders.length === 0 ? (
+              <div className="text-center text-muted py-10 w-100">
+                <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
+                <div>
+                  <BtnPrimary as={Link} to="/" size="small">
+                    前往首頁探索商品
+                  </BtnPrimary>
+                </div>
+              </div>
+            ) : (
+              <>
+                {filteredOrders.map(order => (
+                  <MobileOrderCard key={order.id} order={order} />
+                ))}
+                {filteredOrders.length > 0 && (
+                  <div className="text-center text-muted py-4">
+                    <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Modal */}
       {selectedOrderId && (
