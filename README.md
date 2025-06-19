@@ -78,9 +78,9 @@ npm run dev
 ```bash
 http://localhost:5173/#/
 ```
+## 專案結構
 
-## 主要架構
-
+### 主要架構
 - public - 靜態圖片
 - src - 主要專案檔案
 - assets - scss 樣式模組
@@ -97,7 +97,7 @@ http://localhost:5173/#/
 - main.jsx - React 應用程式進入點
 - store.js - Redux Toolkit 的 store 建立與整合
 
-## 其他檔案
+### 其他檔案
 - vite.config.js - Vite 設定檔
 - eslint.config.js - ESLint 規則設定
 - .prettierrc, .prettierignore - Prettier 格式化規則
