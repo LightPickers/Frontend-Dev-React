@@ -52,6 +52,23 @@ export const SuccessAlert = ({ title = "成功！", text }) => {
   });
 };
 
+// 資訊提示框
+// InfoAlert({title: "", html: ""})
+export const InfoAlert = ({ title = "提示", html }) => {
+  return LP_Swal.fire({
+    title: <h3>{title}</h3>,
+    html,
+    icon: "info",
+    confirmButtonText: "我知道了",
+    customClass: {
+      popup: "alert-popup",
+      confirmButton: "alert-info-button",
+      icon: "alert-icon",
+    },
+    buttonsStyling: false,
+  });
+};
+
 // 錯誤提示框
 // ErrorAlert({title: "", text: ""})
 export const ErrorAlert = ({ title = "錯誤！", text }) => {
@@ -74,4 +91,5 @@ export default {
   ConfirmDialogue,
   SuccessAlert,
   ErrorAlert,
+  InfoAlert,
 };

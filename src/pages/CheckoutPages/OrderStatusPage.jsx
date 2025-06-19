@@ -1,21 +1,21 @@
 // 4-3 付款結果頁面
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useGetPaidOrderByIdQuery } from "@/features/orders/orderApi";
 import { useGetCartQuery, useDeleteCartMutation } from "@/features/cart/cartApi";
 import { BtnPrimary } from "@/components/Buttons";
-import { H2Primary, H3Primary, H5Primary } from "@/components/Headings";
-import { TextLarge, TextSmall } from "@/components/TextTypography";
+import { H1Primary, H2Primary, H3Primary, H5Primary } from "@/components/Headings";
+import { TextLarge, TextMedium } from "@/components/TextTypography";
+import PageLoader from "@/components/loaders/PageLoader";
 
 function OrderStatusPage() {
   // 取得訂單資料
   const { orderId } = useParams();
   const { data: orderData, isLoading: isOrderLoading, error } = useGetPaidOrderByIdQuery(orderId);
-  console.log(orderData);
+  const [showLoading, setShowLoading] = useState(false);
 
   const { data: cartData } = useGetCartQuery();
-  console.log(cartData);
 
   const [deleteCart] = useDeleteCartMutation();
 
@@ -32,7 +32,19 @@ function OrderStatusPage() {
     }
   }, [orderData, cartData, deleteCart]);
 
-  if (isOrderLoading) return <p className="text-center py-10">載入中...</p>;
+  useEffect(() => {
+    let timer;
+
+    if (isOrderLoading) {
+      timer = setTimeout(() => setShowLoading(true), 1000);
+    } else {
+      setShowLoading(false);
+      clearTimeout(timer);
+    }
+    return () => clearTimeout(timer);
+  }, [isOrderLoading]);
+
+  if (isOrderLoading) return <PageLoader text="載入訂單資料中..." />;
   if (error || !orderData?.data)
     return (
       <div className="d-flex flex-column align-items-center gap-5 py-20">
@@ -49,7 +61,7 @@ function OrderStatusPage() {
     <>
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
-          <div className="container d-flex flex-column gap-10">
+          <div className="container d-flex flex-column gap-12">
             {/* 麵包屑 */}
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb mb-0">
@@ -110,13 +122,19 @@ function OrderStatusPage() {
             </div>
             {status === "paid" ? (
               <div className="d-flex flex-column align-items-center gap-15">
-                <H2Primary>付款成功！</H2Primary>
+                <H1Primary className="fs-1">付款成功！</H1Primary>
+                <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-0">
+                  <TextLarge className="text-gray-500 fs-2">感謝您的購買，</TextLarge>
+                  <TextLarge className="text-gray-500 fs-2">敬請再度光臨。</TextLarge>
+                </div>
+                <TextMedium>（訂單編號：{orderNumber}）</TextMedium>
 
-                <TextLarge className="text-gray-500 fs-2">感謝您的購買，敬請再度光臨。</TextLarge>
-
-                <TextSmall>（訂單編號：{orderNumber}）</TextSmall>
-
-                <BtnPrimary size="large" type="button" onClick={() => navigate("/")}>
+                <BtnPrimary
+                  size="cta"
+                  type="button"
+                  className="fs-4 px-11 py-3"
+                  onClick={() => navigate("/")}
+                >
                   回到首頁
                 </BtnPrimary>
               </div>
