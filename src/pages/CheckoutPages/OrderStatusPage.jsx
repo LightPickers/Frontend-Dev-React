@@ -44,7 +44,7 @@ function OrderStatusPage() {
     return () => clearTimeout(timer);
   }, [isOrderLoading]);
 
-  if (isOrderLoading) return <PageLoader text="載入訂單資料中..." />;
+  if (isOrderLoading) return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
   if (error || !orderData?.data)
     return (
       <div className="d-flex flex-column align-items-center gap-5 py-20">
