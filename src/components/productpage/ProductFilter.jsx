@@ -6,7 +6,7 @@ import {
   useGetProductConditionsQuery,
 } from "@features/products/productApi";
 
-function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
+function ProductFilter({ onFilter, initialBrandIds, initialConditionIds, isMobile = false }) {
   // 改為陣列來支援多選
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
@@ -376,10 +376,13 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
   }
 
   return (
-    <form className="product-filter mb-4" onSubmit={handleSubmit}>
-      <div className="row g-3">
+    <form
+      className={`product-filter mb-4 ${isMobile ? "mobile-filter" : ""}`}
+      onSubmit={handleSubmit}
+    >
+      <div className={`row ${isMobile ? "g-2" : "g-3"}`}>
         {/* 品牌多選下拉選單 */}
-        <div className="col-12 col-md-6 col-lg-3">
+        <div className={isMobile ? "col-12" : "col-12 col-md-6 col-lg-3"}>
           <label htmlFor="brand" className="form-label">
             品牌
           </label>
@@ -418,7 +421,7 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
         </div>
 
         {/* 狀態多選下拉選單 */}
-        <div className="col-12 col-md-6 col-lg-3">
+        <div className={isMobile ? "col-12" : "col-12 col-md-6 col-lg-3"}>
           <label htmlFor="status" className="form-label">
             商品狀態
           </label>
@@ -457,7 +460,7 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
         </div>
 
         {/* 金額範圍 */}
-        <div className="col-12 col-md-8 col-lg-4">
+        <div className={isMobile ? "col-12" : "col-12 col-md-8 col-lg-4"}>
           <label className="form-label">金額</label>
           <div className="d-flex align-items-center price-range-selector">
             <input
@@ -482,7 +485,7 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
         </div>
 
         {/* 搜尋和清除按鈕 */}
-        <div className="col-12 col-md-4 col-lg-2 d-flex align-items-end">
+        <div className={isMobile ? "col-12" : "col-12 col-md-4 col-lg-2 d-flex align-items-end"}>
           <div className="button-group w-100 d-flex gap-2">
             <button type="submit" className="btn btn-search flex-fill">
               搜尋
@@ -506,6 +509,7 @@ ProductFilter.propTypes = {
   onFilter: PropTypes.func.isRequired,
   initialBrandIds: PropTypes.string,
   initialConditionIds: PropTypes.string,
+  isMobile: PropTypes.bool,
 };
 
 export default ProductFilter;

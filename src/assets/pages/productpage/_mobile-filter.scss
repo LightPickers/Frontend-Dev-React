@@ -1,0 +1,120 @@
+// 手機版篩選按鈕樣式
+.mobile-filter-button {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  color: #333;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+}
+
+// 篩選器彈出視窗遮罩層
+.mobile-filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+// 篩選器彈出視窗容器
+.mobile-filter-container {
+  position: absolute;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease;
+  margin: 10vh auto 0;
+
+  @media (max-width: 576px) {
+    max-width: 95%;
+    margin-top: 5vh;
+  }
+}
+
+// 篩選器彈出視窗頂部標題區
+.mobile-filter-header {
+  border-bottom: 1px solid #e5e5e5;
+  background-color: #f8f9fa;
+}
+
+// 篩選器彈出視窗內容區
+.mobile-filter-body {
+  max-height: 70vh;
+  overflow-y: auto;
+
+  // 手機版篩選器布局調整
+  .product-filter {
+    .row {
+      margin: 0 -8px;
+    }
+
+    [class*="col-"] {
+      padding: 0 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .button-group {
+      margin-top: 8px;
+
+      .btn {
+        padding: 10px 20px;
+      }
+    }
+  }
+}
+
+// 動畫效果
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// 手機版篩選器中的標題顯示樣式
+.category-name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 70%;
+}

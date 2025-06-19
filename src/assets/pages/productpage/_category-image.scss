@@ -14,18 +14,18 @@
 
     // 響應式高度調整
     @media (max-width: 575px) {
-      min-height: 300px;
-      max-height: 400px;
+      min-height: 150px;
+      max-height: 250px;
     }
 
     @media (min-width: 576px) and (max-width: 991px) {
-      min-height: 350px;
-      max-height: 450px;
+      min-height: 150px;
+      max-height: 250px;
     }
 
     @media (min-width: 992px) {
-      min-height: 400px;
-      max-height: 500px;
+      min-height: 200px;
+      max-height: 300px;
     }
 
     @media (min-width: 1400px) {

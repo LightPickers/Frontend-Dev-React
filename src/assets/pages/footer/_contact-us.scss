@@ -1,0 +1,85 @@
+@use "../../stylesheets/colors" as colors;
+
+.contact-us-page {
+  .contact-link {
+    display: block;
+    text-decoration: none;
+    color: #505050; // 替換 colors.$gray-700
+    padding: 15px 20px;
+    border: 1px solid #dee2e6; // 替換 colors.$gray-300
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+
+    &:hover {
+      background-color: #f8f9fa; // 替換 colors.$gray-100
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    i {
+      font-size: 1.25rem;
+    }
+  }
+
+  .contact-form-container {
+    background-color: #f8f9fa; // 替換 colors.$gray-100
+
+    h3 {
+      font-weight: 600;
+      color: #343a40; // 替換 colors.$gray-800
+    }
+  }
+
+  .form-control {
+    border: 1px solid #dee2e6; // 替換 colors.$gray-300
+    padding: 12px 15px;
+    border-radius: 4px;
+
+    &:focus {
+      border-color: #6c757d; // 替換 colors.$primary-600
+      box-shadow: 0 0 0 0.25rem rgba(139, 176, 183, 0.25);
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
+  }
+
+  textarea.form-control {
+    resize: none;
+  }
+
+  .btn-dark {
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #000;
+    }
+
+    &:disabled {
+      background-color: #adb5bd;
+    }
+  }
+}
+.contact-submit-btn {
+  background-color: #8bb0b7 !important;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken(#8bb0b7, 10%) !important;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}

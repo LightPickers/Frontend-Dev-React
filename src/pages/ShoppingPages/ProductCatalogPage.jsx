@@ -3,6 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 
 import { useGetProductsQuery } from "@features/products/productApi";
 import ProductFilter from "@components/productpage/ProductFilter";
+import MobileFilterButton from "@components/productpage/MobileFilterButton";
 import ProductList from "@components/productpage/ProductList";
 import CategoryImage from "@components/productpage/CategoryImage";
 import useBreakpoint from "@hooks/useBreakpoints";
@@ -14,8 +15,9 @@ function ProductCatalogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  // 使用斷點判斷螢幕尺寸
   const isXlUp = useBreakpoint("xlUp");
-
+  const isLgUp = useBreakpoint("lgUp"); // 992px 及以上
   // 獲取當前類別資訊
   const categoryInfo = getCurrentCategoryInfo(searchParams);
 
@@ -120,6 +122,7 @@ function ProductCatalogPage() {
     newSearchParams.delete("max_price");
     newSearchParams.delete("price_range");
     newSearchParams.delete("page");
+    newSearchParams.delete("keyword");
 
     // 設置新的多選參數
     if (brand_ids) {
@@ -190,15 +193,33 @@ function ProductCatalogPage() {
         {/* Category Image - 完全貼齊 header，撐滿寬度 */}
         <CategoryImage category={categoryInfo.categoryName} />
 
-        {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
+        {/* 篩選器區域 - 根據螢幕尺寸顯示不同版本 */}
         <div className="filter-area-wrapper">
           <div className="container-fluid">
-            <div className="filter-area">
-              <ProductFilter
-                onFilter={handleFilter}
-                initialBrandIds={initialBrandIds}
-                initialConditionIds={initialConditionIds}
-              />
+            <div className="filter-area d-flex justify-content-between align-items-center">
+              {/* 修改這裡：使用 isLgUp 替代原來的 isMdUp */}
+              {isLgUp ? (
+                <ProductFilter
+                  onFilter={handleFilter}
+                  initialBrandIds={initialBrandIds}
+                  initialConditionIds={initialConditionIds}
+                />
+              ) : (
+                <>
+                  {/* 手機版顯示篩選按鈕和分類名稱 */}
+                  <div className="d-flex justify-content-between align-items-center w-100">
+                    <h5 className="category-name mb-0">
+                      {categoryInfo.displayName || "所有商品"}
+                      {keyword && <span className="ms-2">「{keyword}」</span>}
+                    </h5>
+                    <MobileFilterButton
+                      onFilter={handleFilter}
+                      initialBrandIds={initialBrandIds}
+                      initialConditionIds={initialConditionIds}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -231,9 +252,9 @@ function ProductCatalogPage() {
             {products.length === 0 ? (
               <div className="no-products-found">
                 <div className="text-center py-5">
-                  <h4 className="mb-3">無符合{categoryInfo.displayName}商品</h4>
+                  <h4 className="mb-3">無符合商品</h4>
                   <p className="text-muted">
-                    很抱歉，沒有找到符合您篩選條件的{categoryInfo.displayName}商品。
+                    很抱歉，沒有找到符合您篩選條件的商品。
                     <br />
                     請嘗試調整篩選條件或瀏覽其他商品。
                   </p>

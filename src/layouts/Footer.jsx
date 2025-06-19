@@ -16,7 +16,7 @@ function Footer() {
             <Link to="/" className="footer-brand-link mb-4 d-inline-block">
               <img src={`${APP_BASE}Logo.svg`} alt="拾光堂 logo" className="footer-logo" />
             </Link>
-            <div className="social-links d-flex gap-3">
+            <div className="social-links d-flex gap-2">
               <a
                 href="https://www.facebook.com/share/16jKHuUjyT/?mibextid=wwXIfr"
                 target="_blank"
@@ -24,7 +24,7 @@ function Footer() {
                 className="social-icon"
                 aria-label="Facebook"
               >
-                <FacebookIcon size={20} title="Facebook" />
+                <FacebookIcon size={25} title="Facebook" />
               </a>
               <a
                 href="https://www.instagram.com/light_pickers?igsh=Y2NleGdldDB0Z3Np"
@@ -33,15 +33,7 @@ function Footer() {
                 className="social-icon"
                 aria-label="Instagram"
               >
-                <InstagramIcon size={20} title="Instagram" />
-              </a>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-                aria-label="Line"
-              >
-                <LineIcon size={20} title="Line" />
+                <InstagramIcon size={25} title="Instagram" />
               </a>
             </div>
           </div>
@@ -51,10 +43,17 @@ function Footer() {
             <TextLarge className="footer-title mb-3">關於「拾光堂」</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium className="footer-link">常見問題</TextMedium>
+                <TextMedium className="footer-link">關於我們</TextMedium>
               </li>
               <li>
-                <TextMedium className="footer-link">聯絡資訊</TextMedium>
+                <TextMedium as={Link} to="/faq" className="footer-link">
+                  常見問題
+                </TextMedium>
+              </li>
+              <li>
+                <TextMedium as={Link} to="/contact" className="footer-link">
+                  聯絡我們
+                </TextMedium>
               </li>
             </ul>
           </div>
@@ -70,11 +69,6 @@ function Footer() {
               <li>
                 <TextMedium as={Link} to="/products" className="footer-link">
                   最新商品
-                </TextMedium>
-              </li>
-              <li>
-                <TextMedium as={Link} to="/products" className="footer-link">
-                  商品分類
                 </TextMedium>
               </li>
             </ul>
@@ -93,10 +87,14 @@ function Footer() {
             <TextLarge className="footer-title mb-3">用戶服務</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium className="footer-link">會員中心</TextMedium>
+                <TextMedium as={Link} to="/account/profile" className="footer-link">
+                  會員中心
+                </TextMedium>
               </li>
               <li>
-                <TextMedium className="footer-link">訂單查詢</TextMedium>
+                <TextMedium as={Link} to="/account/profile/orders" className="footer-link">
+                  訂單查詢
+                </TextMedium>
               </li>
             </ul>
           </div>

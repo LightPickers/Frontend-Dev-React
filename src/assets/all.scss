@@ -49,9 +49,14 @@
 @import "./pages/productpage/product";
 @import "./pages/productpage/category-image";
 @import "./pages/productpage/filter";
+@import "./pages/productpage/mobile-filter";
 // productDetailPage
 @import "./pages/productDetailPage/productDetail";
 @import "./pages/productDetailPage/productUnavailable";
 
 // orderHistory
 @import "./pages/accountPage/orderHistory";
+
+//footer
+@import "./pages/footer/contact-us";
+@import "./pages/footer/faq";
