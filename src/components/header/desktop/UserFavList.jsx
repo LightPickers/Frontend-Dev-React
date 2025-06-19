@@ -2,8 +2,6 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { useCallback, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import { Link, useNavigate } from "react-router-dom";
-import { check } from "prettier";
-import { toast } from "react-toastify";
 
 import {
   useDeleteWishlistProductMutation,
@@ -37,7 +35,7 @@ function UserFavList() {
     refetch: reFetchFavlist,
   } = useGetWishlistProductsQuery(userId ? undefined : skipToken);
 
-  const [deleteWishlistProduct, { isLoading: isDeleting }] = useDeleteWishlistProductMutation();
+  // const [deleteWishlistProduct, { isLoading: isDeleting }] = useDeleteWishlistProductMutation();
 
   const wishlistItems = useMemo(() => wishlistResponse?.data ?? [], [wishlistResponse]);
   const totalSellingPrice = wishlistResponse?.totalSellingPrice ?? 0;
