@@ -51,7 +51,7 @@ function FullscreenMenu({ isMenuOpen, closeMenu, path }) {
             {/* icon */}
             <ChevronRightIcon size={40} />
             <Link
-              to="/account/profile"
+              to="/account/profile/settings"
               className="stretched-link"
               onClick={closeMenu}
               title="前往會員中心"

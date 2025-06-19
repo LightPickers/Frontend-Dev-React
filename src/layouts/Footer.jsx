@@ -87,7 +87,7 @@ function Footer() {
             <TextLarge className="footer-title mb-3">用戶服務</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium as={Link} to="/account/profile" className="footer-link">
+                <TextMedium as={Link} to="/account/profile/settings" className="footer-link">
                   會員中心
                 </TextMedium>
               </li>
