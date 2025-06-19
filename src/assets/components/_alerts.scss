@@ -62,3 +62,28 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   }
 }
+
+.alert-info-button {
+  border: none;
+  padding: 12px 20px;
+  margin: 4px;
+  color: colors.$gray-100;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: colors.$success;
+  transition:
+    background-color 300ms ease-in,
+    transform 300ms ease-in-out,
+    box-shadow 300ms ease-in;
+
+  &:hover {
+    transform: translateY(-1px);
+    background-color: green;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+}
