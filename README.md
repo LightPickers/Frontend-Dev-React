@@ -1,61 +1,106 @@
-# Frontend-Dev-React 專案開發環境與目錄結構介紹
+# 「拾光堂」前端前台頁面
 
-以 **React + Vite** 為建設
+## 創作緣由
+我們認為，攝影器材在經過升級、汰換後，仍然具有極高的使用價值。許多保存良好的器材，卻因為缺乏合適的流通平台被閒置或低價處理。
+況且購買全新器材的價格高昂，也不確定使用起來是否真正喜歡或適合自己。在摸索的過程金錢成本過高，許多人難以負擔。
+因此「拾光堂」旨在打造一個專門的二手攝影器材交易平台，讓器材能夠在攝影愛好者之間流轉，延續其價值。讓舊有的器材有最有效的利用，再次看見世界。
 
-- 樣式： **SCSS、CSS**
-- 驗證： **JWT 身份驗證機制**
-- 表單： **React Hook Form + Zod 驗證**
-- 路由管理： **React Router**
-- 狀態管理： **Redux & RTK**
+## 技術
+此為「拾光堂」前台介面，由 **React + Vite** 建設
 
----
+### 主要
+- JS 框架：**React** 19.1.0
+- 路由管理：**React Router** v7 (HashRoater)
+- 狀態管理：
+  - **Redux** 9.2.0
+  - **Redux Toolkit** 2.8.2
+  - **Redux Persist** 6.0.0
+- API 管理：**RTK Query**（主要）、**axios** 1.8.4 (輔助)
+- Prop 驗證：**prop-types** 15.8.1
+- 表單管理：**react-hook-form** 7.56.1
+- 表單驗證：**zod** 3.24.3
+- JWT 應用：**jwt-decode** 4.0.0
+- CSS 樣式庫：**Boostrap** 5.3.5
+- CSS 預處理器：**SASS (scss)** 1.87.0
+- 輪播樣式庫：**Swiper** 11.2.6
+- Github 部屬：**gh-pages** 6.3.0
+
+
+### 輔助
+- **classnames** 2.5.1
+- **react-spinners** 0.17.0
+- **react-loading-skeleton** 3.5.0
+- **sweetalert2** 11.22.0
+- **sweetalert2-react-content** 5.1.0
+- **react-toastify** 11.0.5
+- **quill-delta-to-html** 0.12.1
+- **dompurify** 3.2.6
+
+### 第三方服務
+- 藍新金流（結帳流程）
+- Google （登入／註冊流程）
+
+## 功能
+主要實現以下使用者功能
+- [x] 註冊／登入／重設密碼
+- [x] 登出
+- [x] 瀏覽／篩選商品列表
+- [x] 查看商品詳細資訊
+- [x] 收藏商品
+- [x] 將商品加入購物車
+- [x] 使用折扣碼折抵金額
+- [x] 透過藍新金流完成結帳
+- [x] 查看訂單狀態
+
+## 安裝
+### 取得專案
+```bash
+git clone https://github.com/LightPickers/Frontend-Dev-React.git
+```
+
+### 移動到專案內
+```bash
+cd Frontend-Dev-React
+```
+
+### 安裝套件
+```bash
+npm install
+```
+
+### 運行專案
+```bash
+npm run dev
+```
+### 開啟專案
+在瀏覽器網址列輸入以下即可看到畫面
+
+```bash
+http://localhost:5173/#/
+```
 
 ## 主要架構
 
-src/
-├── assets/                // SCSS 樣式模組（依 base, mixins, components 分類）
-├── components/            // 共用元件（如 Button、FormGroup 等）
-├── data/                  // 靜態資料、常數定義
-├── features/              // 特定頁面的功能模組 （含 Redux slice）
-│ ├── auth/                    // 登入、註冊
-│ └── users/                   // 使用者資訊...
-├── hooks/                 // 自定義 Hook
-├── layouts/               // 頁面佈局元件（如 Layout、Header、Footer）
-├── pages/                 // 路由頁面
-│ ├── AuthPages/               // 登入、註冊頁面
-│ ├── MemberAccountPages/      // 會員中心頁面
-│ ├── CheckoutPages/           // 結帳流程頁面
-│ ├── SellPages/               // 販售相關頁面
-│ └── ShoppingPages/           // 商品瀏覽、加入購物車等頁面
-├── routes/                // React Router 路由定義
-├── schemas/               // 表單 Zod 驗證 schema 定義
-├── utils/                 // 通用工具函式
-├── LightPickersApp.jsx    // 入口元件（App）
-├── main.jsx               // React 應用程式進入點
-├── store.js               // Redux Toolkit 的 store 建立與整合
+- public - 靜態圖片
+- src - 主要專案檔案
+- assets - scss 樣式模組
+- components - 共用元件、頁面元件
+- data - 靜態資料
+- features - 特定功能的模組 (含 Redux Slices)
+- hooks - 自定義 Hook
+- layouts - 頁面佈局元件
+- pages - 路由頁面元件
+- routes - 路由元件
+- schemas - Zod 表單驗證放置處
+- utils - 通用工具函式
+- LightPickersApp.jsx - 入口元件 (App)
+- main.jsx - React 應用程式進入點
+- store.js - Redux Toolkit 的 store 建立與整合
 
-## 根目錄
-
-├── .env, .env.production           // 環境變數管理
-├── vite.config.js                  // Vite 設定檔
-├── eslint.config.js                // ESLint 規則設定
-├── .prettierrc, .prettierignore    // Prettier 格式化規則
-├── index.html                      // 應用程式渲染 root 檔案
-├── package.json                    // 專案依賴套件與 script 設定
-├── README.md                       // 專案說明文件
-
-## 注意事項
-### 環境變數
-- 分別設置 .env、.env.production 檔案，並創建環境變數 VITE_APP_BASE 作為部屬路徑使用
-- .env.production 的部屬路徑請設置 repo 名稱
-- 環境變數請用 VITE_ 開頭，使用時須加上 import.meta.env.環境變數名稱
-- 使用 public 靜態資料時，請用部屬路徑作為前綴
-
-### 路由
-- 創建頁面流程：
-  1. 在 src/pages/ 找到該頁面的分類資料夾中創建，沒有所屬類別資料夾就創一個
-  2. 在 src/pages/index.js 匯入並匯出
-  3. 到 src/routes/router.jsx 匯入 index 的地方添加該頁面
-  4. 在 src/routes/router.jsx 的目錄 (ROUTES) 物件上找到對應處設定路徑，沒有就自訂一個
-  5. 在 src/routes/router.jsx，根據該頁面是否公開、頁面種類來找創建路由
-  6. 在 src/routes/router.jsx，若是新增的種類，則需要在整合處另外添加
+## 其他檔案
+- vite.config.js - Vite 設定檔
+- eslint.config.js - ESLint 規則設定
+- .prettierrc, .prettierignore - Prettier 格式化規則
+- index.html - 應用程式渲染 root 位置
+- package.json - 專案依賴套件與 script 設定
+- README.md - 專案說明文件
