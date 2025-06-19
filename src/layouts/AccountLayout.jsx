@@ -13,6 +13,7 @@ import {
   H6Secondary,
 } from "@/components/Headings";
 import { TextMedium } from "@/components/TextTypography";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 function AccountLayout() {
   const { data: userData, isLoading } = useGetUserProfileQuery();
@@ -42,6 +43,7 @@ function AccountLayout() {
 
   return (
     <div style={{ backgroundColor: "#f1f3f5", minHeight: "100vh", padding: "40px 0" }}>
+      <Breadcrumbs />
       <div className="container">
         <div className="row g-4">
           {/* 左側欄位 大螢幕*/}
