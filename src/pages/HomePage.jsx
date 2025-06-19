@@ -5,6 +5,7 @@ import ProductSection from "@components/homepage/ProductSection";
 import FeaturedCategories from "@components/homepage/FeaturedCategories";
 import WhyUsSection from "@components/homepage/WhyUsSection";
 import BeSalerSection from "@components/homepage/BeSalerSection";
+import AiCustomerService from "@/components/homepage/aiCustomerService";
 
 function HomePage() {
   return (
@@ -23,6 +24,9 @@ function HomePage() {
 
       {/* CTA */}
       <BeSalerSection />
+
+      {/* AI 客服 */}
+      <AiCustomerService />
     </>
   );
 }
