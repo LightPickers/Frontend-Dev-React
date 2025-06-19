@@ -11,22 +11,43 @@
   .faq-container {
     max-width: 900px;
     margin: 0 auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
 
     .accordion {
-      --bs-accordion-border-color: #e5e5e5;
+      // 移除邊框顏色
+      --bs-accordion-border-color: transparent;
+      --bs-accordion-btn-border-color: transparent;
+      --bs-accordion-border-width: 0;
       --bs-accordion-active-color: #8bb0b7;
       --bs-accordion-active-bg: rgba(139, 176, 183, 0.1);
 
+      .accordion-item {
+        // 確保移除每個項目的邊框
+        border: none;
+        margin-bottom: 12px; // 添加間距使項目間有空隙
+        background-color: transparent;
+      }
+
       .accordion-header {
         margin-bottom: 0;
+        border: none; // 確保沒有任何邊框
 
         .accordion-button {
           font-size: 18px;
           padding: 20px 25px;
+          background-color: white; // 保持按鈕背景為白色
+          border-radius: 8px !important; // 添加圓角
+          border: none; // 確保按鈕沒有邊框
+          box-shadow: none; // 移除陰影，不再使用陰影代替邊框
+          outline: none; // 移除輪廓
 
           &:not(.collapsed) {
             color: #8bb0b7;
-            box-shadow: none;
+            border: none; // 確保展開時也沒有邊框
+            box-shadow: none; // 移除展開時的陰影
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
 
             &::after {
               background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%238BB0B7' d='M3.204 5h9.592L8 10.481 3.204 5zm-.753-.659l4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z'/%3e%3c/svg%3e");
@@ -34,14 +55,24 @@
           }
 
           &:focus {
-            border-color: rgba(139, 176, 183, 0.4);
-            box-shadow: 0 0 0 0.25rem rgba(139, 176, 183, 0.25);
+            border-color: transparent;
+            outline: none;
+            box-shadow: none; // 移除焦點時的陰影
           }
         }
       }
 
+      .accordion-collapse {
+        background-color: white; // 確保內容背景為白色
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        box-shadow: none; // 移除內容區域的陰影
+        border: none; // 確保沒有邊框
+      }
+
       .accordion-body {
         padding: 20px 25px;
+        border: none; // 確保內容區域沒有邊框
 
         p,
         ul,
@@ -64,6 +95,21 @@
         }
       }
     }
+
+    // 可以考慮添加自定義的分隔線來代替邊框（如果需要視覺上的分隔）
+    // .accordion-item:not(:last-child) {
+    //   position: relative;
+    //
+    //   &::after {
+    //     content: '';
+    //     position: absolute;
+    //     bottom: -6px;
+    //     left: 5%;
+    //     width: 90%;
+    //     height: 1px;
+    //     background-color: #f0f0f0;
+    //   }
+    // }
   }
 
   @media (max-width: 767px) {
