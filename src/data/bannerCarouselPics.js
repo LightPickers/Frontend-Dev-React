@@ -16,7 +16,8 @@ function getBannerCarouselPics() {
         forLargeScreen: `${PIC_PATH}/banner-2-lg.png`,
         forSmallScreen: `${PIC_PATH}/banner-2-sm.png`,
       },
-      element: { title: "你的珍藏，能是別人的靈光", type: "button", text: "成為賣家" },
+      element: { title: "你的珍藏，能是別人的靈光", type: "button", text: "瀏覽商品" },
+      // element: { title: "你的珍藏，能是別人的靈光", type: "button", text: "成為賣家" },
     },
     {
       id: 3,
@@ -32,7 +33,8 @@ function getBannerCarouselPics() {
         forLargeScreen: `${PIC_PATH}/banner-4-lg.png`,
         forSmallScreen: `${PIC_PATH}/banner-4-sm.png`,
       },
-      element: { title: "你的珍藏，能是別人的靈光", type: "button", text: "成為賣家" },
+      element: { title: "你的珍藏，能是別人的靈光", type: "button", text: "瀏覽商品" },
+      // element: { title: "你的珍藏，能是別人的靈光", type: "button", text: "成為賣家" },
     },
   ];
 }

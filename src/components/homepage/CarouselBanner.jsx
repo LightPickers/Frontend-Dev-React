@@ -91,7 +91,8 @@ function CarouselBanner() {
                         {/* 按鈕 */}
                         {type === "button" && (
                           <Link
-                            to="/sell"
+                            // to="/sell"
+                            to="/products"
                             role="button"
                             className="d-block text-center btn-custom-secondary"
                           >
