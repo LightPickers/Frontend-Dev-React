@@ -6,9 +6,9 @@ function ProtectedRoute() {
   const location = useLocation();
 
   // 確認是否還在載入驗證狀態
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   // 驗證完成，且未通過驗證 -> 導向登入頁
   if (isVerified && !isAuthenticated) {

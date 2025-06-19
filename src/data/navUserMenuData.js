@@ -5,7 +5,7 @@ function getUserMenu({ dispatch, navigate }) {
     {
       label: "我的帳戶",
       role: "link",
-      path: "/account/profile",
+      path: "/account/profile/settings",
     },
     // {
     //   label: "專屬優惠券",

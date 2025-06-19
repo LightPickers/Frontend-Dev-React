@@ -1,12 +1,12 @@
 function getStaticMobileNavData() {
   return [
     {
-      name: "購物車",
+      name: "查看購物車",
       path: "/cart",
       hasChild: false,
     },
     {
-      name: "願望清單",
+      name: "收藏清單",
       path: "/account/profile/wishlists",
       hasChild: false,
     },

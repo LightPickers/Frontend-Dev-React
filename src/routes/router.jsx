@@ -190,11 +190,11 @@ const accountRoutes = [
       ),
     },
     children: [
+      // {
+      //   element: <AccountDashboardPage />,
+      // },
       {
         index: true,
-        element: <AccountDashboardPage />,
-      },
-      {
         path: ROUTES.ACCOUNT.SETTINGS,
         element: <AccountSettingsPage />,
         handle: {
