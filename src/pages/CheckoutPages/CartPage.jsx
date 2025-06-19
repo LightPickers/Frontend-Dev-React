@@ -46,7 +46,7 @@ function CartPage() {
     navigate("/checkout"); // 有商品才導到結帳頁
   };
 
-  if (isLoading) return <PageLoader loading={isLoading} />;
+  if (isLoading) return <PageLoader text={"載入購物車資料中，請稍候..."} loading={isLoading} />;
 
   return (
     <>
