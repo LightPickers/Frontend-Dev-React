@@ -138,7 +138,7 @@ function CheckoutPage() {
     };
 
     try {
-      dispatch(showLoading());
+      dispatch(showLoading({ text: "正在準備訂單資料，請稍候..." }));
 
       await confirmOrderInfo(payload).unwrap();
 
@@ -150,7 +150,7 @@ function CheckoutPage() {
     }
   };
 
-  if (isLoading || isConfirming || !userInfo) return <PageLoader loading />;
+  if (isLoading || !userInfo) return <PageLoader text={"載入結帳資料中，請稍候..."} />;
 
   return (
     <>
