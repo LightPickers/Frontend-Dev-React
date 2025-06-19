@@ -43,9 +43,6 @@ function Footer() {
             <TextLarge className="footer-title mb-3">關於「拾光堂」</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium className="footer-link">關於我們</TextMedium>
-              </li>
-              <li>
                 <TextMedium as={Link} to="/faq" className="footer-link">
                   常見問題
                 </TextMedium>
@@ -87,7 +84,7 @@ function Footer() {
             <TextLarge className="footer-title mb-3">用戶服務</TextLarge>
             <ul className="footer-links list-unstyled">
               <li>
-                <TextMedium as={Link} to="/account/profile" className="footer-link">
+                <TextMedium as={Link} to="/account/profile/settings" className="footer-link">
                   會員中心
                 </TextMedium>
               </li>

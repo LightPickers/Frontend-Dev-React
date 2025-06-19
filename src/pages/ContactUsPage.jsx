@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom"; // 暫時不需要，已註解
 import { toast } from "react-toastify";
 
-import { TextLarge, TextMedium } from "@components/TextTypography";
+// import { TextLarge, TextMedium } from "@components/TextTypography"; // 暫時不需要，已註解
 
 function ContactUsPage() {
   const [formData, setFormData] = useState({
@@ -56,97 +56,40 @@ function ContactUsPage() {
         </div>
 
         <div className="row">
-          {/* 聯絡資訊 */}
-          <div className="col-md-6 mb-5 mb-md-0">
-            <div className="contact-info">
-              {/* 電子郵件 */}
-              <div className="mb-4">
-                <Link
-                  to="mailto:lightpickers6@gmail.com"
-                  className="contact-link d-flex align-items-center justify-content-between"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>lightpickers6@gmail.com</span>
-                  <i className="bi bi-arrow-up-right"></i>
-                </Link>
-              </div>
-
-              {/* 電話 */}
-              <div className="mb-4">
-                <Link
-                  className="contact-link d-flex align-items-center justify-content-between"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>+886 987-987-987</span>
-                  <i className="bi bi-arrow-up-right"></i>
-                </Link>
-              </div>
-
-              {/* 地址 */}
-              <div className="mb-4">
-                <Link
-                  to="https://maps.google.com/?q=台北市六角區六角路888號"
-                  className="contact-link d-flex align-items-center justify-content-between"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>
-                    台北市六角區六角路888號
-                    <br />
-                    (週一至週五 11:00 - 21:00)
-                  </span>
-                  <i className="bi bi-arrow-up-right"></i>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* 聯絡表單 */}
-          <div className="col-md-6">
-            <div className="contact-form-container bg-light p-4 p-md-5 rounded">
-              <h3 className="mb-4">想跟我們說的話</h3>
+          {/* 使用新增的 contact-form-wrapper 類實現置中和響應式寬度 */}
+          <div className="contact-form-wrapper">
+            <div className="contact-form-container">
+              <h3>想跟我們說的話</h3>
               <form onSubmit={handleSubmit} className="contact-form">
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="您的稱呼"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="您的 Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <textarea
-                    className="form-control"
-                    rows="5"
-                    placeholder="今天好嗎？隨意留言給我吧"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  ></textarea>
-                </div>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="您的稱呼"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="您的 Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <textarea
+                  className="form-control"
+                  rows="5"
+                  placeholder="今天好嗎？隨意留言給我吧"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
                 <div className="text-center">
-                  <button
-                    type="submit"
-                    className="btn w-100 py-2 contact-submit-btn"
-                    disabled={isSubmitting}
-                  >
+                  <button type="submit" className="contact-submit-btn" disabled={isSubmitting}>
                     {isSubmitting ? "送出留言中..." : "送出留言"}
                   </button>
                 </div>
