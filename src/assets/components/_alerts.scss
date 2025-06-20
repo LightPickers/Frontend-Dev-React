@@ -14,7 +14,8 @@
   padding: 20px;
 }
 
-.alert-confirm-button {
+.alert-confirm-button,
+.alert-success-button {
   border: none;
   padding: 12px 20px;
   margin: 4px;
@@ -39,7 +40,8 @@
   }
 }
 
-.alert-cancel-button {
+.alert-cancel-button,
+.alert-error-button {
   border: none;
   padding: 12px 20px;
   margin: 4px;

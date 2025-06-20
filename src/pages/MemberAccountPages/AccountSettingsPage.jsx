@@ -8,6 +8,7 @@ import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/u
 import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
 function AccountSettingsPage() {
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const navigate = useNavigate();
   const { user, token, isAuthenticated } = useSelector(state => state.auth);
   const { data, isLoading, error, refetch } = useGetUserProfileQuery(undefined, {

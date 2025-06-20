@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
+
 import ProductFilter from "./ProductFilter";
 
 function MobileFilterButton({ onFilter, initialBrandIds, initialConditionIds }) {

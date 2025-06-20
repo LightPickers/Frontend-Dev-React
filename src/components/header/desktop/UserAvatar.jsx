@@ -6,12 +6,16 @@ import { useDispatch } from "react-redux";
 import { useDropdownPosition } from "@hooks/useDropdownPosition";
 import { TextLarge, TextMedium } from "@components/TextTypography";
 import getUserMenu from "@data/navUserMenuData";
+import { useGetUserProfileQuery } from "@/features/users/userApi";
 
 function UserAvatar({ user }) {
-  const { photo, name } = user;
   const APP_BASE = import.meta.env.VITE_APP_BASE;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { data: getUserResponse } = useGetUserProfileQuery(undefined, {
+    skip: !user,
+  });
+  const { name = "", photo = "" } = getUserResponse?.data?.user ?? {};
   const UserMenu = getUserMenu({ dispatch, navigate }); // 下拉選單內容
   // 下拉選單
   const hoverTimeout = useRef(null);
@@ -42,7 +46,7 @@ function UserAvatar({ user }) {
     >
       {/* 導覽列按鈕 */}
       <a role="button" className="user-avatar" aria-expanded="false">
-        <img src={photo || `${APP_BASE}icon/default_avatar.svg`} alt={name} />
+        <img src={photo || `${APP_BASE}icon/default_avatar.svg`} alt={name} className="user-img" />
       </a>
 
       {/* 下拉選單 */}
