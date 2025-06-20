@@ -44,7 +44,11 @@ function FullscreenMenu({ isMenuOpen, closeMenu, path }) {
           <div className="user-wrapper gap-4 gap-sm-6 px-8 px-sm-12">
             {/* 頭像 */}
             <div className="avatar-container">
-              <img src={photo} alt={name} className="object-fit-cover w-100 h-100" />
+              <img
+                src={photo || defaultPhoto}
+                alt={name}
+                className="object-fit-cover w-100 h-100"
+              />
             </div>
             {/* 名字 */}
             <H3Secondary className="flex-grow-1">{name}</H3Secondary>
