@@ -46,13 +46,7 @@ function UserAvatar({ user }) {
       {/* 導覽列按鈕 */}
       <a role="button" className="user-avatar" aria-expanded="false">
         {/* <img src={isValidPhoto ? photo : fallbackSrc} alt={name} className="user-img" />; */}
-        {photo && (
-          <img
-            src={photo || `${APP_BASE}icon/default_avatar.svg`}
-            alt={name}
-            className="user-img"
-          />
-        )}
+        <img src={photo || `${APP_BASE}icon/default_avatar.svg`} alt={name} className="user-img" />
       </a>
 
       {/* 下拉選單 */}
