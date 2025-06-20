@@ -14,7 +14,8 @@ import { useAddToCartMutation } from "@features/cart/cartApi";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function WishlistCard({ product }) {
-  const { id, name, condition_name, primary_image, original_price, selling_price } = product;
+  const { id, name, condition, primary_image, original_price, selling_price } = product;
+  console.log(product);
 
   const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
     useDeleteWishlistProductMutation();
@@ -55,7 +56,7 @@ function WishlistCard({ product }) {
         />
 
         {/* 機況標籤 抓不到資料 先備註*/}
-        {/* <LabelText className="card-badge mt-5">{condition_name}</LabelText> */}
+        <LabelText className="card-badge mt-5">{condition}</LabelText>
 
         {/* 懸停按鈕 */}
         <div className="icon-group">
