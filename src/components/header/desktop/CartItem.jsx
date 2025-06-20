@@ -10,7 +10,7 @@ import { formatPrice } from "@utils/formatPrice";
 import { CloseIcon } from "@components/icons";
 import { useDeleteCartProductMutation } from "@features/cart/cartApi";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
-import { showLoading } from "@features/loading/loadingSlice";
+// import { showLoading } from "@features/loading/loadingSlice";
 import { ConfirmDialogue, ErrorAlert } from "@/components/Alerts";
 
 function CartItem({ item }) {
@@ -60,7 +60,7 @@ function CartItem({ item }) {
       <Link
         to={`/products/${product_id}`}
         className={classNames({ "stretched-link": is_available })}
-        onClick={dispatch(showLoading)}
+        // onClick={dispatch(showLoading())}
         title={`查看「${name}」`}
       />
       <button

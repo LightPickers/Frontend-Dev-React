@@ -10,11 +10,16 @@ import MobileNavItems from "@components/header/mobile/MobileNavItems";
 import { BtnPrimary } from "@components/Buttons";
 import logoutAndRedirect from "@features/auth/logoutAndRedirect";
 import useBodyScrollLock from "@hooks/useBodyScrollLock";
+import { useGetUserProfileQuery } from "@features/users/userApi";
 
 function FullscreenMenu({ isMenuOpen, closeMenu, path }) {
   const user = useSelector(state => state.auth.user);
+  const { data: getUserResponse } = useGetUserProfileQuery(undefined, {
+    skip: !user,
+  });
+
+  const { name = "", photo = "" } = getUserResponse?.data?.user ?? {};
   const defaultPhoto = `${path}icon/default_avatar.svg`;
-  const { photo = defaultPhoto, name = "" } = user ?? {};
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useBodyScrollLock(isMenuOpen);
