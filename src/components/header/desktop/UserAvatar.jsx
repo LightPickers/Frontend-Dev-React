@@ -10,8 +10,8 @@ import getUserMenu from "@data/navUserMenuData";
 function UserAvatar({ user }) {
   const { photo, name } = user;
   const APP_BASE = import.meta.env.VITE_APP_BASE;
-  const isValidPhoto = photo && !["null", "undefined", "[NULL]"].includes(photo);
-  const fallbackSrc = `${APP_BASE}icon/default_avatar.svg`;
+  // const isValidPhoto = photo && !["null", "undefined", "[NULL]"].includes(photo);
+  // const fallbackSrc = `${APP_BASE}icon/default_avatar.svg`;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,8 +45,14 @@ function UserAvatar({ user }) {
     >
       {/* 導覽列按鈕 */}
       <a role="button" className="user-avatar" aria-expanded="false">
-        <img src={isValidPhoto ? photo : fallbackSrc} alt={name} className="user-img" />;
-        {/* {photo && <img src={photo || `${APP_BASE}icon/default_avatar.svg`} alt={name} />} */}
+        {/* <img src={isValidPhoto ? photo : fallbackSrc} alt={name} className="user-img" />; */}
+        {photo && (
+          <img
+            src={photo || `${APP_BASE}icon/default_avatar.svg`}
+            alt={name}
+            className="user-img"
+          />
+        )}
       </a>
 
       {/* 下拉選單 */}
