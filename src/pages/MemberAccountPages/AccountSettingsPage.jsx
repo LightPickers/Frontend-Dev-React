@@ -8,6 +8,8 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
 import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 function AccountSettingsPage() {
   const navigate = useNavigate();
   const { user, token, isAuthenticated } = useSelector(state => state.auth);
@@ -39,7 +41,7 @@ function AccountSettingsPage() {
     formData.append("files", file);
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/upload/image", {
+      const response = await fetch(`${API_BASE}/upload/image`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

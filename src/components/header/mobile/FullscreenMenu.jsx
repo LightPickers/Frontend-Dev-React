@@ -10,11 +10,16 @@ import MobileNavItems from "@components/header/mobile/MobileNavItems";
 import { BtnPrimary } from "@components/Buttons";
 import logoutAndRedirect from "@features/auth/logoutAndRedirect";
 import useBodyScrollLock from "@hooks/useBodyScrollLock";
+import { useGetUserProfileQuery } from "@features/users/userApi";
 
 function FullscreenMenu({ isMenuOpen, closeMenu, path }) {
   const user = useSelector(state => state.auth.user);
+  const { data: getUserResponse } = useGetUserProfileQuery(undefined, {
+    skip: !user,
+  });
+
+  const { name = "", photo = "" } = getUserResponse?.data?.user ?? {};
   const defaultPhoto = `${path}icon/default_avatar.svg`;
-  const { photo = defaultPhoto, name = "" } = user ?? {};
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useBodyScrollLock(isMenuOpen);
@@ -44,7 +49,11 @@ function FullscreenMenu({ isMenuOpen, closeMenu, path }) {
           <div className="user-wrapper gap-4 gap-sm-6 px-8 px-sm-12">
             {/* 頭像 */}
             <div className="avatar-container">
-              <img src={photo} alt={name} className="object-fit-cover w-100 h-100" />
+              <img
+                src={photo || defaultPhoto}
+                alt={name}
+                className="object-fit-cover w-100 h-100"
+              />
             </div>
             {/* 名字 */}
             <H3Secondary className="flex-grow-1">{name}</H3Secondary>

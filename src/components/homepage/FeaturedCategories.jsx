@@ -73,7 +73,7 @@ function FeaturedCategories() {
                         <BtnPrimary
                           size="medium"
                           as={Link}
-                          className="d-md-block d-none stretched-link"
+                          className="d-md-block d-none"
                           to={`/products?category_id=${id}`}
                         >
                           查看更多
@@ -81,7 +81,7 @@ function FeaturedCategories() {
                         <BtnPrimary
                           size="small"
                           as={Link}
-                          className="d-md-none d-block stretched-link"
+                          className="d-md-none d-block"
                           to={`/products?category_id=${id}`}
                         >
                           查看更多
