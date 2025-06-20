@@ -38,7 +38,7 @@ function AccountSettingsPage() {
     formData.append("files", file);
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/upload/image", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE}/upload/image`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
