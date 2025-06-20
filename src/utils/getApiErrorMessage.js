@@ -1,5 +1,5 @@
 // 傳入收到 error、自定義預設錯誤訊息
-export function getApiErrorMessage(error, fallbackMessage = "發生錯誤，請稍後再試") {
+export function getApiErrorMessage(error, fallbackMessage = "發生不明錯誤，請稍後再試") {
   const data = error?.data; // 遠端傳回的錯誤訊息
   if (!data) return fallbackMessage;
 
