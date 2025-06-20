@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useMemo } from "react";
 
-import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetWishlistProductsQuery } from "@/features/wishlist/wishlistApi";
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import WishlistCard from "@/components/productpage/WishlistCard";
@@ -24,7 +23,7 @@ function mapWishlistData(apiData) {
     name: item.Products.name,
     primary_image: item.Products.primary_image,
     liked: true,
-    //condition: item.Products.condition, 後端目前沒有回傳
+    condition: item.Products.condition_name,
     original_price: item.Products.original_price,
     selling_price: item.Products.selling_price,
     created_at: item.created_at,
@@ -34,8 +33,6 @@ function mapWishlistData(apiData) {
 function WishlistPage() {
   const { data, error, isLoading } = useGetWishlistProductsQuery();
   const wishlist = mapWishlistData(data);
-  console.log("原始 API 資料:", data);
-  console.log("第一個商品的完整資料:", data?.data?.[0]);
 
   const { data: userData, error: userError, isLoading: isUserLoading } = useGetUserProfileQuery();
   const user = userData?.data?.user;
@@ -77,61 +74,44 @@ function WishlistPage() {
 
   if (isPageLoading) {
     return (
-      <div
-        style={{
-          backgroundColor: "#f1f3f5",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div className="text-center text-muted">
-          <div className="spinner-border text-secondary mb-3" role="status"></div>
-          <div>資料載入中，請稍候...</div>
-        </div>
+      <div className="text-center text-muted py-5">
+        <div className="spinner-border text-secondary mb-3" role="status"></div>
+        <div>資料載入中，請稍候...</div>
       </div>
     );
   }
+
   return (
-    <div className="container">
-      <Breadcrumbs />
-      <div className="row g-4">
-        {/* 右側 */}
-        <div className="col-lg-12">
-          <div className="bg-white rounded  p-4">
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
-              <h4 className="mb-3 mb-md-0">收藏資訊</h4>
-              <select className="form-select w-auto" value={sortOption} onChange={handleSortChange}>
-                <option value="default">排序方式：預設</option>
-                <option value="price-high">價格（由高到低）</option>
-                <option value="price-low">價格（由低到高）</option>
-                <option value="newest">上架順序（由新到舊）</option>
-                <option value="oldest">上架順序（由舊到新）</option>
-              </select>
-            </div>
-            <hr />
-            <div className="row g-4">
-              {wishlist.length > 0 ? (
-                sortedWishlist.map(product => (
-                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12" key={product.id}>
-                    <WishlistCard product={product} />
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-5 w-100">
-                  <H6Secondary className="mb-6">尚未收藏任何商品</H6Secondary>
-                  <BtnPrimary as={Link} to="/" size="medium">
-                    前往首頁探索商品
-                  </BtnPrimary>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        {/* 右側內容 end */}
+    <>
+      {/* 不要再包 container/row/col 或 bg-white，這些 AccountLayout 已經有了 */}
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+        <h4 className="mb-3 mb-md-0">收藏資訊</h4>
+        <select className="form-select w-auto" value={sortOption} onChange={handleSortChange}>
+          <option value="default">排序方式：預設</option>
+          <option value="price-high">價格（由高到低）</option>
+          <option value="price-low">價格（由低到高）</option>
+          <option value="newest">上架順序（由新到舊）</option>
+          <option value="oldest">上架順序（由舊到新）</option>
+        </select>
       </div>
-    </div>
+      <hr />
+      <div className="row g-4">
+        {wishlist.length > 0 ? (
+          sortedWishlist.map(product => (
+            <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12" key={product.id}>
+              <WishlistCard product={product} />
+            </div>
+          ))
+        ) : (
+          <div className="text-center py-5 w-100">
+            <H6Secondary className="mb-6">尚未收藏任何商品</H6Secondary>
+            <BtnPrimary as={Link} to="/" size="medium">
+              前往首頁探索商品
+            </BtnPrimary>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

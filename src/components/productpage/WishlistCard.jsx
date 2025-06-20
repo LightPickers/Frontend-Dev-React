@@ -15,6 +15,7 @@ import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function WishlistCard({ product }) {
   const { id, name, condition, primary_image, original_price, selling_price } = product;
+  console.log(product);
 
   const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
     useDeleteWishlistProductMutation();
@@ -44,7 +45,7 @@ function WishlistCard({ product }) {
   };
 
   return (
-    <main className="card product-card h-100 mb-4">
+    <main className="card product-card h-100 mb-4 border border-light">
       {/* 圖片區域 */}
       <section className="card-image-container">
         {/* 商品主圖 */}
@@ -54,8 +55,8 @@ function WishlistCard({ product }) {
           alt={name}
         />
 
-        {/* 機況標籤/ 後端目前沒回傳 */}
-        {/* <LabelText className="card-badge mt-5">{condition}</LabelText> */}
+        {/* 機況標籤 抓不到資料 先備註*/}
+        <LabelText className="card-badge mt-5">{condition}</LabelText>
 
         {/* 懸停按鈕 */}
         <div className="icon-group">

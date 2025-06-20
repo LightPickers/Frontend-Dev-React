@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import Breadcrumbs from "@/components/Breadcrumbs";
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
 import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
-
 function AccountSettingsPage() {
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const navigate = useNavigate();
   const { user, token, isAuthenticated } = useSelector(state => state.auth);
   const { data, isLoading, error, refetch } = useGetUserProfileQuery(undefined, {
@@ -41,7 +39,7 @@ function AccountSettingsPage() {
     formData.append("files", file);
 
     try {
-      const response = await fetch(`${API_BASE}/upload/image`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE}/upload/image`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -190,44 +188,36 @@ function AccountSettingsPage() {
 
   return (
     <>
-      <div className="container">
-        <Breadcrumbs />
-        <div className="row g-4">
-          <div className="col-lg-12">
-            <div className="bg-white rounded p-4">
-              <h4 className="mb-5 py-2 mb-md-0">我的帳戶</h4>
+      <h4 className="mb-5 py-2 mb-md-0">我的帳戶</h4>
 
-              {/* 手機版大頭貼 - 顯示在最上方 */}
-              <div className="d-lg-none mb-4">
-                <PhotoSection />
-                <hr className="mt-4" />
-              </div>
+      {/* 手機版大頭貼 - 顯示在最上方 */}
+      <div className="d-lg-none mb-4">
+        <PhotoSection />
+        <hr className="mt-4" />
+      </div>
 
-              <div className="row justify-content-center">
-                {/* 左邊表單欄位 - 調整響應式類別 */}
-                <div className="col-12 col-lg-8">
-                  <hr className="d-none d-lg-block" />
+      <div className="row justify-content-center">
+        {/* 左邊表單欄位 - 調整響應式類別 */}
+        <div className="col-12 col-lg-8">
+          <hr className="d-none d-lg-block" />
 
-                  {/* 確保表單內容對齊 */}
-                  <div className="w-100">
-                    <UserProfileForSettingPage
-                      isEdit={true}
-                      userData={userData}
-                      onSubmit={handleUpdateProfile}
-                      isSubmitting={isUpdating}
-                    />
-                  </div>
-                </div>
-
-                {/* 桌面版大頭貼 - 右邊欄位 */}
-                <div className="col-lg-4 d-none d-lg-flex">
-                  <PhotoSection className="mt-4 mt-lg-0" />
-                </div>
-              </div>
-            </div>
+          {/* 確保表單內容對齊 */}
+          <div className="w-100">
+            <UserProfileForSettingPage
+              isEdit={true}
+              userData={userData}
+              onSubmit={handleUpdateProfile}
+              isSubmitting={isUpdating}
+            />
           </div>
         </div>
+
+        {/* 桌面版大頭貼 - 右邊欄位 */}
+        <div className="col-lg-4 d-none d-lg-flex">
+          <PhotoSection className="mt-4 mt-lg-0" />
+        </div>
       </div>
+
       {/* {isUpdating && <div className="text-center py-2">正在更新資料...</div>} */}
     </>
   );
