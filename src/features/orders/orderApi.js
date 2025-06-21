@@ -65,6 +65,15 @@ export const orderApi = createApi({
         return [{ type: "Order", id: "LIST" }];
       },
     }),
+
+    // 再次付款（pending 訂單）
+    repayOrder: builder.mutation({
+      query: orderId => ({
+        url: `/orders/pending/${orderId}`,
+        method: "POST",
+        responseHandler: response => response.text(), // 將 html 當作 text 回傳
+      }),
+    }),
   }),
 });
 
@@ -77,4 +86,5 @@ export const {
   useGetPaidOrderByIdQuery,
   usePrefetch,
   useGetOrdersQuery,
+  useRepayOrderMutation,
 } = orderApi;

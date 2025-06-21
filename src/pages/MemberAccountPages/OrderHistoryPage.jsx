@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-import "../../assets/pages/accountPage/orderHistory.scss";
 import { ArrowDownIcon } from "@/components/icons";
-import { useGetOrdersQuery, useLazyGetOrderByIdQuery } from "@/features/orders/orderApi";
+import "../../assets/pages/accountPage/orderHistory.scss";
+import {
+  useGetOrdersQuery,
+  useLazyGetOrderByIdQuery,
+  useRepayOrderMutation,
+} from "@/features/orders/orderApi";
 import {
   H3Primary,
   H3Secondary,
@@ -16,6 +20,7 @@ import {
 } from "@/components/Headings";
 import { TextMedium } from "@/components/TextTypography";
 import { BtnPrimary } from "@/components/Buttons";
+import { ConfirmAlert } from "@/components/Alerts";
 
 function OrderHistoryPage() {
   const [hoveredTab, setHoveredTab] = useState(null);
@@ -75,6 +80,22 @@ function OrderHistoryPage() {
   const countPaid = orders.filter(o => o.status === "paid").length;
   const countCanceled = orders.filter(o => o.status === "canceled").length;
   const countPending = orders.filter(o => o.status === "pending").length;
+
+  const [repayOrder] = useRepayOrderMutation();
+  const handleRepay = async orderId => {
+    const result = await ConfirmAlert({
+      title: "是否確認前往付款？",
+      text: "付款成功後訂單將無法修改，請確認無誤後繼續。",
+      icon: "warning",
+    });
+
+    if (!result.isConfirmed) return;
+
+    const html = await repayOrder(orderId).unwrap();
+    document.open();
+    document.write(html);
+    document.close();
+  };
 
   const filteredOrders = orders
     //狀態篩選
@@ -271,7 +292,7 @@ function OrderHistoryPage() {
               )}
             </div>
 
-            <div className="text-center">
+            <div className="text-center d-flex gap-3">
               <BtnPrimary
                 size="small"
                 className="w-100"
@@ -282,6 +303,17 @@ function OrderHistoryPage() {
               >
                 查看訂單
               </BtnPrimary>
+              {order.status === "pending" && (
+                <BtnPrimary
+                  className="w-100"
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleRepay(order.id);
+                  }}
+                >
+                  再次付款
+                </BtnPrimary>
+              )}
             </div>
           </div>
         )}
@@ -411,7 +443,7 @@ function OrderHistoryPage() {
                           : "處理中"}
                     </TextMedium>
                   </div>
-                  <div className="col-6 col-lg-2 text-center">
+                  <div className="col-6 col-lg-2 text-center d-flex flex-column gap-2">
                     <TextMedium
                       className="text-primary text-decoration-underline cursor-pointer hover-text"
                       onClick={e => {
@@ -422,6 +454,18 @@ function OrderHistoryPage() {
                     >
                       查看訂單
                     </TextMedium>
+                    {order.status === "pending" && (
+                      <TextMedium
+                        className="text-danger text-decoration-underline cursor-pointer hover-text"
+                        onClick={e => {
+                          e.stopPropagation();
+                          handleRepay(order.id);
+                        }}
+                        style={{ fontSize: "0.875rem", fontWeight: "700" }}
+                      >
+                        再次付款
+                      </TextMedium>
+                    )}
                   </div>
                 </div>
               ))
@@ -512,7 +556,7 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>訂單狀態</H6Primary>
                               </th>
-                              <td className="modal-td-content ps-5">
+                              <td className="modal-td-content px-5 d-flex justify-content-between">
                                 <TextMedium>
                                   {order.status === "paid"
                                     ? "已完成"
@@ -520,6 +564,18 @@ function OrderHistoryPage() {
                                       ? "已取消"
                                       : "處理中"}
                                 </TextMedium>
+                                {order.status === "pending" && (
+                                  <TextMedium
+                                    className="text-danger text-decoration-underline cursor-pointer hover-text fs-6"
+                                    onClick={e => {
+                                      e.stopPropagation();
+                                      handleRepay(order.id);
+                                    }}
+                                    style={{ fontSize: "0.875rem", fontWeight: "700" }}
+                                  >
+                                    再次付款
+                                  </TextMedium>
+                                )}
                               </td>
                             </tr>
                             <tr>
@@ -675,13 +731,27 @@ function OrderHistoryPage() {
 
                           <div className="d-flex flex-column gap-3 pb-2 border-bottom">
                             <H5Primary className="fs-5">訂單狀態</H5Primary>
-                            <TextMedium className="fw-normal">
-                              {order.status === "paid"
-                                ? "已完成"
-                                : order.status === "canceled"
-                                  ? "已取消"
-                                  : "處理中"}
-                            </TextMedium>
+                            <div className="d-flex justify-content-between pe-3">
+                              <TextMedium className="fw-normal">
+                                {order.status === "paid"
+                                  ? "已完成"
+                                  : order.status === "canceled"
+                                    ? "已取消"
+                                    : "處理中"}
+                              </TextMedium>
+                              {order.status === "pending" && (
+                                <TextMedium
+                                  className="text-danger text-decoration-underline cursor-pointer hover-text fs-6"
+                                  onClick={e => {
+                                    e.stopPropagation();
+                                    handleRepay(order.id);
+                                  }}
+                                  style={{ fontSize: "0.875rem", fontWeight: "400" }}
+                                >
+                                  再次付款
+                                </TextMedium>
+                              )}
+                            </div>
                           </div>
 
                           <div className="d-flex flex-column gap-3 pb-2 border-bottom">
