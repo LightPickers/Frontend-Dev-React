@@ -142,7 +142,8 @@
 }
 
 .product-catalog-page {
-  padding-top: 0; // 移除頂部間距，讓圖片貼齊 header
+  overflow-x: hidden;
+  padding-top: 0;
 }
 
 // 分頁容器樣式
