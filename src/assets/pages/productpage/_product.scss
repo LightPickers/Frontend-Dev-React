@@ -15,6 +15,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%; // 撐滿父容器寬度
+    max-width: 300px; // 設置最大寬度，避免過寬
+    min-width: 200px; // 設置最小寬度，避免過窄
 
     // 內容區域
     .button-content {
@@ -144,6 +147,21 @@
 .product-catalog-page {
   overflow-x: hidden;
   padding-top: 0;
+
+  .category-image-wrapper,
+  .filter-area-wrapper,
+  .product-list-wrapper {
+    margin: 0 auto; // 居中
+    max-width: 1340px; // 限制最大寬度
+  }
+
+  .breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  .pagination-container {
+    margin-top: 2rem;
+  }
 }
 
 // 分頁容器樣式

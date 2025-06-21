@@ -188,12 +188,14 @@ function ProductCatalogPage() {
     <>
       <PageLoader loading={isLoading} text="載入商品列表中" />
       <div className="product-catalog-page">
-        {/* Category Image - 完全貼齊 header，撐滿寬度 */}
-        <CategoryImage category={categoryInfo.categoryName} />
+        {/* Category Image - 集中在中間，緊貼 Header */}
+        <div className="category-image-wrapper">
+          <CategoryImage category={categoryInfo.categoryName} />
+        </div>
 
-        {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
+        {/* 篩選器區域 */}
         <div className="filter-area-wrapper">
-          <div className="container-fluid">
+          <div className="container-lg">
             <div className="filter-area">
               <ProductFilter
                 onFilter={handleFilter}
@@ -206,7 +208,7 @@ function ProductCatalogPage() {
 
         {/* 商品列表 */}
         <div className="product-list-wrapper">
-          <div className="container-fluid">
+          <div className="container-lg">
             {/* 麵包屑 */}
             <nav aria-label="breadcrumb" className="mb-3">
               <ol className="breadcrumb mb-0">
@@ -247,7 +249,7 @@ function ProductCatalogPage() {
 
           {/* 分頁 */}
           {products.length > 0 && totalPages > 1 && (
-            <div className="container-fluid">
+            <div className="container-lg">
               <div className="pagination-container text-center mt-4">
                 <nav aria-label="商品列表分頁">
                   <ul className="pagination justify-content-center">
