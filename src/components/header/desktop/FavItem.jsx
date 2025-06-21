@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { func, object } from "prop-types";
+import { toast } from "react-toastify";
 
 import { H6Secondary } from "@components/Headings";
 import { TextSmall } from "@components/TextTypography";
@@ -38,8 +39,11 @@ function FavItem({ item, onCheckChange }) {
   const handleDelete = async id => {
     try {
       await deleteWishlistProduct(id).unwrap();
+      if (!isAvailable) {
+        toast.success(`已成功移除「${name}」`);
+        return;
+      }
       SuccessAlert({ text: `已成功移除「${name}」` });
-      // toast.success(`已成功移除「${name}」`);
     } catch (error) {
       ErrorAlert({ title: `刪除 ${name} 失敗`, text: getApiErrorMessage(error) });
     }
@@ -52,9 +56,16 @@ function FavItem({ item, onCheckChange }) {
   return (
     <>
       <li
-        className={classNames("dropdown-product", "d-flex align-items-center", "gap-3", {
-          "in-cart": isInCart && isAvailable,
-        })}
+        className={classNames(
+          "dropdown-product",
+          "d-flex align-items-center",
+          "gap-3",
+          "position-relative",
+          {
+            "in-cart": isInCart && isAvailable,
+            "not-available": !isAvailable,
+          }
+        )}
         onClick={handleItemClick}
         title={itemTitle}
       >
@@ -70,15 +81,20 @@ function FavItem({ item, onCheckChange }) {
             <H6Secondary className="text-truncate" isBold={false}>
               {name}
             </H6Secondary>
-            <TextSmall>NT$ ${formatPrice(price, false)}</TextSmall>
+            <TextSmall>NT$ {formatPrice(price, false)}</TextSmall>
           </div>
         </label>
         <button
           type="button"
-          className="btn btn-sm delete-btn"
+          className={classNames("btn", "btn-sm", "delete-btn", { "stretched-link": !isAvailable })}
+          // className="btn btn-sm delete-btn"
           onClick={e => {
             e.stopPropagation();
             e.preventDefault();
+            if (!isAvailable) {
+              handleDelete(favItemId);
+              return;
+            }
             ConfirmDialogue({
               title: "確認刪除？",
               text: `您確定要從收藏清單移除「${name}」嗎？`,
@@ -89,6 +105,7 @@ function FavItem({ item, onCheckChange }) {
           onMouseUp={e => e.stopPropagation()}
           disabled={isDeleting}
           style={{ zIndex: 1000 }}
+          title={isAvailable ? `移除「${name}」` : `「${name}」已無法取得，點選以移除`}
         >
           {!isDeleting ? (
             <CloseIcon size={24} />
