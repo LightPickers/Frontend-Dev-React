@@ -9,7 +9,7 @@ import { BtnPrimary } from "@components/Buttons";
 import { H3Primary, H5Primary } from "@components/Headings";
 import { useGetUserProfileQuery } from "@features/users/userApi";
 import { useGetCouponsQuery } from "@features/coupons/couponApi";
-import { useConfirmOrderInfoMutation } from "@features/cart/cartApi";
+import { useGetCartQuery, useConfirmOrderInfoMutation } from "@features/cart/cartApi";
 import { getCheckoutSchema } from "@schemas/cart/checkoutSchema";
 import {
   setCheckoutField,
@@ -25,6 +25,24 @@ import { showLoading, hideLoading } from "@features/loading/loadingSlice";
 function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { data: cartData, isLoading: isGetCartDataLoading } = useGetCartQuery();
+  const cartItems = useMemo(() => cartData?.data?.items || [], [cartData]);
+
+  // 檢查購物車是否有商品
+  useEffect(() => {
+    if (!isGetCartDataLoading && cartItems.length === 0) {
+      toast.info("購物車是空的，請先選購商品", { toastId: "cart-empty" });
+      navigate("/products", { replace: true });
+    }
+  }, [cartItems, isGetCartDataLoading, navigate]);
+
+  // 檢查購物車是否有下架商品
+  useEffect(() => {
+    if (!isGetCartDataLoading && cartItems.some(item => item.is_available === false)) {
+      navigate("/cart", { replace: true });
+    }
+  }, [cartItems, isGetCartDataLoading, navigate]);
 
   // 取 redux 裡保存的 checkout form 狀態
   const checkoutForm = useSelector(state => state.checkoutPage);
@@ -150,7 +168,8 @@ function CheckoutPage() {
     }
   };
 
-  if (isLoading || !userInfo) return <PageLoader text={"載入結帳資料中，請稍候..."} />;
+  if (isLoading && isGetCartDataLoading && !userInfo)
+    return <PageLoader text={"載入結帳資料中，請稍候..."} />;
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useMemo } from "react";
+import { toast } from "react-toastify";
 
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import { useGetCartQuery } from "@/features/cart/cartApi";
@@ -86,9 +87,23 @@ function OrderConfirmationPage() {
   };
 
   // 小計、運費、總計計算
-  const cartItems = data?.data?.items || [];
+  const cartItems = useMemo(() => data?.data?.items || [], [data]);
   const subtotal = data?.data?.amount || 0;
   const shipping = 60;
+
+  useEffect(() => {
+    if (Array.isArray(cartItems) && cartItems.length === 0) {
+      toast.info("購物車是空的，請先選購商品", { toastId: "order-cart-empty" });
+      navigate("/products", { replace: true });
+    }
+  }, [cartItems, navigate]);
+
+  // 檢查購物車是否有下架商品
+  useEffect(() => {
+    if (!isCartLoading && cartItems.some(item => item.is_available === false)) {
+      navigate("/cart", { replace: true });
+    }
+  }, [cartItems, isCartLoading, navigate]);
 
   const matchedCoupon = useMemo(() => {
     const code = checkoutForm.couponCode?.trim().toLowerCase();

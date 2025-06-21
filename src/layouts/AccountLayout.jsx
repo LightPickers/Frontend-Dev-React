@@ -13,6 +13,7 @@ import {
   H6Secondary,
 } from "@/components/Headings";
 import { TextMedium } from "@/components/TextTypography";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 function AccountLayout() {
   const { data: userData, isLoading } = useGetUserProfileQuery();
@@ -42,7 +43,8 @@ function AccountLayout() {
 
   return (
     <div style={{ backgroundColor: "#f1f3f5", minHeight: "100vh", padding: "40px 0" }}>
-      <div className="container">
+      <Breadcrumbs />
+      <div className="container" style={{ marginTop: "32px" }}>
         <div className="row g-4">
           {/* 左側欄位 大螢幕*/}
           <div className="col-lg-3 d-none d-lg-block">
@@ -101,29 +103,28 @@ function AccountLayout() {
           {/* 手機版選單 */}
           <div className="col-12 d-lg-none">
             <div className="bg-white rounded shadow-sm p-3 mb-3">
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center">
-                  <div>
-                    <div className=" h5 muted-text">{getCurrentPageTitle()}</div>
-                  </div>
-                </div>
-                <button
-                  className="btn p-2"
-                  type="button"
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  aria-expanded={isMenuOpen}
-                  style={{ border: "none", background: "transparent" }}
-                >
-                  <ArrowDownIcon
-                    size={20}
-                    className={`transition-transform ${isMenuOpen ? "rotate-180" : ""}`}
-                    style={{
-                      transform: isMenuOpen ? "rotate(180deg)" : "rotate(0deg)",
-                      transition: "transform 0.2s ease-in-out",
-                    }}
-                  />
-                </button>
-              </div>
+              <button
+                className="btn d-flex align-items-center justify-content-between w-100 "
+                type="button"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-expanded={isMenuOpen}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  padding: "0 0.75rem",
+                  boxShadow: "none",
+                }}
+              >
+                <div className="h2 muted-text mb-0">{getCurrentPageTitle()}</div>
+                <ArrowDownIcon
+                  size={20}
+                  className={`transition-transform ${isMenuOpen ? "rotate-180" : ""}`}
+                  style={{
+                    transform: isMenuOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s ease-in-out",
+                  }}
+                />
+              </button>
 
               {/* 下拉選單內容 */}
               <div className={`collapse ${isMenuOpen ? "show" : ""}`}>
@@ -133,13 +134,14 @@ function AccountLayout() {
                     <Link
                       key={item.path}
                       to={item.path}
-                      className={`list-group-item list-group-item-action border-0 px-0 ${
+                      className={`list-group-item list-group-item-action border-0 px-0 text-decoration-none ${
                         location.pathname === item.path ? "active" : ""
                       }`}
                       style={{
                         backgroundColor:
                           location.pathname === item.path ? "#8BB0B7" : "transparent",
                         color: location.pathname === item.path ? "white" : "#495057",
+                        fontSize: "1.25rem",
                       }}
                       onClick={() => setIsMenuOpen(false)}
                     >

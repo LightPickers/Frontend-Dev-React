@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { showLoading } from "@features/loading/loadingSlice";
 
 import { H5Secondary } from "@components/Headings";
 import { TextSmall, TextMedium, TextLarge, LabelText } from "@components/TextTypography";
@@ -15,12 +17,14 @@ import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function WishlistCard({ product }) {
   const { id, name, condition, primary_image, original_price, selling_price } = product;
+  console.log(product);
 
   const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
     useDeleteWishlistProductMutation();
   const { data: wishlist, refetch } = useGetWishlistProductsQuery();
 
   const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
+  const dispatch = useDispatch();
 
   const handleDeleteWishlistProduct = async () => {
     const targetIndex = wishlist?.data.findIndex(item => item.Products.id === id);
@@ -44,7 +48,7 @@ function WishlistCard({ product }) {
   };
 
   return (
-    <main className="card product-card h-100 mb-4">
+    <main className="card product-card h-100 mb-4 border border-light position-relative">
       {/* 圖片區域 */}
       <section className="card-image-container">
         {/* 商品主圖 */}
@@ -54,8 +58,8 @@ function WishlistCard({ product }) {
           alt={name}
         />
 
-        {/* 機況標籤/ 後端目前沒回傳 */}
-        {/* <LabelText className="card-badge mt-5">{condition}</LabelText> */}
+        {/* 機況標籤*/}
+        <LabelText className="card-badge mt-5">{condition}</LabelText>
 
         {/* 懸停按鈕 */}
         <div className="icon-group">
@@ -103,6 +107,14 @@ function WishlistCard({ product }) {
           <TextLarge>{formatPrice(selling_price, false)}</TextLarge>
         </p>
       </section>
+      <Link
+        to={`/products/${id}`}
+        onClick={() => {
+          dispatch(showLoading());
+        }}
+        title={`前往查看 ${name}`}
+        className="stretched-link"
+      />
     </main>
   );
 }

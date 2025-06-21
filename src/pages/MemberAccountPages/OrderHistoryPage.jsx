@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
 import { ArrowDownIcon } from "@/components/icons";
 import "../../assets/pages/accountPage/orderHistory.scss";
-import Breadcrumbs from "@/components/Breadcrumbs";
+
 import { useGetOrdersQuery, useLazyGetOrderByIdQuery } from "@/features/orders/orderApi";
 import {
   H3Primary,
@@ -33,11 +32,8 @@ function OrderHistoryPage() {
     useLazyGetOrderByIdQuery();
 
   const handleViewOrder = async orderId => {
-    console.log("觸發查看訂單", orderId);
     setSelectedOrderId(orderId);
-    //triggerGetOrderById(orderId);
     const result = await triggerGetOrderById(orderId);
-    console.log("查詢結果：", result);
   };
 
   const closeModal = () => {
@@ -79,34 +75,27 @@ function OrderHistoryPage() {
   const countPaid = orders.filter(o => o.status === "paid").length;
   const countCanceled = orders.filter(o => o.status === "canceled").length;
   const countPending = orders.filter(o => o.status === "pending").length;
-  console.log("取得訂單：", orders);
 
   const filteredOrders = orders
     //狀態篩選
     .filter(order => activeTab === "all" || order.status === activeTab)
     //文字篩選
     .filter(
-      order => order.id.toLowerCase().includes(searchTerm.toLowerCase())
-      //暫時沒有回傳商品名稱，先備註
-      //order.product.toLowerCase().includes(searchTerm.toLowerCase())
+      order =>
+        // 如果搜尋框是空的，就直接回傳 true
+        !searchTerm ||
+        // 進行搜尋文字的比對
+        (order.merchant_order_no &&
+          order.merchant_order_no.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
   if (isError) {
     return (
-      <div className="container">
-        <Breadcrumbs />
-        <div className="row g-4">
-          <div className="col-lg-12">
-            <div className="bg-white rounded p-4">
-              <div className="text-center text-danger py-5">
-                <TextMedium className="mb-3">載入訂單資料時發生錯誤</TextMedium>
-                <BtnPrimary size="medium" onClick={() => window.location.reload()}>
-                  重新載入
-                </BtnPrimary>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="text-center text-danger py-5">
+        <TextMedium className="mb-3">載入訂單資料時發生錯誤</TextMedium>
+        <BtnPrimary size="medium" onClick={() => window.location.reload()}>
+          重新載入
+        </BtnPrimary>
       </div>
     );
   }
@@ -118,59 +107,34 @@ function OrderHistoryPage() {
     const items = orderDetails?.order_items || [];
 
     return (
-      <div className="mobile-order-card border rounded mb-3 bg-white overflow-hidden">
-        {/* 收合時顯示的主要資訊 */}
+      <div className="mobile-order-card border rounded mb-3 bg-white overflow-hidden shadow-sm">
         <div
-          className="p-3 cursor-pointer position-relative"
+          className="p-3 position-relative d-flex flex-column"
           onClick={() => toggleOrderExpansion(order.id)}
           style={{ cursor: "pointer" }}
         >
-          {/* 訂單編號 */}
-          <div className="mb-1">
+          {/* 訂單資訊區塊 */}
+          <div className="mb-2">
             <TextMedium
-              className="mb-0 text-break order-number-text"
-              style={{
-                wordBreak: "break-all",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-              }}
+              className=" mb-1"
+              style={{ fontSize: "1rem", fontWeight: "600", color: "#212529" }}
             >
-              訂單編號: {order.id}
+              訂單編號：{order.merchant_order_no}
+            </TextMedium>
+            <br />
+            <TextMedium className="text-muted mb-1" style={{ fontSize: "0.75rem" }}>
+              成立日期：{new Date(order.created_at).toLocaleDateString("zh-TW")}
             </TextMedium>
           </div>
 
-          {/* 狀態，固定在右下角 */}
-          <span
-            className={`badge position-absolute ${
-              order.status === "paid"
-                ? "bg-success"
-                : order.status === "canceled"
-                  ? "bg-danger"
-                  : "bg-warning"
-            }`}
-            style={{ bottom: "12px", right: "12px", zIndex: 1 }}
-          >
-            {order.status === "paid" ? "已完成" : order.status === "canceled" ? "已取消" : "處理中"}
-          </span>
+          {/* 金額+箭頭 */}
+          <div className="d-flex justify-content-between align-items-center">
+            <TextMedium style={{ fontSize: "0.8rem" }}>
+              NT$ {order.amount?.toLocaleString()}
+            </TextMedium>
 
-          <div className="d-flex justify-content-between align-items-start mb-2">
-            <div className="flex-grow-1 min-width-0" style={{ paddingRight: "80px" }}>
-              {/* 訂單成立日期 */}
-              <div className="mb-2">
-                <TextMedium className="text-muted mb-0" style={{ fontSize: "0.8rem" }}>
-                  訂單成立日期：{new Date(order.created_at).toLocaleDateString("zh-TW")}
-                </TextMedium>
-              </div>
-
-              {/* 金額 */}
-              <div>
-                <TextMedium className="fw-bold mb-0">
-                  NT$ {order.amount?.toLocaleString()}
-                </TextMedium>
-              </div>
-            </div>
-
-            <div className="ms-2 d-flex align-items-center flex-shrink-0">
+            {/* 展開箭頭 */}
+            <div className="d-flex align-items-center">
               <ArrowDownIcon
                 size={20}
                 className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
@@ -181,6 +145,25 @@ function OrderHistoryPage() {
               />
             </div>
           </div>
+
+          {/* 訂單狀態移到右上角 */}
+          <span
+            className={`badge position-absolute rounded-pill text-white px-2 py-1 ${
+              order.status === "paid"
+                ? "bg-success"
+                : order.status === "canceled"
+                  ? "bg-danger"
+                  : "bg-warning text-dark"
+            }`}
+            style={{
+              top: "12px",
+              right: "12px",
+              fontSize: "0.75rem",
+              fontWeight: "500",
+            }}
+          >
+            {order.status === "paid" ? "已完成" : order.status === "canceled" ? "已取消" : "處理中"}
+          </span>
         </div>
 
         {/* 展開時顯示的詳細資訊 */}
@@ -249,7 +232,13 @@ function OrderHistoryPage() {
                     <div className="d-flex justify-content-between align-items-center mb-1">
                       <TextMedium style={{ fontSize: "0.875rem" }}>商品總計：</TextMedium>
                       <TextMedium style={{ fontSize: "0.875rem" }}>
-                        NT$ {Number(orderDetails.order.amount).toLocaleString()}
+                        NT$ {Number(orderDetails.order.final_amount).toLocaleString()}
+                      </TextMedium>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mb-1">
+                      <TextMedium style={{ fontSize: "0.875rem" }}>運費：</TextMedium>
+                      <TextMedium style={{ fontSize: "0.875rem" }}>
+                        NT$ {Number(orderDetails.order.shippingFee).toLocaleString()}
                       </TextMedium>
                     </div>
 
@@ -269,7 +258,7 @@ function OrderHistoryPage() {
                         支付總額：
                       </TextMedium>
                       <TextMedium className="fw-bold" style={{ fontSize: "0.9rem" }}>
-                        NT$ {Number(orderDetails.order.final_amount).toLocaleString()}
+                        NT$ {Number(orderDetails.order.amount).toLocaleString()}
                       </TextMedium>
                     </div>
                   </div>
@@ -285,6 +274,7 @@ function OrderHistoryPage() {
             <div className="text-center">
               <BtnPrimary
                 size="small"
+                className="w-100"
                 onClick={e => {
                   e.stopPropagation();
                   handleViewOrder(order.id);
@@ -299,10 +289,10 @@ function OrderHistoryPage() {
     );
   };
 
-  // PropTypes 驗證
   MobileOrderCard.propTypes = {
     order: PropTypes.shape({
       id: PropTypes.string.isRequired,
+      merchant_order_no: PropTypes.string,
       status: PropTypes.string.isRequired,
       created_at: PropTypes.string.isRequired,
       amount: PropTypes.number,
@@ -313,174 +303,162 @@ function OrderHistoryPage() {
 
   return (
     <>
-      <div className="container">
-        <Breadcrumbs />
-        <div className="row g-4">
-          <div className="col-lg-12">
-            <div className="bg-white rounded p-4">
-              <H4Primary className="mb-5 py-2 mb-md-0">訂單資訊</H4Primary>
+      <H4Primary className="mb-5 py-2 mb-md-0">訂單資訊</H4Primary>
 
-              {isLoading ? (
-                <div className="text-center py-5">
-                  <div className="spinner-border text-secondary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                  <TextMedium className="mt-2 text-muted">載入中...</TextMedium>
-                </div>
-              ) : (
-                <>
-                  {/* 切換按鈕區 */}
-                  <div className="d-flex gap-4 border-bottom mb-4 flex-wrap">
-                    {[
-                      { key: "all", label: "全部", count: countAll },
-                      { key: "pending", label: "處理中", count: countPending },
-                      { key: "paid", label: "已完成", count: countPaid },
-                      { key: "canceled", label: "已取消", count: countCanceled },
-                    ].map(tab => (
-                      <button
-                        key={tab.key}
-                        className={`btn btn-link px-0 flex-shrink-0 ${activeTab === tab.key ? "fw-bold" : "text-muted"}`}
-                        style={activeTab === tab.key ? { color: "#8BB0B7" } : {}}
-                        onClick={() => setActiveTab(tab.key)}
-                      >
-                        {tab.label} <sup>{tab.count}</sup>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* search space */}
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="搜尋訂單編號"
-                      value={searchTerm}
-                      onChange={e => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-
-                  {/* 桌面-大螢幕顯示 */}
-                  <div className="d-none d-lg-block">
-                    {/* 表頭欄位名稱 */}
-                    <div
-                      className="row text-muted px-2 mb-2 py-2 bg-light"
-                      style={{ backgroundColor: "#F2F2F2" }}
-                    >
-                      <div className="col-6 col-lg-2">
-                        <H6Secondary className="text-muted">訂單成立日期</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">訂單編號</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">總金額</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">付款方式</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">狀態</H6Secondary>
-                      </div>
-                      <div className="col-6 col-lg-2 text-center">
-                        <H6Secondary className="text-muted">操作</H6Secondary>
-                      </div>
-                    </div>
-
-                    {/* 桌面-訂單內容 */}
-                    {filteredOrders.length === 0 ? (
-                      <div className="text-center py-5 w-100">
-                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
-                        <BtnPrimary as={Link} to="/" size="medium">
-                          前往首頁探索商品
-                        </BtnPrimary>
-                      </div>
-                    ) : (
-                      filteredOrders.map(order => (
-                        <div
-                          key={order.id}
-                          className="row align-items-center px-2 py-3 border-bottom"
-                        >
-                          <div className="col-6 col-lg-2">
-                            <TextMedium>
-                              {new Date(order.created_at).toLocaleDateString("zh-TW")}
-                            </TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-truncate">
-                            <TextMedium>{order.id}</TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-center">
-                            <TextMedium>NT$ {order.amount?.toLocaleString()}</TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-center">
-                            <TextMedium>
-                              {order.payment_method === "credit_card"
-                                ? "信用卡"
-                                : order.payment_method === "bank_transfer"
-                                  ? "銀行轉帳"
-                                  : order.payment_method || "未知"}
-                            </TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2 text-center">
-                            <TextMedium className="text-muted">
-                              {order.status === "paid"
-                                ? "已完成"
-                                : order.status === "canceled"
-                                  ? "已取消"
-                                  : "處理中"}
-                            </TextMedium>
-                          </div>
-                          <div className="col-6 col-lg-2">
-                            <BtnPrimary
-                              size="small"
-                              className="mx-auto d-block"
-                              onClick={e => {
-                                e.stopPropagation();
-                                handleViewOrder(order.id);
-                              }}
-                            >
-                              查看訂單
-                            </BtnPrimary>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                    {filteredOrders.length > 0 && (
-                      <div className="text-center text-muted py-4">
-                        <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 手機版卡片式布局 - 只在小螢幕顯示 */}
-                  <div className="d-lg-none">
-                    {filteredOrders.length === 0 ? (
-                      <div className="text-center text-muted py-10 w-100">
-                        <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
-                        <div>
-                          <BtnPrimary as={Link} to="/" size="small">
-                            前往首頁探索商品
-                          </BtnPrimary>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        {filteredOrders.map(order => (
-                          <MobileOrderCard key={order.id} order={order} />
-                        ))}
-                        {filteredOrders.length > 0 && (
-                          <div className="text-center text-muted py-4">
-                            <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+      {isLoading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-secondary" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
+          <TextMedium className="mt-2 text-muted">載入中...</TextMedium>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* 切換按鈕區 */}
+          <div className="d-flex gap-4 border-bottom mb-4 flex-wrap">
+            {[
+              { key: "all", label: "全部", count: countAll },
+              { key: "pending", label: "處理中", count: countPending },
+              { key: "paid", label: "已完成", count: countPaid },
+              { key: "canceled", label: "已取消", count: countCanceled },
+            ].map(tab => (
+              <button
+                key={tab.key}
+                className={`btn btn-link px-0 flex-shrink-0 ${activeTab === tab.key ? "fw-bold" : "text-muted"}`}
+                style={activeTab === tab.key ? { color: "#8BB0B7" } : {}}
+                onClick={() => setActiveTab(tab.key)}
+              >
+                {tab.label} <sup>{tab.count}</sup>
+              </button>
+            ))}
+          </div>
+
+          {/* search space */}
+          <div className="mb-4">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="搜尋訂單編號"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* 桌面-大螢幕顯示 */}
+          <div className="d-none d-lg-block">
+            {/* 表頭欄位名稱 */}
+            <div
+              className="row text-muted px-2 mb-2 py-2 bg-light"
+              style={{ backgroundColor: "#F2F2F2" }}
+            >
+              <div className="col-6 col-lg-3 ps-7">
+                <H6Secondary className="text-muted">訂單成立日期</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">訂單編號</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-3 text-center">
+                <H6Secondary className="text-muted">總金額</H6Secondary>
+              </div>
+              {/* <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">付款方式</H6Secondary>
+              </div> */}
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">狀態</H6Secondary>
+              </div>
+              <div className="col-6 col-lg-2 text-center">
+                <H6Secondary className="text-muted">操作</H6Secondary>
+              </div>
+            </div>
+
+            {/* 桌面-訂單內容 */}
+            {filteredOrders.length === 0 ? (
+              <div className="text-center py-5 w-100">
+                <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
+                <BtnPrimary as={Link} to="/" size="medium">
+                  前往首頁探索商品
+                </BtnPrimary>
+              </div>
+            ) : (
+              filteredOrders.map(order => (
+                <div key={order.id} className="row align-items-center px-2 py-3 border-bottom">
+                  <div className="col-6 col-lg-3 ps-7">
+                    <TextMedium>
+                      {new Date(order.created_at).toLocaleDateString("zh-TW")}
+                    </TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium>{order.merchant_order_no}</TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-3 text-center">
+                    <TextMedium>NT$ {order.amount?.toLocaleString()}</TextMedium>
+                  </div>
+                  {/* <div className="col-6 col-lg-2 text-center">
+                    <TextMedium>
+                      {order.payment_method === "credit_card"
+                        ? "信用卡"
+                        : order.payment_method === "bank_transfer"
+                          ? "銀行轉帳"
+                          : order.payment_method || "未知"}
+                    </TextMedium>
+                  </div> */}
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium className="text-muted">
+                      {order.status === "paid"
+                        ? "已完成"
+                        : order.status === "canceled"
+                          ? "已取消"
+                          : "處理中"}
+                    </TextMedium>
+                  </div>
+                  <div className="col-6 col-lg-2 text-center">
+                    <TextMedium
+                      className="text-primary text-decoration-underline cursor-pointer hover-text"
+                      onClick={e => {
+                        e.stopPropagation();
+                        handleViewOrder(order.id);
+                      }}
+                      style={{ fontSize: "0.875rem", fontWeight: "500" }}
+                    >
+                      查看訂單
+                    </TextMedium>
+                  </div>
+                </div>
+              ))
+            )}
+            {filteredOrders.length > 0 && (
+              <div className="text-center text-muted py-4">
+                <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
+              </div>
+            )}
+          </div>
+
+          {/* 手機版卡片式布局 - 只在小螢幕顯示 */}
+          <div className="d-lg-none">
+            {filteredOrders.length === 0 ? (
+              <div className="text-center text-muted py-10 w-100">
+                <H6Secondary className="mb-6">查無符合條件的訂單</H6Secondary>
+                <div>
+                  <BtnPrimary as={Link} to="/" size="small">
+                    前往首頁探索商品
+                  </BtnPrimary>
+                </div>
+              </div>
+            ) : (
+              <>
+                {filteredOrders.map(order => (
+                  <MobileOrderCard key={order.id} order={order} />
+                ))}
+                {filteredOrders.length > 0 && (
+                  <div className="text-center text-muted py-4">
+                    <H6Secondary className="text-muted">沒有更多訂單資料</H6Secondary>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Modal */}
       {selectedOrderId && (
@@ -492,7 +470,7 @@ function OrderHistoryPage() {
           <div className="modal-dialog modal-lg modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <H5Primary className="modal-title">訂單明細</H5Primary>
+                <H4Primary className="modal-title fs-1">訂單明細</H4Primary>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
@@ -510,7 +488,7 @@ function OrderHistoryPage() {
                     return (
                       <>
                         {/* 訂單資訊表格 */}
-                        <table className="table table-bordered">
+                        <table className="order-detail-table d-none d-lg-table table table-bordered">
                           <tbody>
                             <tr>
                               <th style={{ backgroundColor: "#D4D4D4" }}>
@@ -527,7 +505,7 @@ function OrderHistoryPage() {
                                 <H6Primary>訂單編號</H6Primary>
                               </th>
                               <td className="modal-td-content ps-5">
-                                <TextMedium>{order.id}</TextMedium>
+                                <TextMedium>{order.merchant_order_no}</TextMedium>
                               </td>
                             </tr>
                             <tr>
@@ -554,7 +532,9 @@ function OrderHistoryPage() {
                                 </div>
                                 <div>
                                   <TextMedium>
-                                    地址：{order.user_address_zipcode} {order.user_address_detail}
+                                    地址：{order.user_address_zipcode} {order.user_address_city}
+                                    {order.user_address_district}
+                                    {order.user_address_detail}
                                   </TextMedium>
                                 </div>
                                 <div>
@@ -604,20 +584,21 @@ function OrderHistoryPage() {
                               <th style={{ backgroundColor: "#D4D4D4" }}>
                                 <H6Primary>購物清單</H6Primary>
                               </th>
-                              <td className="modal-td-content ps-5">
+                              <td className="modal-td-content py-3 ps-5">
                                 {items && items.length > 0 ? (
                                   items.map(item => (
                                     <div
                                       key={item.id}
-                                      className="mb-3 border-bottom pb-2 d-flex align-items-center"
+                                      className=" pb-3 d-flex align-items-center"
                                       style={{ gap: "1rem" }}
                                     >
                                       <img
                                         src={item.primary_image}
                                         alt={item.name}
                                         style={{
-                                          width: "150px",
-                                          height: "auto",
+                                          width: "100px",
+                                          height: "100px",
+                                          objectFit: "cover",
                                           flexShrink: 0,
                                           borderRadius: "12px",
                                         }}
@@ -644,21 +625,33 @@ function OrderHistoryPage() {
                                 ) : (
                                   <TextMedium className="text-muted">無商品資料</TextMedium>
                                 )}
-                                <div>
-                                  <div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th style={{ backgroundColor: "#D4D4D4" }}>
+                                <H6Primary>金額資訊</H6Primary>
+                              </th>
+                              <td className="modal-td-content ps-5">
+                                <div className="d-flex flex-column gap-3">
+                                  <div className="d-flex flex-column gap-1">
                                     <TextMedium>
-                                      總計：NT$ {Number(order.amount).toLocaleString()}
+                                      商品總計：NT$ {Number(order.final_amount).toLocaleString()}
                                     </TextMedium>
-                                  </div>
-                                  <div>
+
                                     <TextMedium>
                                       折扣總額：NT$
                                       {Number(order.discount_price).toLocaleString()}
                                     </TextMedium>
-                                  </div>
-                                  <div style={{ marginTop: " 0.75rem" }}>
+
                                     <TextMedium>
-                                      支付總額：NT$ {Number(order.final_amount).toLocaleString()}
+                                      運費：NT$
+                                      {Number(order.shippingFee).toLocaleString()}
+                                    </TextMedium>
+                                  </div>
+                                  <div className="divider-line"></div>
+                                  <div>
+                                    <TextMedium>
+                                      支付總額：NT$ {Number(order.amount).toLocaleString()}
                                     </TextMedium>
                                   </div>
                                 </div>
@@ -666,6 +659,120 @@ function OrderHistoryPage() {
                             </tr>
                           </tbody>
                         </table>
+                        {/* 訂單資訊表格手機版 */}
+                        <div className="order-detail-mobile d-block d-lg-none d-flex flex-column gap-4 pe-0">
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">訂單成立日期</H5Primary>
+                            <TextMedium className="fw-normal">
+                              {new Date(order.created_at).toLocaleString("zh-TW")}
+                            </TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">訂單編號</H5Primary>
+                            <TextMedium className="fw-normal">{order.merchant_order_no}</TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">訂單狀態</H5Primary>
+                            <TextMedium className="fw-normal">
+                              {order.status === "paid"
+                                ? "已完成"
+                                : order.status === "canceled"
+                                  ? "已取消"
+                                  : "處理中"}
+                            </TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">收件地址</H5Primary>
+                            <TextMedium className="fw-normal">
+                              {order.user_name} 先生/小姐
+                            </TextMedium>
+                            <TextMedium className="fw-normal">
+                              地址：{order.user_address_zipcode} {order.user_address_city}
+                              {order.user_address_district}
+                              {order.user_address_detail}
+                            </TextMedium>
+                            <TextMedium className="fw-normal">電話：{order.user_phone}</TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">寄送方式</H5Primary>
+                            <TextMedium className="fw-normal">
+                              {order.shipping_method === "home_delivery"
+                                ? "宅配到府"
+                                : order.shipping_method || "待確認"}
+                            </TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">付款方式</H5Primary>
+                            <TextMedium className="fw-normal">
+                              {order.payment_method === "credit_card"
+                                ? "信用卡"
+                                : order.payment_method === "bank_transfer"
+                                  ? "銀行轉帳"
+                                  : order.payment_method || "待確認"}
+                            </TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">希望配送日期</H5Primary>
+                            <TextMedium className="fw-normal">
+                              {order.desired_date
+                                ? new Date(order.desired_date).toLocaleDateString("zh-TW")
+                                : "未指定"}
+                            </TextMedium>
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">購物清單</H5Primary>
+                            {items && items.length > 0 ? (
+                              items.map(item => (
+                                <div key={item.id} className="d-flex align-items-center gap-3">
+                                  <img
+                                    src={item.primary_image}
+                                    alt={item.name}
+                                    style={{
+                                      width: "80px",
+                                      height: "80px",
+                                      objectFit: "cover",
+                                      borderRadius: "10px",
+                                      flexShrink: 0,
+                                    }}
+                                  />
+                                  <div className="d-flex flex-column">
+                                    <TextMedium className="fw-normal">{item.name}</TextMedium>
+                                    <TextMedium className="fw-normal">
+                                      NT$ {Number(item.price).toLocaleString()} / 數量：
+                                      {item.quantity}
+                                    </TextMedium>
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <TextMedium className="text-muted">無商品資料</TextMedium>
+                            )}
+                          </div>
+
+                          <div className="d-flex flex-column gap-3 pb-2 border-bottom">
+                            <H5Primary className="fs-5">金額資訊</H5Primary>
+                            <TextMedium className="fw-normal">
+                              商品總計：NT$ {Number(order.final_amount).toLocaleString()}
+                            </TextMedium>
+                            <TextMedium className="fw-normal">
+                              折扣總額：NT$ {Number(order.discount_price).toLocaleString()}
+                            </TextMedium>
+                            <TextMedium className="fw-normal">
+                              運費：NT$ {Number(order.shippingFee).toLocaleString()}
+                            </TextMedium>
+                            <div className="divider-line" />
+                            <TextMedium className="fw-bold">
+                              支付總額：NT$ {Number(order.amount).toLocaleString()}
+                            </TextMedium>
+                          </div>
+                        </div>
                       </>
                     );
                   })()
@@ -677,9 +784,9 @@ function OrderHistoryPage() {
       )}
 
       <style jsx>{`
-        // .modal-td-content {
-        //   padding-left: 2rem;
-        // } 不知為何沒用 先註解
+        .hover-text:hover {
+          color: #4a6465;
+        }
         .mobile-order-card {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           transition: box-shadow 0.2s ease;
@@ -740,15 +847,6 @@ function OrderHistoryPage() {
           line-height: 1;
         }
 
-        @media (max-width: 530px) {
-          .order-number-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1;
-            display: block;
-            width: 100%;
-          }
         }
       `}</style>
     </>
