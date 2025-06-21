@@ -5,9 +5,63 @@
 況且購買全新器材的價格高昂，也不確定使用起來是否真正喜歡或適合自己。在摸索的過程金錢成本過高，許多人難以負擔。
 因此「拾光堂」旨在打造一個專門的二手攝影器材交易平台，讓器材能夠在攝影愛好者之間流轉，延續其價值。讓舊有的器材有最有效的利用，再次看見世界。
 
-## 技術
-此為「拾光堂」前台介面，由 **React + Vite** 建設
+## 專案內容
+>以下是「拾光堂」專案網址：
 
+### 前端
+- **前台**（本儲存庫） 
+  - [儲存庫](https://github.com/LightPickers/Frontend-Dev-React)
+  - [頁面呈現](https://lightpickers.github.io/Frontend-Dev-React/#/)
+
+- 後台
+  - [儲存庫](https://github.com/LightPickers/Manage-Dev-React)
+  - [頁面呈現](https://lightpickers.github.io/Manage-Dev-React/#/)
+
+### 後端
+- 前台 - [儲存庫](https://github.com/LightPickers/Frontend-Dev-Nodejs)
+- 後台 - [儲存庫](https://github.com/LightPickers/Manage-Dev-Nodejs)
+
+## 功能
+>此為「拾光堂」前台介面，由「**React + Vite**」建設，主要實現以下功能：
+
+- [x] 註冊／登入／重設密碼
+- [x] 登出
+- [x] 瀏覽／篩選商品列表
+- [x] 查看商品詳細資訊
+- [x] 收藏商品
+- [x] 將商品加入購物車
+- [x] 使用折扣碼折抵金額
+- [x] 透過藍新金流完成結帳
+- [x] 查看訂單狀態
+
+### 功能測試
+- 帳號
+```bash
+example1223@gmail.com
+```
+- 密碼
+```bash
+ASSffff8972
+```
+- 優惠券
+```bash
+2025summer
+```
+- 信用卡
+卡號
+```bash
+4000 2211 1111 1111
+```
+到期日
+```bash
+01/28
+```
+安全碼
+```bash
+111
+```
+
+## 使用技術
 ### 主要
 - JS 框架：**React** 19.1.0
 - 路由管理：**React Router** v7 (HashRoater)
@@ -25,7 +79,6 @@
 - 輪播樣式庫：**Swiper** 11.2.6
 - Github 部屬：**gh-pages** 6.3.0
 
-
 ### 輔助
 - **classnames** 2.5.1
 - **react-spinners** 0.17.0
@@ -39,29 +92,6 @@
 ### 第三方服務
 - 藍新金流（結帳流程）
 - Google （登入／註冊流程）
-
-## 功能
-主要實現以下使用者功能
-- [x] 註冊／登入／重設密碼
-- [x] 登出
-- [x] 瀏覽／篩選商品列表
-- [x] 查看商品詳細資訊
-- [x] 收藏商品
-- [x] 將商品加入購物車
-- [x] 使用折扣碼折抵金額
-- [x] 透過藍新金流完成結帳
-- [x] 查看訂單狀態
-
-## 測試帳密
-### 帳號
-```bash
-example1223@gmail.com
-```
-
-### 密碼
-```bash
-ASSffff8972
-```
 
 ## 安裝
 ### 取得專案
@@ -89,6 +119,7 @@ npm run dev
 ```bash
 http://localhost:5173/#/
 ```
+
 ## 專案結構
 
 ### 主要架構
