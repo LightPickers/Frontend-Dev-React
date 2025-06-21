@@ -29,7 +29,6 @@ function AiCustomerService() {
       setResponse(result.response);
       setConversation(prev => [...prev, { type: "ai", text: result.response }]);
     } catch (err) {
-      console.error("AI 回覆錯誤：", err);
       setResponse("客服暫時無法回覆，請稍後再試。");
     }
   };
@@ -64,7 +63,17 @@ function AiCustomerService() {
                 <span className="dot">.</span>
               </p>
             )}
-            {isError && <p className="error-msg">發生錯誤，請稍後再試。</p>}
+            {isError && (
+              <p className="ai-response">
+                {error?.status === 401
+                  ? "請先登入才能使用客服功能。"
+                  : error?.data?.message === "請勿輸入不當內容"
+                    ? "我們無法回覆含有不當內容的訊息，請重新輸入。"
+                    : error?.data?.message === "訊息過長，請在 75 個字以內"
+                      ? "訊息太長囉！請用更簡短的文字再試一次。"
+                      : error?.data?.message || error?.error || "客服暫時無法回覆，請稍後再試。"}
+              </p>
+            )}
           </div>
           <form className="ai-chat-footer" onSubmit={handleSubmit}>
             <input
