@@ -12,6 +12,7 @@ import PageLoader from "@components/loaders/PageLoader";
 function ProductCatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFiltering, setIsFiltering] = useState(false); // 新增狀態
   const itemsPerPage = 20;
 
   const isXlUp = useBreakpoint("xlUp");
@@ -107,7 +108,7 @@ function ProductCatalogPage() {
     setCurrentPage(1);
   }, [categoryId, brandIds, conditionIds, keyword, minPrice, maxPrice, priceRange]);
 
-  const handleFilter = filters => {
+  const handleFilter = async filters => {
     const { brand_ids, condition_ids, minPrice, maxPrice } = filters;
     const newSearchParams = new URLSearchParams(searchParams);
 
@@ -139,8 +140,18 @@ function ProductCatalogPage() {
       newSearchParams.set("max_price", maxPrice.toString());
     }
 
+    setIsFiltering(true); // 顯示 PageLoader
     setSearchParams(newSearchParams);
     setCurrentPage(1);
+
+    // 確保 PageLoader 至少顯示 800ms
+    const minimumLoadingTime = new Promise(resolve => setTimeout(resolve, 800));
+
+    try {
+      await minimumLoadingTime;
+    } finally {
+      setIsFiltering(false); // 隱藏 PageLoader
+    }
   };
 
   const handlePageChange = page => {
@@ -164,16 +175,6 @@ function ProductCatalogPage() {
     }
   }, [searchParams]);
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="d-flex justify-content-center py-5">
-  //       <div className="spinner-border" role="status">
-  //         <span className="visually-hidden">Loading...</span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   if (isError) {
     return (
       <div className="d-flex justify-content-center py-5">
@@ -186,14 +187,16 @@ function ProductCatalogPage() {
 
   return (
     <>
-      <PageLoader loading={isLoading} text="載入商品列表中" />
+      <PageLoader loading={isLoading || isFiltering} text="載入商品列表中" />
       <div className="product-catalog-page">
-        {/* Category Image - 完全貼齊 header，撐滿寬度 */}
-        <CategoryImage category={categoryInfo.categoryName} />
+        {/* Category Image - 集中在中間，緊貼 Header */}
+        <div className="category-image-wrapper">
+          <CategoryImage category={categoryInfo.categoryName} />
+        </div>
 
-        {/* 篩選器區域 - 白色背景，貼齊頁面左右 */}
+        {/* 篩選器區域 */}
         <div className="filter-area-wrapper">
-          <div className="container-fluid">
+          <div className="container-lg">
             <div className="filter-area">
               <ProductFilter
                 onFilter={handleFilter}
@@ -206,7 +209,7 @@ function ProductCatalogPage() {
 
         {/* 商品列表 */}
         <div className="product-list-wrapper">
-          <div className="container-fluid">
+          <div className="container-lg">
             {/* 麵包屑 */}
             <nav aria-label="breadcrumb" className="mb-3">
               <ol className="breadcrumb mb-0">
@@ -247,7 +250,7 @@ function ProductCatalogPage() {
 
           {/* 分頁 */}
           {products.length > 0 && totalPages > 1 && (
-            <div className="container-fluid">
+            <div className="container-lg">
               <div className="pagination-container text-center mt-4">
                 <nav aria-label="商品列表分頁">
                   <ul className="pagination justify-content-center">
