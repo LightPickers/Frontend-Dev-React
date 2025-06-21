@@ -21,25 +21,44 @@ export const getCheckoutSchema = (couponsList = []) =>
     couponCode: z
       .string()
       .optional()
-      .refine(
-        code => {
-          if (!code || !code.trim()) return true;
-          const now = new Date();
-          const match = couponsList.find(c => c.code === code.trim());
-          if (!match) return false;
+      .superRefine((code, ctx) => {
+        if (!code || !code.trim()) return;
 
-          const start = new Date(match.start_at);
-          const end = new Date(match.end_at);
+        const trimmed = code.trim();
+        const match = couponsList.find(c => c.code === trimmed);
+        const now = new Date();
 
-          return (
-            match.is_available &&
-            now >= start &&
-            now <= end &&
-            match.distributed_quantity < match.quantity
-          );
-        },
-        {
-          message: "優惠碼無效、已過期或已用完",
+        if (!match) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "查無此優惠碼",
+          });
+          return;
         }
-      ),
+
+        const start = new Date(match.start_at);
+        const end = new Date(match.end_at);
+
+        if (!match.is_available) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "此優惠碼目前不可使用",
+          });
+        } else if (now < start) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "此優惠碼尚未開始",
+          });
+        } else if (now > end) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "此優惠碼已過期",
+          });
+        } else if (match.distributed_quantity >= match.quantity) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "此優惠碼已達使用上限",
+          });
+        }
+      }),
   });

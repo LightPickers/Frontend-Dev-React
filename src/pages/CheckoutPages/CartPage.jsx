@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -6,7 +7,7 @@ import { BtnPrimary } from "@components/Buttons";
 import { CloseIcon } from "@components/icons";
 import { H3Primary, H5Primary } from "@components/Headings";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
-import { ConfirmDialogue, SuccessAlert } from "@/components/Alerts";
+import { ConfirmDialogue, SuccessAlert, InfoAlert } from "@/components/Alerts";
 import PageLoader from "@/components/loaders/PageLoader";
 
 function CartPage() {
@@ -17,8 +18,22 @@ function CartPage() {
   const [deleteCartProduct] = useDeleteCartProductMutation();
 
   // 數量、商品合計
-  const cartItems = data?.data?.items || [];
+  const cartItems = useMemo(() => data?.data?.items || [], [data]);
   const subtotal = data?.data?.amount || 0;
+
+  // 檢查購物車是否有下架商品
+  useEffect(() => {
+    if (!isLoading && cartItems.some(item => item.is_available === false)) {
+      InfoAlert({
+        title: "購物車中有已下架商品",
+        html: `
+        <ol style="text-align: center;">
+          <li>請先移除已下架商品，再進行結帳。</li>
+        </ol>
+      `,
+      });
+    }
+  }, [cartItems, isLoading, navigate]);
 
   const hasDiscontinuedProducts = cartItems.some(item => !item.is_available);
   // 刪除品項
@@ -46,7 +61,7 @@ function CartPage() {
     navigate("/checkout"); // 有商品才導到結帳頁
   };
 
-  if (isLoading) return <PageLoader text={"載入購物車資料中，請稍候..."} loading={isLoading} />;
+  if (isLoading) return <PageLoader text={"載入購物車資料中，請稍候..."} />;
 
   return (
     <>
