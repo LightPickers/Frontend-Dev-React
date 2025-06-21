@@ -65,9 +65,11 @@ export const SuccessAlert = ({ title = "成功！", text, confirmText = "確定"
 
 // 資訊提示框
 // InfoAlert({title: "", html: ""})
-export const InfoAlert = ({ title = "提示", html, confirmText = "我知道了" }) => {
+export const InfoAlert = ({ title = "提示", html, text, confirmText = "我知道了" }) => {
   return LP_Swal.fire({
     title: <h3 className="alert-title">{title}</h3>,
+    timer: 3000,
+    text,
     html,
     icon: "info",
     confirmButtonText: confirmText,

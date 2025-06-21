@@ -7,7 +7,7 @@ import { TextSmall } from "@components/TextTypography";
 import { formatPrice } from "@utils/formatPrice";
 import { CloseIcon } from "@components/icons";
 import { useDeleteWishlistProductMutation } from "@features/wishlist/wishlistApi";
-import { ConfirmDialogue, ErrorAlert, SuccessAlert } from "@components/Alerts";
+import { ConfirmDialogue, ErrorAlert, InfoAlert, SuccessAlert } from "@components/Alerts";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function FavItem({ item, onCheckChange }) {
@@ -98,7 +98,10 @@ function FavItem({ item, onCheckChange }) {
             ConfirmDialogue({
               title: "確認刪除？",
               text: `您確定要從收藏清單移除「${name}」嗎？`,
-              action: () => handleDelete(favItemId),
+              action: () => {
+                InfoAlert({ title: "正在執行刪除", text: "正在背景執行刪除，您可以繼續您的動作" });
+                handleDelete(favItemId);
+              },
             });
           }}
           onMouseDown={e => e.stopPropagation()}
