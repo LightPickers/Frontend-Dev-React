@@ -1,0 +1,228 @@
+.footer {
+  background-color: #ffffff !important;
+  padding: 4rem 0 !important;
+
+  .container {
+    max-width: 1000px;
+  }
+
+  .footer-brand-link {
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    margin-bottom: 2rem !important;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .footer-logo {
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .footer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .footer-links {
+    li {
+      margin-bottom: 0.75rem;
+    }
+
+    .text-m {
+      font-weight: normal !important;
+    }
+  }
+
+  .footer-link {
+    color: #000000;
+    text-decoration: none;
+    font-weight: normal !important;
+    transition: color 0.3s ease;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #333333;
+      text-decoration: none;
+      font-weight: normal !important;
+    }
+  }
+
+  .footer-links a {
+    color: #000000 !important;
+    text-decoration: none !important;
+    font-weight: normal !important;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #333333 !important;
+      text-decoration: none !important;
+      font-weight: normal !important;
+    }
+  }
+
+  .social-links {
+    gap: 1.5rem !important;
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      color: #6c757d;
+
+      svg {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .copyright {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+    display: inline-block;
+    white-space: nowrap;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 990px) {
+    padding: 3rem 0 !important;
+
+    .col-lg-3:first-child {
+      order: -1;
+      text-align: center !important;
+      margin-bottom: 2rem !important;
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+
+    .footer-brand-link {
+      display: flex !important;
+      justify-content: center !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .social-links {
+      justify-content: center !important;
+      display: flex !important;
+      margin-bottom: 0 !important;
+    }
+
+    .col-lg-2:nth-child(2) {
+      order: 1;
+      width: 50% !important;
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
+    }
+
+    .col-lg-2:nth-child(3) {
+      order: 2;
+      width: 50% !important;
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
+    }
+
+    .col-lg-2:nth-child(4) {
+      order: 3;
+      width: 50% !important;
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
+    }
+
+    .col-lg-3:nth-child(5) {
+      order: 4;
+      width: 50% !important;
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
+    }
+
+    .col-lg-2,
+    .col-lg-3:not(:first-child) {
+      text-align: center !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+    }
+
+    .footer-title {
+      margin-top: 1rem;
+      text-align: center !important;
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      text-align: center !important;
+    }
+
+    .copyright {
+      text-align: center !important;
+      margin-top: 2rem;
+      order: 5;
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 2rem 0 !important;
+
+    .footer-brand-link {
+      margin-bottom: 0.5rem !important;
+    }
+
+    .footer-logo {
+      height: 35px;
+    }
+
+    .social-links {
+      gap: 1rem !important;
+      margin-bottom: 1.5rem !important;
+
+      .social-icon {
+        width: 35px;
+        height: 35px;
+
+        svg {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .footer-title {
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      margin-bottom: 0.8rem !important;
+    }
+
+    .footer-links {
+      li {
+        margin-bottom: 0.4rem;
+      }
+
+      .footer-link {
+        font-size: 0.8rem;
+      }
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+.footer:not(.fixed-bottom) {
+  position: static;
+}

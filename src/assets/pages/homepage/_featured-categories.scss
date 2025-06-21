@@ -1,0 +1,63 @@
+@use "../../stylesheets/fonts" as fonts;
+@use "../../stylesheets/colors" as colors;
+@use "../../stylesheets/sizes" as sizes;
+
+.category-card {
+  position: relative;
+  max-width: 320px;
+  min-width: 163.5px;
+  border: 2px solid colors.$gray-200;
+  border-radius: 8px;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(-0.5px) scale(0.98);
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .image-container {
+    width: 100px;
+    height: 100px;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include media-breakpoint-up(md) {
+      width: 120px;
+      height: 120px;
+    }
+
+    @include media-breakpoint-up(lg) {
+      width: 160px;
+      height: 160px;
+    }
+  }
+
+  .category-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

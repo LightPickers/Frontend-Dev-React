@@ -1,0 +1,63 @@
+@import "bootstrap/scss/functions";
+@import "./utilities/variables";
+@import "./utilities/custom-utitlities";
+@import "./stylesheets/spacers";
+@import "bootstrap/scss/bootstrap";
+
+// custom variable
+@import "./stylesheets/colors";
+@import "./stylesheets/fonts";
+@import "./stylesheets/sizes";
+@import "./stylesheets/line-height";
+@import "./stylesheets/border";
+
+@import "./stylesheets/grid-system";
+
+@import "./mixins/breakpoints";
+
+@import "./base/base";
+
+// custom components
+@import "./components/buttons";
+@import "./components/alerts";
+@import "./components/tags";
+@import "./components/dropdowns";
+@import "./components/expanding-search";
+@import "./components/mobile-search";
+@import "./components/mobile-menu";
+@import "./components/mobile-nav-modal";
+@import "./components/mobile-product-card";
+@import "./components/product-article-settings";
+
+// layouts
+@import "./layouts/header";
+@import "./layouts/mobile-header";
+@import "./layouts/footer";
+
+// pages
+// homepage
+@import "./pages/homepage/carousel-banner";
+@import "./pages/homepage/product-showcase";
+@import "./pages/homepage/be-saler-section";
+@import "./pages/homepage/why-us-section";
+@import "./pages/homepage/featured-categories";
+@import "./pages/homepage/ai-customer-service";
+
+// carts
+@import "./pages/checkout/cart";
+
+// productpage
+@import "./pages/productpage/product";
+@import "./pages/productpage/category-image";
+@import "./pages/productpage/filter";
+//@import "./pages/productpage/mobile-filter";
+// productDetailPage
+@import "./pages/productDetailPage/productDetail";
+@import "./pages/productDetailPage/productUnavailable";
+
+// orderHistory
+@import "./pages/accountPage/orderHistory";
+
+//footer
+@import "./pages/footer/contact-us";
+@import "./pages/footer/faq";
