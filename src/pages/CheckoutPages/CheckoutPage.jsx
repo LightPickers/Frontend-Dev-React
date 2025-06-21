@@ -17,7 +17,7 @@ import {
   getDefaultDeliveryDate,
 } from "@features/cart/checkoutPageSlice";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
-import { InfoAlert } from "@/components/Alerts";
+import { ConfirmDialogue, InfoAlert } from "@/components/Alerts";
 import PageLoader from "@/components/loaders/PageLoader";
 import { showLoading, hideLoading } from "@features/loading/loadingSlice";
 
@@ -261,7 +261,7 @@ function CheckoutPage() {
                         </div>
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
-                            <div className="text-gray-500 fw-bold">{userInfo.name}</div>
+                            <div className="text-gray-500 fw-bold">{userInfo?.name}</div>
                             {/* <div className="text-gray-500">
                               地址：{userInfo.address_zipcode}
                               {userInfo.address_district}
@@ -336,21 +336,35 @@ function CheckoutPage() {
                                 className={`form-check-label d-flex flex-column gap-1 ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
                                 htmlFor="recipient-default"
                               >
-                                <div className="fw-bold">{userInfo.name}</div>
+                                <div className="fw-bold">{userInfo?.name}</div>
                                 <div>
-                                  收件地址：{userInfo.address_zipcode}
-                                  {userInfo.address_district}
-                                  {userInfo.address_detail}
+                                  收件地址：{userInfo?.address_zipcode}
+                                  {userInfo?.address_district}
+                                  {userInfo?.address_detail}
                                 </div>
-                                <div>電話：{userInfo.phone}</div>
+                                <div>電話：{userInfo?.phone}</div>
 
-                                <Link
-                                  to="/account/profile/settings"
+                                <span
                                   className="text-gray-500 text-decoration-underline"
-                                  style={{ position: "absolute", right: "12px", bottom: 0 }}
+                                  style={{
+                                    position: "absolute",
+                                    right: "12px",
+                                    bottom: 0,
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => {
+                                    ConfirmDialogue({
+                                      title: "是否前往更改收件地址？",
+                                      text: "這將帶您前往會員資料頁面，請確認是否繼續。",
+                                      icon: "warning",
+                                      action: () => {
+                                        navigate("/account/profile/settings");
+                                      },
+                                    });
+                                  }}
                                 >
                                   更改收件地址
-                                </Link>
+                                </span>
                               </label>
                               {errors.recipient && (
                                 <p className="invalid-feedback m-0">{errors.recipient.message}</p>
