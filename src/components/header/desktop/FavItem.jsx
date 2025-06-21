@@ -99,7 +99,7 @@ function FavItem({ item, onCheckChange }) {
               title: "確認刪除？",
               text: `您確定要從收藏清單移除「${name}」嗎？`,
               action: () => {
-                InfoAlert({ title: "正在執行刪除", text: "正在背景執行刪除，您可以繼續您的動作" });
+                // InfoAlert({ title: "正在執行刪除", text: "正在背景執行刪除，您可以繼續您的動作" });
                 handleDelete(favItemId);
               },
             });
