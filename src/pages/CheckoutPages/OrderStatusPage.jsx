@@ -24,9 +24,6 @@ function OrderStatusPage() {
   useEffect(() => {
     // 當訂單狀態為已付款時
     if (orderData?.data?.status === "paid") {
-      // 清空購物車中的所有商品
-      deleteCart();
-
       // 清除 checkoutForm 暫存
       localStorage.removeItem("checkoutForm");
     }
