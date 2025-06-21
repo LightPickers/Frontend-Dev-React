@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ArrowDownIcon } from "@/components/icons";
-import "../../assets/pages/accountPage/orderHistory.scss";
 
+import "../../assets/pages/accountPage/orderHistory.scss";
+import { ArrowDownIcon } from "@/components/icons";
 import { useGetOrdersQuery, useLazyGetOrderByIdQuery } from "@/features/orders/orderApi";
 import {
   H3Primary,
