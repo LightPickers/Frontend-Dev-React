@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
 
   return (
     <>
-      <PageLoader loading={isLoading || isVerifying} text="身分驗證中…" minTime={1000} />
+      {/* <PageLoader loading={isLoading || isVerifying} text="身分驗證中…" minTime={1000} /> */}
       {children}
     </>
   );
