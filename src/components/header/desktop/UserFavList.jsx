@@ -65,16 +65,33 @@ function UserFavList() {
   }, []);
 
   // 處理從子元件傳回來的資料，並設定所選的 id 陣列
+  // const handleCheckboxChange = useCallback((favId, productId, name, isChecked) => {
+  //   const updateSet = (prev, item) => {
+  //     // 根據 isChecked（勾選狀態）判斷將 id 加入陣列或從陣列刪除
+  //     // item: {id, name}
+  //     return isChecked
+  //       ? Array.from(new Set([...prev, item]))
+  //       : prev.filter(existingItem => existingItem.id !== item.id);
+  //   };
+  //   setSelectedFavIds(prev => updateSet(prev, favId));
+  //   setSelectedProducts(prev => updateSet(prev, { productId, name }));
+  // }, []);
+
   const handleCheckboxChange = useCallback((favId, productId, name, isChecked) => {
-    const updateSet = (prev, item) => {
-      // 根據 isChecked（勾選狀態）判斷將 id 加入陣列或從陣列刪除
-      // item: {id, name}
-      return isChecked
-        ? Array.from(new Set([...prev, item]))
-        : prev.filter(existingItem => existingItem.id !== item.id);
+    // keyName => 選擇一個 key 做為比對項目
+    const updateSet = (prev, item, keyName = "id") => {
+      if (isChecked) {
+        // 檢查是否已存在，避免重複添加
+        const exists = prev.some(existingItem => existingItem[keyName] === item[keyName]);
+        return exists ? prev : [...prev, item];
+      } else {
+        // 移除項目
+        return prev.filter(existingItem => existingItem[keyName] !== item[keyName]);
+      }
     };
-    setSelectedFavIds(prev => updateSet(prev, favId));
-    setSelectedProducts(prev => updateSet(prev, { productId, name }));
+
+    setSelectedFavIds(prev => updateSet(prev, favId, "id"));
+    setSelectedProducts(prev => updateSet(prev, { productId, name }, "productId"));
   }, []);
 
   // 加入購物車

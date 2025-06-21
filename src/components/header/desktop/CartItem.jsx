@@ -11,7 +11,7 @@ import { CloseIcon } from "@components/icons";
 import { useDeleteCartProductMutation } from "@features/cart/cartApi";
 import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 // import { showLoading } from "@features/loading/loadingSlice";
-import { ConfirmDialogue, ErrorAlert } from "@/components/Alerts";
+import { ConfirmDialogue, ErrorAlert, SuccessAlert } from "@/components/Alerts";
 
 function CartItem({ item }) {
   const dispatch = useDispatch();
@@ -20,7 +20,11 @@ function CartItem({ item }) {
   const handleDelete = async id => {
     try {
       await deleteCartProduct(id).unwrap();
-      toast.success(`已成功刪除「${name}」`);
+      if (!is_available) {
+        toast.success(`已成功移除「${name}」`);
+        return;
+      }
+      SuccessAlert({ text: `已成功移除「${name}」` });
     } catch (error) {
       ErrorAlert({
         title: `移除「${name}」失敗`,
@@ -69,10 +73,14 @@ function CartItem({ item }) {
           "stretched-link": !is_available,
         })}
         // className="btn btn-sm delete-btn ms-auto"
-        title={`移除「${name}」`}
+        title={`「${name}」已無法取得，點選以移除`}
         onClick={e => {
           e.stopPropagation();
           e.preventDefault();
+          if (!is_available) {
+            handleDelete(cartId);
+            return;
+          }
           ConfirmDialogue({
             title: "確認刪除？",
             text: `您確定要從購物車移除「${name}」嗎？`,
