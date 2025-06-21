@@ -144,10 +144,14 @@ function ProductCatalogPage() {
     setSearchParams(newSearchParams);
     setCurrentPage(1);
 
-    // 模擬篩選完成後隱藏 PageLoader
-    setTimeout(() => {
-      setIsFiltering(false);
-    }, 800); // 可根據實際情況調整時間
+    // 確保 PageLoader 至少顯示 800ms
+    const minimumLoadingTime = new Promise(resolve => setTimeout(resolve, 800));
+
+    try {
+      await minimumLoadingTime;
+    } finally {
+      setIsFiltering(false); // 隱藏 PageLoader
+    }
   };
 
   const handlePageChange = page => {
