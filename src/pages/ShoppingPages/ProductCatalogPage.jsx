@@ -12,6 +12,7 @@ import PageLoader from "@components/loaders/PageLoader";
 function ProductCatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFiltering, setIsFiltering] = useState(false); // 新增狀態
   const itemsPerPage = 20;
 
   const isXlUp = useBreakpoint("xlUp");
@@ -107,7 +108,7 @@ function ProductCatalogPage() {
     setCurrentPage(1);
   }, [categoryId, brandIds, conditionIds, keyword, minPrice, maxPrice, priceRange]);
 
-  const handleFilter = filters => {
+  const handleFilter = async filters => {
     const { brand_ids, condition_ids, minPrice, maxPrice } = filters;
     const newSearchParams = new URLSearchParams(searchParams);
 
@@ -139,8 +140,14 @@ function ProductCatalogPage() {
       newSearchParams.set("max_price", maxPrice.toString());
     }
 
+    setIsFiltering(true); // 顯示 PageLoader
     setSearchParams(newSearchParams);
     setCurrentPage(1);
+
+    // 模擬篩選完成後隱藏 PageLoader
+    setTimeout(() => {
+      setIsFiltering(false);
+    }, 800); // 可根據實際情況調整時間
   };
 
   const handlePageChange = page => {
@@ -164,16 +171,6 @@ function ProductCatalogPage() {
     }
   }, [searchParams]);
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="d-flex justify-content-center py-5">
-  //       <div className="spinner-border" role="status">
-  //         <span className="visually-hidden">Loading...</span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   if (isError) {
     return (
       <div className="d-flex justify-content-center py-5">
@@ -186,7 +183,7 @@ function ProductCatalogPage() {
 
   return (
     <>
-      <PageLoader loading={isLoading} text="載入商品列表中" />
+      <PageLoader loading={isLoading || isFiltering} text="載入商品列表中" />
       <div className="product-catalog-page">
         {/* Category Image - 集中在中間，緊貼 Header */}
         <div className="category-image-wrapper">
