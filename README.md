@@ -1,4 +1,4 @@
-# 「拾光堂」 - 二手攝影器材交易平台
+# 「拾光堂」 - 二手攝影器材交易平台（前台介面）
 
 [![LightPickers Logo](https://raw.githubusercontent.com/LightPickers/Frontend-Dev-React/refs/heads/feature/header/public/homepage/banner/banner-2-lg.png)](https://lightpickers.github.io/Frontend-Dev-React/#/)
 
@@ -81,7 +81,7 @@ npm run dev
 
 ### 輔助工具
 
-- **UI 組件**：Swiper（輪播）、Loading Skeleton、Spinners
+- **UI 組件**：Swiper（輪播）、React Loading Skeleton、React Spinners
 - **通知系統**：SweetAlert2、React Toastify
 - **安全處理**：DOMPurify、JWT Decode
 - **內容處理**：Quill Delta to HTML
