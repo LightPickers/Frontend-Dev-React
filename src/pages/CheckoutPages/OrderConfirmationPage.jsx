@@ -92,11 +92,11 @@ function OrderConfirmationPage() {
   const shipping = 60;
 
   useEffect(() => {
-    if (Array.isArray(cartItems) && cartItems.length === 0) {
+    if (!isCartLoading && Array.isArray(cartItems) && cartItems.length === 0) {
       toast.info("購物車是空的，請先選購商品", { toastId: "order-cart-empty" });
       navigate("/products", { replace: true });
     }
-  }, [cartItems, navigate]);
+  }, [cartItems, isCartLoading, navigate]);
 
   // 檢查購物車是否有下架商品
   useEffect(() => {
@@ -491,7 +491,7 @@ function OrderConfirmationPage() {
                         </div>
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
-                            <div className="text-gray-500 fw-bold">{userInfo.name}</div>
+                            <div className="text-gray-500 fw-bold">{userInfo?.name}</div>
                             {/* <div className="text-gray-500">
                               地址：{userInfo.address_zipcode}
                               {userInfo.address_district}
@@ -539,13 +539,13 @@ function OrderConfirmationPage() {
                         </div>
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
-                            <div className="text-gray-500 fw-bold">{userInfo.name}</div>
+                            <div className="text-gray-500 fw-bold">{userInfo?.name}</div>
                             <div className="text-gray-500">
-                              地址：{userInfo.address_zipcode}
-                              {userInfo.address_district}
-                              {userInfo.address_detail}
+                              地址：{userInfo?.address_zipcode}
+                              {userInfo?.address_district}
+                              {userInfo?.address_detail}
                             </div>
-                            <div className="text-gray-500">電話：{userInfo.phone}</div>
+                            <div className="text-gray-500">電話：{userInfo?.phone}</div>
                           </div>
                         </div>
                       </div>
