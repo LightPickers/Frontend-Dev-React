@@ -51,6 +51,28 @@ function CheckoutPage() {
   const { data, isLoading, error } = useGetUserProfileQuery();
   const userInfo = data?.data?.user;
 
+  // 檢查會員資料是否有填寫地址與電話，沒有就導向編輯頁面
+  useEffect(() => {
+    if (!isLoading && userInfo) {
+      const { phone, address_city, address_district, address_detail, address_zipcode } = userInfo;
+
+      const isMissingAddress =
+        !address_city || !address_district || !address_detail || !address_zipcode;
+      const isMissingPhone = !phone;
+
+      if (isMissingAddress || isMissingPhone) {
+        InfoAlert({
+          title: "資料不完整",
+          text: "請先填寫完整的收件地址與聯絡電話",
+        }).then(result => {
+          if (result.isConfirmed) {
+            navigate("/account/profile/settings", { replace: true });
+          }
+        });
+      }
+    }
+  }, [isLoading, userInfo, navigate]);
+
   // 取得優惠券資料
   const { data: couponsData } = useGetCouponsQuery({ page: 1, per: 9999 });
   const coupons = useMemo(() => {
