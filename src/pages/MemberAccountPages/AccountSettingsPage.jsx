@@ -8,7 +8,6 @@ import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/u
 import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
 
 function AccountSettingsPage() {
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const navigate = useNavigate();
   const { user, token, isAuthenticated } = useSelector(state => state.auth);
   const { data, isLoading, error, refetch } = useGetUserProfileQuery(undefined, {
@@ -16,6 +15,9 @@ function AccountSettingsPage() {
   });
   const [updateUser] = useUpdateUserMutation();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [previewPhoto, setPreviewPhoto] = useState(null); // 預覽照片
+  const [pendingPhotoUrl, setPendingPhotoUrl] = useState(null); // 待儲存的照片URL
   const fileInputRef = useRef(null);
 
   const handlePhotoUpload = async event => {
@@ -35,8 +37,17 @@ function AccountSettingsPage() {
       return;
     }
 
+    // 創建預覽圖片
+    const reader = new window.FileReader();
+    reader.onload = e => {
+      setPreviewPhoto(e.target.result);
+    };
+    reader.readAsDataURL(file);
+
     const formData = new FormData();
     formData.append("files", file);
+
+    setIsUploadingPhoto(true);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE}/upload/image`, {
@@ -50,7 +61,7 @@ function AccountSettingsPage() {
       // 檢查回應狀態
       if (!response.ok) {
         // 錯誤訊息
-        let errorMessage = "頭像上傳失敗，請稍後再試";
+        let errorMessage = "照片上傳失敗，請稍後再試";
         try {
           const errorData = await response.json();
           errorMessage = errorData.message || errorMessage;
@@ -64,13 +75,17 @@ function AccountSettingsPage() {
       const responseData = await response.json();
       const imageUrl = responseData.data.image_urls[0];
 
-      // 呼叫更新 user 的 API
-      await handleUpdateProfile({ ...userData, photo: imageUrl });
+      // 保存待儲存的照片URL，不直接更新資料庫
+      setPendingPhotoUrl(imageUrl);
+      toast.success("照片已選擇，請點擊「儲存」按鈕完成變更");
     } catch (error) {
-      console.error("頭像上傳失敗: ", error);
+      console.error("照片上傳失敗: ", error);
+
+      // 清除預覽
+      setPreviewPhoto(null);
 
       // 處理不同類型的錯誤
-      let errorMessage = "頭像上傳失敗，請稍後再試";
+      let errorMessage = "照片上傳失敗，請稍後再試";
 
       if (error.name === "TypeError" && error.message.includes("fetch")) {
         // 網路錯誤
@@ -82,8 +97,18 @@ function AccountSettingsPage() {
 
       toast.error(errorMessage);
     } finally {
+      setIsUploadingPhoto(false);
       // 清空 input
       event.target.value = "";
+    }
+  };
+
+  // 取消照片變更
+  const handleCancelPhotoChange = () => {
+    setPreviewPhoto(null);
+    setPendingPhotoUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -100,14 +125,24 @@ function AccountSettingsPage() {
   const handleUpdateProfile = async newData => {
     setIsUpdating(true);
     try {
-      // console.log("要更新的資料：", newData);
-      const res = await updateUser(newData).unwrap();
+      // 如果有待儲存的照片，加入到更新資料中
+      const updateData = {
+        ...newData,
+        ...(pendingPhotoUrl && { photo: pendingPhotoUrl }),
+      };
+
+      // console.log("要更新的資料：", updateData);
+      const res = await updateUser(updateData).unwrap();
       // console.log("更新回應", res);
       toast.success("更新資料成功");
+
+      // 清除待儲存的照片狀態
+      setPreviewPhoto(null);
+      setPendingPhotoUrl(null);
+
       // 重新抓取最新資料
       refetch();
     } catch (error) {
-      // console.error("更新失敗：", error);
       const message = error?.data?.message || "更新失敗，請稍後再試";
       toast.error(message);
     } finally {
@@ -137,39 +172,69 @@ function AccountSettingsPage() {
 
   const userData = data.data.user;
 
-  // console.log("API 返回的原始資料:", data);
-  // console.log("傳給表單的資料:", userData);
+  // 決定顯示的照片：預覽照片 > 原始照片 > 預設照片
+  const displayPhoto =
+    previewPhoto ||
+    userData?.photo ||
+    "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop";
 
   // 大頭貼
   const PhotoSection = ({ className = "" }) => (
     <div className={`d-flex flex-column align-items-center justify-content-start ${className}`}>
       <div className="text-center">
         <img
-          src={
-            userData?.photo ||
-            "https://plus.unsplash.com/premium_photo-1739786996022-5ed5b56834e2?q=80&w=1480&auto=format&fit=crop"
-          }
+          src={displayPhoto}
           alt="會員照片"
           className="rounded-circle mb-2"
           style={{ width: "250px", height: "250px", objectFit: "cover" }}
         />
       </div>
-      <button
-        type="button"
-        className="btn btn-link p-0 text-decoration-underline"
-        style={{
-          color: "#4A6465",
-        }}
-        onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
-        onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
-        onClick={() => fileInputRef.current.click()}
-      >
-        更換相片
-      </button>
+
+      {/* 照片操作按鈕 */}
+      <div className="d-flex gap-2 align-items-center">
+        <button
+          type="button"
+          className="btn btn-link p-0 text-decoration-underline"
+          style={{
+            color: "#4A6465",
+          }}
+          onMouseOver={e => (e.currentTarget.style.color = "#8BB0B7")}
+          onMouseOut={e => (e.currentTarget.style.color = "#4A6465")}
+          onClick={() => fileInputRef.current.click()}
+          disabled={isUploadingPhoto || isUpdating}
+        >
+          {isUploadingPhoto ? "上傳中" : "更換相片"}
+        </button>
+
+        {/* 如果有預覽照片，顯示取消按鈕 */}
+        {previewPhoto && (
+          <button
+            type="button"
+            className="btn btn-link p-0 text-decoration-underline small"
+            style={{
+              color: "#dc3545",
+            }}
+            onMouseOver={e => (e.currentTarget.style.color = "#c82333")}
+            onMouseOut={e => (e.currentTarget.style.color = "#dc3545")}
+            onClick={handleCancelPhotoChange}
+            disabled={isUploadingPhoto || isUpdating}
+          >
+            取消變更
+          </button>
+        )}
+      </div>
+
+      {/* 照片提示 */}
       <div className="mt-2 text-muted small text-center">
         <div>檔案大小上限：5MB</div>
         <div>格式支援：JPG、JPEG、PNG</div>
+        {previewPhoto && (
+          <div className="text-danger mt-1">
+            <small>照片尚未儲存，請點擊下方「儲存」按鈕</small>
+          </div>
+        )}
       </div>
+
       {/* 隱藏input */}
       <input
         type="file"
@@ -208,6 +273,7 @@ function AccountSettingsPage() {
               userData={userData}
               onSubmit={handleUpdateProfile}
               isSubmitting={isUpdating}
+              hasPhotoChange={!!previewPhoto} // 傳遞照片變更狀態
             />
           </div>
         </div>
@@ -217,8 +283,6 @@ function AccountSettingsPage() {
           <PhotoSection className="mt-4 mt-lg-0" />
         </div>
       </div>
-
-      {/* {isUpdating && <div className="text-center py-2">正在更新資料...</div>} */}
     </>
   );
 }

@@ -15,6 +15,7 @@ function UserProfileForSettingPage({
   userData = null,
   isSubmitting = false,
   isLoggingin = false,
+  hasPhotoChange = false, // 新增：是否有照片變更
 }) {
   const validateSchema = isEdit ? profileSchema : registerSchema;
   const methods = useForm({
@@ -60,8 +61,10 @@ function UserProfileForSettingPage({
     }
   };
 
-  // 實現自己的 "isDirty" 檢查，檢測實際內容是否改變
   const hasRealChanges = () => {
+    // 如果有照片變更，直接返回 true
+    if (hasPhotoChange) return true;
+
     if (!originalDataRef.current) return isDirty;
 
     // 比較當前值和原始值
@@ -429,6 +432,7 @@ UserProfileForSettingPage.propTypes = {
   onSubmit: PropTypes.func,
   isSubmitting: PropTypes.bool,
   isLoggingin: PropTypes.bool,
+  hasPhotoChange: PropTypes.bool, // 新增 PropType
   userData: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string,
