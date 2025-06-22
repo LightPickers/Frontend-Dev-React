@@ -122,6 +122,7 @@ function ProductCatalogPage() {
     newSearchParams.delete("price_range");
     newSearchParams.delete("page");
     newSearchParams.delete("keyword");
+    newSearchParams.delete("category_id");
 
     // 設置新的多選參數
     if (brand_ids) {
