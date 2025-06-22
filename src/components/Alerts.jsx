@@ -24,7 +24,7 @@ export const ConfirmAlert = ({
       confirmButton: "alert-confirm-button",
       icon: "alert-icon",
     },
-    background: "rgba(255, 255, 255, 0.8)",
+    background: "rgba(255, 255, 255, 1)",
     buttonsStyling: false,
   });
 };
@@ -58,7 +58,7 @@ export const SuccessAlert = ({ title = "成功！", text, confirmText = "確定"
       icon: "alert-icon",
     },
     // background: "rgba(250, 255, 248, 0.6)",
-    background: "rgba(255, 255, 255, 0.8)",
+    background: "rgba(255, 255, 255, 1)",
     buttonsStyling: false,
   });
 };
@@ -78,7 +78,7 @@ export const InfoAlert = ({ title = "提示", html, text, confirmText = "我知�
       confirmButton: "alert-info-button",
       icon: "alert-icon",
     },
-    background: "rgba(255, 255, 255, 0.8)",
+    background: "rgba(255, 255, 255, 1)",
     buttonsStyling: false,
   });
 };
@@ -96,7 +96,7 @@ export const ErrorAlert = ({ title = "錯誤！", text, confirmText = "確定" }
       confirmButton: "alert-error-button",
       icon: "alert-icon",
     },
-    background: "rgba(255, 255, 255, 0.8)",
+    background: "rgba(255, 255, 255, 1)",
     buttonsStyling: false,
   });
 };

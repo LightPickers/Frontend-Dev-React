@@ -36,7 +36,7 @@ div:where(.swal2-container) div:where(.swal2-actions) {
 }
 
 .alert-popup {
-  backdrop-filter: blur(12px) brightness(1.2) contrast(1.2);
+  // backdrop-filter: blur(12px) brightness(1.2) contrast(1.2);
   // backdrop-filter: blur(12px) brightness(1.1) contrast(1.2);
   border-radius: 12px;
   border: 1px solid colors.$gray-100;
