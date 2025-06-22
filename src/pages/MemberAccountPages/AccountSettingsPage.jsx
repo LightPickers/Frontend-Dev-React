@@ -182,12 +182,18 @@ function AccountSettingsPage() {
   const PhotoSection = ({ className = "" }) => (
     <div className={`d-flex flex-column align-items-center justify-content-start ${className}`}>
       <div className="text-center">
-        <img
-          src={displayPhoto}
-          alt="會員照片"
-          className="rounded-circle mb-2"
-          style={{ width: "250px", height: "250px", objectFit: "cover" }}
-        />
+        <div
+          className="rounded-circle mb-2 d-flex align-items-center justify-content-center"
+          style={{
+            width: "250px",
+            height: "250px",
+            backgroundImage: `url(${displayPhoto})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: "#f8f9fa", // 破圖時的背景色
+          }}
+        ></div>
       </div>
 
       {/* 照片操作按鈕 */}
