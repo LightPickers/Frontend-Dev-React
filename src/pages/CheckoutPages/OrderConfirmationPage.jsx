@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
+import Skeleton from "react-loading-skeleton";
 
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import { useGetCartQuery } from "@/features/cart/cartApi";
@@ -9,9 +10,10 @@ import { useGetCouponsQuery } from "@/features/coupons/couponApi";
 import { useCreateNewOrderMutation } from "@/features/orders/orderApi";
 import { BtnPrimary } from "@/components/Buttons";
 import { H3Primary, H5Primary } from "@/components/Headings";
-import { InfoAlert } from "@/components/Alerts";
+import { ErrorAlert, InfoAlert } from "@/components/Alerts";
 import PageLoader from "@/components/loaders/PageLoader";
 import { showLoading, hideLoading } from "@features/loading/loadingSlice";
+import { CartItemMobileSkeleton, CartItemSkeleton } from "@/components/loaders/CartItemSkeleton";
 
 // 4-2 訂單確認頁面
 function OrderConfirmationPage() {
@@ -102,9 +104,8 @@ function OrderConfirmationPage() {
       document.open();
       document.write(htmlForm);
       document.close();
-    } catch (err) {
-      console.error("建立訂單失敗", err);
-      alert("建立訂單失敗，請稍後再試");
+    } catch {
+      ErrorAlert({ title: "建立失敗", text: "建立訂單失敗，請稍後再試" });
     }
   };
 
@@ -147,7 +148,7 @@ function OrderConfirmationPage() {
     }
   }, [isDataReady, dispatch]);
 
-  if (!isDataReady) return null;
+  // if (!isDataReady) return null;
 
   return (
     <>
@@ -212,274 +213,317 @@ function OrderConfirmationPage() {
             </div>
             <div className="d-flex flex-column gap-11 gap-lg-7">
               {/* 訂單內容 */}
-              <div className="cart-contents d-flex flex-column gap-9 py-lg-8">
-                <div className="d-flex flex-column gap-3">
-                  <H3Primary className="text-gray-600 fs-1">確認訂單內容</H3Primary>
-                  <div className="divider-line"></div>
-                </div>
-                <table
-                  className="table cart-table align-middle text-nowrap px-5"
-                  style={{ tableLayout: "fixed", width: "100%" }}
-                >
-                  <thead className="cart-table-head">
-                    <tr>
-                      <th scope="col" style={{ paddingLeft: "0px", width: "526px" }}>
-                        <p className="text-start text-gray-600">商品資訊</p>
-                      </th>
-                      <th scope="col">
-                        <p>價格</p>
-                      </th>
-                      <th scope="col">
-                        <p>數量</p>
-                      </th>
-                      <th scope="col" style={{ paddingRight: "0px", width: "306px" }}>
-                        <p>總計</p>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="cart-table-body">
-                    {cartItems.map((item, index) => {
-                      const isLast = index === cartItems.length - 1;
-                      return (
-                        <tr key={item.id}>
-                          <td
-                            style={{ paddingLeft: "0", width: "526px" }}
-                            className={isLast ? "cart-item-last" : ""}
-                          >
-                            <div className="d-flex align-items-center gap-3 p-3">
-                              <img
-                                className="rounded-1"
-                                src={item.primary_image}
-                                alt={item.name}
-                                style={{
-                                  width: "60px",
-                                  height: "60px",
-                                  objectFit: "cover",
-                                  flexShrink: 0,
-                                }}
-                              />
-                              <div>
-                                <p
-                                  className="fs-5 text-gray-600"
+              {isDataReady ? (
+                <div className="cart-contents d-flex flex-column gap-9 py-lg-8">
+                  <div className="d-flex flex-column gap-3">
+                    <H3Primary className="text-gray-600 fs-1">確認訂單內容</H3Primary>
+                    <div className="divider-line"></div>
+                  </div>
+                  <table
+                    className="table cart-table align-middle text-nowrap px-5"
+                    style={{ tableLayout: "fixed", width: "100%" }}
+                  >
+                    <thead className="cart-table-head">
+                      <tr>
+                        <th scope="col" style={{ paddingLeft: "0px", width: "526px" }}>
+                          <p className="text-start text-gray-600">商品資訊</p>
+                        </th>
+                        <th scope="col">
+                          <p>價格</p>
+                        </th>
+                        <th scope="col">
+                          <p>數量</p>
+                        </th>
+                        <th scope="col" style={{ paddingRight: "0px", width: "306px" }}>
+                          <p>總計</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="cart-table-body">
+                      {cartItems.map((item, index) => {
+                        const isLast = index === cartItems.length - 1;
+                        return (
+                          <tr key={item.id}>
+                            <td
+                              style={{ paddingLeft: "0", width: "526px" }}
+                              className={isLast ? "cart-item-last" : ""}
+                            >
+                              <div className="d-flex align-items-center gap-3 p-3">
+                                <img
+                                  className="rounded-1"
+                                  src={item.primary_image}
+                                  alt={item.name}
+                                  style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    objectFit: "cover",
+                                    flexShrink: 0,
+                                  }}
+                                />
+                                <div>
+                                  <p
+                                    className="fs-5 text-gray-600"
+                                    style={{ letterSpacing: "0.1em" }}
+                                  >
+                                    {item.name}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className={isLast ? "cart-item-last" : ""}>
+                              <div className="d-flex justify-content-end align-items-center p-3 gap-1">
+                                <div className="text-gray-400">NT$</div>
+                                <div
+                                  className="fs-5 fw-bold text-gray-500"
                                   style={{ letterSpacing: "0.1em" }}
                                 >
-                                  {item.name}
-                                </p>
+                                  {item.price_at_time.toLocaleString()}
+                                </div>
                               </div>
+                            </td>
+                            <td
+                              className={
+                                isLast
+                                  ? "cart-item-last text-end text-gray-500 px-5 py-3 gap-3"
+                                  : "text-end text-gray-500 px-5 py-3 gap-3"
+                              }
+                            >
+                              {item.quantity}
+                            </td>
+                            <td
+                              className={isLast ? "cart-item-last" : ""}
+                              style={{ paddingRight: "0px", width: "306px" }}
+                            >
+                              <div className="d-flex justify-content-end align-items-center p-3 gap-1">
+                                <div className="text-gray-400">NT$</div>
+                                <div
+                                  className="fs-5 fw-bold text-gray-500"
+                                  style={{ letterSpacing: "0.1em" }}
+                                >
+                                  {item.total_price.toLocaleString()}
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot className="cart-table-foot">
+                      <tr>
+                        <td colSpan="3">
+                          <p className="text-end fw-bold text-gray-500 py-3 pe-7">商品合計</p>
+                        </td>
+                        <td>
+                          <div className="d-flex justify-content-end align-items-center gap-1">
+                            <div className="text-gray-400">NT$</div>
+                            <div
+                              className="fs-5 fw-bold text-gray-500"
+                              style={{ letterSpacing: "0.1em" }}
+                            >
+                              {subtotal.toLocaleString()}
                             </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan="3">
+                          <p className="text-end fw-bold text-gray-500 py-3 pe-7">運費</p>
+                        </td>
+                        <td>
+                          <div className="d-flex justify-content-end align-items-center gap-1">
+                            <div className="text-gray-400">NT$</div>
+                            <div
+                              className="fs-5 fw-bold text-gray-500"
+                              style={{ letterSpacing: "0.1em" }}
+                            >
+                              {shipping}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      {matchedCoupon && (
+                        <tr>
+                          <td colSpan="3">
+                            <p className="text-end fw-bold text-gray-500 py-3 pe-7">優惠券折扣</p>
                           </td>
-                          <td className={isLast ? "cart-item-last" : ""}>
-                            <div className="d-flex justify-content-end align-items-center p-3 gap-1">
-                              <div className="text-gray-400">NT$</div>
+                          <td>
+                            <div className="d-flex justify-content-end align-items-center gap-1">
+                              <div className="text-gray-400">- NT$</div>
                               <div
-                                className="fs-5 fw-bold text-gray-500"
+                                className="fs-5 fw-bold text-danger"
                                 style={{ letterSpacing: "0.1em" }}
                               >
-                                {item.price_at_time.toLocaleString()}
-                              </div>
-                            </div>
-                          </td>
-                          <td
-                            className={
-                              isLast
-                                ? "cart-item-last text-end text-gray-500 px-5 py-3 gap-3"
-                                : "text-end text-gray-500 px-5 py-3 gap-3"
-                            }
-                          >
-                            {item.quantity}
-                          </td>
-                          <td
-                            className={isLast ? "cart-item-last" : ""}
-                            style={{ paddingRight: "0px", width: "306px" }}
-                          >
-                            <div className="d-flex justify-content-end align-items-center p-3 gap-1">
-                              <div className="text-gray-400">NT$</div>
-                              <div
-                                className="fs-5 fw-bold text-gray-500"
-                                style={{ letterSpacing: "0.1em" }}
-                              >
-                                {item.total_price.toLocaleString()}
+                                {discountAmount.toLocaleString()}
                               </div>
                             </div>
                           </td>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                  <tfoot className="cart-table-foot">
-                    <tr>
-                      <td colSpan="3">
-                        <p className="text-end fw-bold text-gray-500 py-3 pe-7">商品合計</p>
-                      </td>
-                      <td>
-                        <div className="d-flex justify-content-end align-items-center gap-1">
+                      )}
+                      <tr className="bg-primary-200">
+                        <td colSpan="3" className="rounded-start">
+                          <p className="text-end fw-bold text-primary-1000 fs-5 py-3 pe-7">總計</p>
+                        </td>
+                        <td className="rounded-end">
+                          <div className="d-flex justify-content-end align-items-center gap-1">
+                            <div className="text-primary-800">NT$</div>
+                            <div
+                              className="fs-5 fw-bold text-primary-1000"
+                              style={{ letterSpacing: "0.1em" }}
+                            >
+                              {finalTotal.toLocaleString()}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                  <div className="cart-table-mobile" style={{ letterSpacing: "0.1em" }}>
+                    <div className="d-flex flex-column gap-4">
+                      {cartItems.map(item => (
+                        <div className="d-flex flex-row gap-3" key={item.id}>
+                          <img
+                            className="rounded-1"
+                            src={item.primary_image}
+                            alt={item.name}
+                            style={{
+                              width: "90px",
+                              height: "90px",
+                              objectFit: "cover",
+                              flexShrink: 0,
+                            }}
+                          />
+                          <div className="d-flex flex-column gap-3 w-100">
+                            <div className="text-gray-600 h-75 text-multiline-truncate">
+                              {item.name}
+                            </div>
+                            <div className="d-flex justify-content-between">
+                              <div className="d-flex align-items-center gap-1">
+                                <div className="text-gray-400">NT$</div>
+                                <div
+                                  className="text-gray-500 fs-5 fw-bold"
+                                  style={{ letterSpacing: "0.1em" }}
+                                >
+                                  {item.price_at_time.toLocaleString()}
+                                </div>
+                              </div>
+                              <div className="d-flex align-items-center gap-1">
+                                <div className="text-gray-400">x</div>
+                                <div
+                                  className="text-gray-500 fs-5 fw-bold"
+                                  style={{ letterSpacing: "0.1em" }}
+                                >
+                                  {item.quantity}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="divider-line"></div>
+                    <div className="d-flex flex-column gap-2">
+                      <div className="d-flex align-items-center justify-content-between px-2 py-1">
+                        <div className="fw-bold text-gray-500">商品合計</div>
+                        <div className="d-flex align-items-center gap-1">
                           <div className="text-gray-400">NT$</div>
                           <div
-                            className="fs-5 fw-bold text-gray-500"
+                            className="text-gray-500 fs-5 fw-bold"
                             style={{ letterSpacing: "0.1em" }}
                           >
                             {subtotal.toLocaleString()}
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="3">
-                        <p className="text-end fw-bold text-gray-500 py-3 pe-7">運費</p>
-                      </td>
-                      <td>
-                        <div className="d-flex justify-content-end align-items-center gap-1">
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between px-2 py-1">
+                        <div className="fw-bold text-gray-500">運費</div>
+                        <div className="d-flex align-items-center gap-1">
                           <div className="text-gray-400">NT$</div>
                           <div
-                            className="fs-5 fw-bold text-gray-500"
+                            className="text-gray-500 fs-5 fw-bold"
                             style={{ letterSpacing: "0.1em" }}
                           >
-                            {shipping}
+                            {shipping.toLocaleString()}
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                    {matchedCoupon && (
-                      <tr>
-                        <td colSpan="3">
-                          <p className="text-end fw-bold text-gray-500 py-3 pe-7">優惠券折扣</p>
-                        </td>
-                        <td>
-                          <div className="d-flex justify-content-end align-items-center gap-1">
-                            <div className="text-gray-400">- NT$</div>
-                            <div
-                              className="fs-5 fw-bold text-danger"
-                              style={{ letterSpacing: "0.1em" }}
-                            >
-                              {discountAmount.toLocaleString()}
+                      </div>
+                      {matchedCoupon && (
+                        <div className="d-flex align-items-center justify-content-between px-2 py-1">
+                          <div className="fw-bold text-gray-500">優惠券折扣</div>
+                          <div>
+                            <div className="d-flex align-items-center gap-1">
+                              <div className="text-gray-400">- NT$</div>
+                              <div
+                                className="text-danger fs-5 fw-bold"
+                                style={{ letterSpacing: "0.1em" }}
+                              >
+                                {discountAmount.toLocaleString()}
+                              </div>
                             </div>
                           </div>
-                        </td>
-                      </tr>
-                    )}
-                    <tr className="bg-primary-200">
-                      <td colSpan="3" className="rounded-start">
-                        <p className="text-end fw-bold text-primary-1000 fs-5 py-3 pe-7">總計</p>
-                      </td>
-                      <td className="rounded-end">
-                        <div className="d-flex justify-content-end align-items-center gap-1">
-                          <div className="text-primary-800">NT$</div>
+                        </div>
+                      )}
+                      <div className="bg-primary-200 d-flex align-items-center justify-content-between px-2 py-3 rounded-1">
+                        <div
+                          className="text-primary-1000 fw-bold fs-5"
+                          style={{ letterSpacing: "0.1em" }}
+                        >
+                          總計
+                        </div>
+                        <div className="d-flex align-items-center gap-1">
+                          <div className="text-gray-400">NT$</div>
                           <div
-                            className="fs-5 fw-bold text-primary-1000"
+                            className="text-primary-1000 fs-5 fw-bold"
                             style={{ letterSpacing: "0.1em" }}
                           >
                             {finalTotal.toLocaleString()}
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
-                <div className="cart-table-mobile" style={{ letterSpacing: "0.1em" }}>
-                  <div className="d-flex flex-column gap-4">
-                    {cartItems.map(item => (
-                      <div className="d-flex flex-row gap-3" key={item.id}>
-                        <img
-                          className="rounded-1"
-                          src={item.primary_image}
-                          alt={item.name}
-                          style={{
-                            width: "90px",
-                            height: "90px",
-                            objectFit: "cover",
-                            flexShrink: 0,
-                          }}
-                        />
-                        <div className="d-flex flex-column gap-3 w-100">
-                          <div className="text-gray-600 h-75 text-multiline-truncate">
-                            {item.name}
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <div className="d-flex align-items-center gap-1">
-                              <div className="text-gray-400">NT$</div>
-                              <div
-                                className="text-gray-500 fs-5 fw-bold"
-                                style={{ letterSpacing: "0.1em" }}
-                              >
-                                {item.price_at_time.toLocaleString()}
-                              </div>
-                            </div>
-                            <div className="d-flex align-items-center gap-1">
-                              <div className="text-gray-400">x</div>
-                              <div
-                                className="text-gray-500 fs-5 fw-bold"
-                                style={{ letterSpacing: "0.1em" }}
-                              >
-                                {item.quantity}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="divider-line"></div>
-                  <div className="d-flex flex-column gap-2">
-                    <div className="d-flex align-items-center justify-content-between px-2 py-1">
-                      <div className="fw-bold text-gray-500">商品合計</div>
-                      <div className="d-flex align-items-center gap-1">
-                        <div className="text-gray-400">NT$</div>
-                        <div
-                          className="text-gray-500 fs-5 fw-bold"
-                          style={{ letterSpacing: "0.1em" }}
-                        >
-                          {subtotal.toLocaleString()}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center justify-content-between px-2 py-1">
-                      <div className="fw-bold text-gray-500">運費</div>
-                      <div className="d-flex align-items-center gap-1">
-                        <div className="text-gray-400">NT$</div>
-                        <div
-                          className="text-gray-500 fs-5 fw-bold"
-                          style={{ letterSpacing: "0.1em" }}
-                        >
-                          {shipping.toLocaleString()}
-                        </div>
-                      </div>
-                    </div>
-                    {matchedCoupon && (
-                      <div className="d-flex align-items-center justify-content-between px-2 py-1">
-                        <div className="fw-bold text-gray-500">優惠券折扣</div>
-                        <div>
-                          <div className="d-flex align-items-center gap-1">
-                            <div className="text-gray-400">- NT$</div>
-                            <div
-                              className="text-danger fs-5 fw-bold"
-                              style={{ letterSpacing: "0.1em" }}
-                            >
-                              {discountAmount.toLocaleString()}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <div className="bg-primary-200 d-flex align-items-center justify-content-between px-2 py-3 rounded-1">
-                      <div
-                        className="text-primary-1000 fw-bold fs-5"
-                        style={{ letterSpacing: "0.1em" }}
-                      >
-                        總計
-                      </div>
-                      <div className="d-flex align-items-center gap-1">
-                        <div className="text-gray-400">NT$</div>
-                        <div
-                          className="text-primary-1000 fs-5 fw-bold"
-                          style={{ letterSpacing: "0.1em" }}
-                        >
-                          {finalTotal.toLocaleString()}
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="cart-contents d-flex flex-column gap-9 py-lg-8">
+                  <div className="d-flex flex-column gap-3">
+                    <H3Primary className="text-gray-600 fs-1">確認訂單內容</H3Primary>
+                    <div className="divider-line"></div>
+                  </div>
+                  <table
+                    className="table cart-table align-middle text-nowrap px-5"
+                    style={{ tableLayout: "fixed", width: "100%" }}
+                  >
+                    <thead className="cart-table-head">
+                      <tr>
+                        <th scope="col" style={{ paddingLeft: "0px", width: "526px" }}>
+                          <p className="text-start text-gray-600">商品資訊</p>
+                        </th>
+                        <th scope="col">
+                          <p>價格</p>
+                        </th>
+                        <th scope="col">
+                          <p>數量</p>
+                        </th>
+                        <th scope="col" style={{ paddingRight: "0px", width: "306px" }}>
+                          <p>總計</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="cart-table-body">
+                      {Array.from({ length: 5 }).map((_, idx) => (
+                        <CartItemSkeleton key={idx} />
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="cart-table-mobile" style={{ letterSpacing: "0.1em" }}>
+                    <div className="d-flex flex-column gap-4">
+                      {Array.from({ length: 5 }).map((_, idx) => (
+                        <CartItemMobileSkeleton key={idx} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* 出貨資訊 */}
               <div className="d-flex flex-column gap-11 gap-lg-7">
                 <div className="d-flex flex-column gap-6 gap-lg-9 py-lg-8">
@@ -513,7 +557,16 @@ function OrderConfirmationPage() {
                         </div>
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
-                            <div className="text-gray-500 fw-bold">{userInfo?.name}</div>
+                            <div className="text-gray-500 fw-bold">
+                              {userInfo?.name || (
+                                <Skeleton
+                                  height={20}
+                                  width={60}
+                                  baseColor="#e0e0e0"
+                                  highlightColor="#f5f5f5"
+                                />
+                              )}
+                            </div>
                             {/* <div className="text-gray-500">
                               地址：{userInfo.address_zipcode}
                               {userInfo.address_district}
@@ -561,13 +614,40 @@ function OrderConfirmationPage() {
                         </div>
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
-                            <div className="text-gray-500 fw-bold">{userInfo?.name}</div>
+                            <div className="text-gray-500 fw-bold">
+                              {userInfo?.name || (
+                                <Skeleton
+                                  height={20}
+                                  width={60}
+                                  baseColor="#e0e0e0"
+                                  highlightColor="#f5f5f5"
+                                />
+                              )}
+                            </div>
                             <div className="text-gray-500">
-                              地址：{userInfo?.address_zipcode}
+                              地址：
+                              {userInfo?.address_zipcode || (
+                                <Skeleton
+                                  height={20}
+                                  width={180}
+                                  baseColor="#e0e0e0"
+                                  highlightColor="#f5f5f5"
+                                />
+                              )}
                               {userInfo?.address_district}
                               {userInfo?.address_detail}
                             </div>
-                            <div className="text-gray-500">電話：{userInfo?.phone}</div>
+                            <div className="text-gray-500">
+                              電話：
+                              {userInfo?.phone || (
+                                <Skeleton
+                                  height={20}
+                                  width={100}
+                                  baseColor="#e0e0e0"
+                                  highlightColor="#f5f5f5"
+                                />
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
