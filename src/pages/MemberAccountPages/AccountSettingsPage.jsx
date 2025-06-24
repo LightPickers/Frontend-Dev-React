@@ -183,10 +183,11 @@ function AccountSettingsPage() {
     <div className={`d-flex flex-column align-items-center justify-content-start ${className}`}>
       <div className="text-center">
         <div
-          className="rounded-circle mb-2 d-flex align-items-center justify-content-center"
+          className="rounded-circle mb-2 d-flex align-items-center justify-content-center responsive-avatar"
           style={{
             width: "250px",
             height: "250px",
+            maxWidth: "100%",
             backgroundImage: `url(${displayPhoto})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -289,6 +290,16 @@ function AccountSettingsPage() {
           <PhotoSection className="mt-4 mt-lg-0" />
         </div>
       </div>
+      <style>
+        {`
+    @media (max-width: 1200px) {
+      .responsive-avatar {
+        width: 180px !important;
+        height: 180px !important;
+      }
+    }
+  `}
+      </style>
     </>
   );
 }
