@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import {
   useGetProductBrandsQuery,
@@ -355,13 +356,56 @@ function ProductFilter({ onFilter, initialBrandIds, initialConditionIds }) {
   // 條件渲染
   if (brandsLoading || conditionsLoading) {
     return (
-      <div className="product-filter mb-4">
-        <div className="d-flex justify-content-center py-3">
-          <div className="spinner-border spinner-border-sm" role="status">
-            <span className="visually-hidden">載入篩選選項中...</span>
+      <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
+        <div className="product-filter mb-4">
+          <div className="row g-3">
+            {/* 品牌骨架 */}
+            <div className="col-12 col-md-6 col-lg-3">
+              <label className="form-label">品牌</label>
+              <Skeleton height={38} />
+            </div>
+
+            {/* 狀態骨架 */}
+            <div className="col-12 col-md-6 col-lg-3">
+              <label className="form-label">商品狀態</label>
+              <Skeleton height={38} />
+            </div>
+
+            {/* 金額範圍骨架 */}
+            <div className="col-12 col-md-8 col-lg-4">
+              <label className="form-label">金額</label>
+              <div className="d-flex align-items-center gap-2">
+                <div className="flex-grow-1">
+                  <Skeleton height={38} />
+                </div>
+                <div className="flex-grow-1">
+                  <Skeleton height={38} />
+                </div>
+              </div>
+            </div>
+
+            {/* 按鈕骨架 */}
+            <div className="col-12 col-md-4 col-lg-2 d-flex align-items-end">
+              <div className="w-100 d-flex gap-2">
+                <div className="flex-grow-1">
+                  <Skeleton height={38} />
+                </div>
+                <div className="flex-grow-1">
+                  <Skeleton height={38} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </SkeletonTheme>
+
+      // <div className="product-filter mb-4">
+      //   <div className="d-flex justify-content-center py-3">
+      //     <div className="spinner-border spinner-border-sm" role="status">
+      //       <span className="visually-hidden">載入篩選選項中...</span>
+      //     </div>
+      //   </div>
+      // </div>
     );
   }
 
