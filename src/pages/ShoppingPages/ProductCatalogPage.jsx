@@ -8,6 +8,7 @@ import CategoryImage from "@components/productpage/CategoryImage";
 import useBreakpoint from "@hooks/useBreakpoints";
 import { getCurrentCategoryInfo } from "@utils/CategoryImageUtils";
 import PageLoader from "@components/loaders/PageLoader";
+import { TextMedium } from "@components/TextTypography";
 
 function ProductCatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +16,7 @@ function ProductCatalogPage() {
   const [isFiltering, setIsFiltering] = useState(false); // 新增狀態
   const itemsPerPage = 20;
 
+  const isLgUp = useBreakpoint("lgUp");
   const isXlUp = useBreakpoint("xlUp");
 
   // 獲取當前類別資訊
@@ -178,9 +180,14 @@ function ProductCatalogPage() {
 
   if (isError) {
     return (
-      <div className="d-flex justify-content-center py-5">
+      <div
+        className="d-flex justify-content-center align-items-center py-5"
+        style={{
+          height: "50vh",
+        }}
+      >
         <div className="alert alert-danger" role="alert">
-          Failed to load products. Please try again later.
+          <TextMedium>載入商品失敗，請稍後再試</TextMedium>
         </div>
       </div>
     );
@@ -233,7 +240,55 @@ function ProductCatalogPage() {
               </ol>
             </nav>
 
-            {products.length === 0 ? (
+            {/* 載入骨架 */}
+            {isLoading &&
+              (isLgUp ? (
+                <div className="row gy-lg-6 gy-4">
+                  {Array.from({ length: 24 }).map((_, index) => (
+                    <div key={index} className="col-xl-3 col-lg-4 col-md-6">
+                      <div className="card product-card placeholder-glow">
+                        <div className="card-image-container">
+                          <div className="product-image bg-gray-200 w-100 h-100" />
+                          <div
+                            className="card-badge placeholder mt-4 rounded-end"
+                            style={{ height: "1.5em", width: "4em" }}
+                          />
+                        </div>
+                        <div className="card-body d-flex flex-column gap-1">
+                          <p className="placeholder col-12 rounded" style={{ height: "3em" }} />
+                          <p className="placeholder col-6 rounded" style={{ height: "1em" }} />
+                          <p className="placeholder col-8 rounded" style={{ height: "1.2em" }} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="row gy-md-6 gy-sm-5 gy-4">
+                  {Array.from({ length: 24 }).map((_, index) => (
+                    <div key={index} className="col-md-3 col-sm-4 col-6">
+                      <div className="mobile-product-card placeholder-glow">
+                        <div className="img-container">
+                          <div className="w-100 h-100 bg-gray-200" />
+                          <div
+                            className="card-badge placeholder mt-3 rounded-end"
+                            style={{ height: "1em", width: "3em" }}
+                          />
+                        </div>
+                        <div className="card-content d-flex flex-column gap-2">
+                          <p className="placeholder col-12 rounded" style={{ height: "2.5em" }} />
+                          <div className="product-price mt-auto">
+                            <p className="placeholder w-50 rounded" style={{ height: "1em" }} />
+                            <p className="placeholder w-75 rounded" style={{ height: "1.2em" }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+            {!isLoading && products.length === 0 ? (
               <div className="no-products-found">
                 <div className="text-center py-5">
                   <h4 className="mb-3">無符合商品</h4>
