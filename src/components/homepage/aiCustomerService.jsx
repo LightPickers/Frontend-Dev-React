@@ -28,7 +28,7 @@ function AiCustomerService() {
       const result = await postAiMessage(message).unwrap();
       setResponse(result.response);
       setConversation(prev => [...prev, { type: "ai", text: result.response }]);
-    } catch (err) {
+    } catch {
       setResponse("客服暫時無法回覆，請稍後再試。");
     }
   };
