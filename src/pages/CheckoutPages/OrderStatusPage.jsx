@@ -29,19 +29,19 @@ function OrderStatusPage() {
     }
   }, [orderData, cartData, deleteCart]);
 
-  useEffect(() => {
-    let timer;
+  // useEffect(() => {
+  //   let timer;
 
-    if (isOrderLoading) {
-      timer = setTimeout(() => setShowLoading(true), 1000);
-    } else {
-      setShowLoading(false);
-      clearTimeout(timer);
-    }
-    return () => clearTimeout(timer);
-  }, [isOrderLoading]);
+  //   if (isOrderLoading) {
+  //     timer = setTimeout(() => setShowLoading(true), 1000);
+  //   } else {
+  //     setShowLoading(false);
+  //     clearTimeout(timer);
+  //   }
+  //   return () => clearTimeout(timer);
+  // }, [isOrderLoading]);
 
-  if (isOrderLoading) return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
+  // if (isOrderLoading) return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
   if (error || !orderData?.data)
     return (
       <div className="d-flex flex-column align-items-center gap-5 py-20">
@@ -56,6 +56,7 @@ function OrderStatusPage() {
 
   return (
     <>
+      <PageLoader loading={isOrderLoading} text="正在確認您的付款狀態，請稍後..." />
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
           <div className="container d-flex flex-column gap-12">
@@ -118,13 +119,15 @@ function OrderStatusPage() {
               </div>
             </div>
             {status === "paid" ? (
-              <div className="d-flex flex-column align-items-center gap-15">
+              <div className="d-flex flex-column align-items-center justify-content-center gap-15">
                 <H1Primary className="fs-1">付款成功！</H1Primary>
-                <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-0">
+                <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-0 align-items-center justify-content-center">
                   <TextLarge className="text-gray-500 fs-2">感謝您的購買，</TextLarge>
                   <TextLarge className="text-gray-500 fs-2">敬請再度光臨。</TextLarge>
                 </div>
-                <TextMedium>（訂單編號：{orderNumber}）</TextMedium>
+                <TextMedium as="p" className="text-balance">
+                  （訂單編號：{orderNumber}）
+                </TextMedium>
 
                 <BtnPrimary
                   size="cta"
