@@ -17,7 +17,6 @@ import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function WishlistCard({ product }) {
   const { id, name, condition, primary_image, original_price, selling_price } = product;
-  console.log(product);
 
   const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
     useDeleteWishlistProductMutation();
