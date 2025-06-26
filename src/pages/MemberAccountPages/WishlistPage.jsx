@@ -14,6 +14,8 @@ import {
   H6Primary,
   H6Secondary,
 } from "@/components/Headings";
+import PageLoader from "@/components/loaders/PageLoader";
+import ProductCardSkeleton from "@/components/loaders/ProductCardSkeleton";
 
 function mapWishlistData(apiData) {
   if (!apiData || !Array.isArray(apiData.data)) return [];
@@ -72,17 +74,18 @@ function WishlistPage() {
     setSortOption(e.target.value);
   };
 
-  if (isPageLoading) {
-    return (
-      <div className="text-center text-muted py-5">
-        <div className="spinner-border text-secondary mb-3" role="status"></div>
-        <div>資料載入中，請稍候...</div>
-      </div>
-    );
-  }
+  // if (isPageLoading) {
+  //   return (
+  //     <div className="text-center text-muted py-5">
+  //       <div className="spinner-border text-secondary mb-3" role="status"></div>
+  //       <div>資料載入中，請稍候...</div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
+      <PageLoader loading={isPageLoading} text="載入收藏資訊中…" />
       {/* 不要再包 container/row/col 或 bg-white，這些 AccountLayout 已經有了 */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
         <h4 className="mb-3 mb-md-0">收藏資訊</h4>
@@ -96,20 +99,30 @@ function WishlistPage() {
       </div>
       <hr />
       <div className="row g-4">
-        {wishlist.length > 0 ? (
-          sortedWishlist.map(product => (
-            <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12" key={product.id}>
-              <WishlistCard product={product} />
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-5 w-100">
-            <H6Secondary className="mb-6">尚未收藏任何商品</H6Secondary>
-            <BtnPrimary as={Link} to="/" size="medium">
-              前往首頁探索商品
-            </BtnPrimary>
-          </div>
+        {isPageLoading && (
+          <>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12" key={index}>
+                <ProductCardSkeleton />
+              </div>
+            ))}
+          </>
         )}
+        {!isPageLoading &&
+          (wishlist.length > 0 ? (
+            sortedWishlist.map(product => (
+              <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12" key={product.id}>
+                <WishlistCard product={product} />
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-5 w-100">
+              <H6Secondary className="mb-6">尚未收藏任何商品</H6Secondary>
+              <BtnPrimary as={Link} to="/" size="medium">
+                前往首頁探索商品
+              </BtnPrimary>
+            </div>
+          ))}
       </div>
     </>
   );
