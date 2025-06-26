@@ -1,5 +1,6 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
 import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
 
 import { useGetUserProfileQuery } from "@/features/users/userApi";
 import { ArrowDownIcon } from "@/components/icons";
@@ -59,14 +60,14 @@ function AccountLayout() {
                   className="rounded-circle mb-2"
                   style={{ width: "140px", height: "140px", objectFit: "cover" }}
                 />
-                <div>{user?.name || "取得帳戶中"}</div>
+                <div>{user?.name || <Skeleton width={50} height={20} />}</div>
                 <div
                   className=" small mb-0 "
                   style={{
                     color: "#939393",
                   }}
                 >
-                  {user?.email || "取得電子郵件中"}
+                  {user?.email || <Skeleton width={200} height={20} />}
                 </div>
               </div>
               <hr />
