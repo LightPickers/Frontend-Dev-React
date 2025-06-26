@@ -2,28 +2,23 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-import { ArrowDownIcon } from "@/components/icons";
+import { ArrowDownIcon } from "@components/icons";
 import "../../assets/pages/accountPage/orderHistory.scss";
 import {
   useGetOrdersQuery,
   useLazyGetOrderByIdQuery,
   useRepayOrderMutation,
-} from "@/features/orders/orderApi";
-import {
-  H3Primary,
-  H3Secondary,
-  H4Primary,
-  H5Primary,
-  H5Secondary,
-  H6Primary,
-  H6Secondary,
-} from "@/components/Headings";
-import { TextMedium } from "@/components/TextTypography";
-import { BtnPrimary } from "@/components/Buttons";
-import { ConfirmAlert } from "@/components/Alerts";
+} from "@features/orders/orderApi";
+import { H4Primary, H5Primary, H6Primary, H6Secondary } from "@components/Headings";
+import { TextMedium } from "@components/TextTypography";
+import { BtnPrimary } from "@components/Buttons";
+import { ConfirmAlert } from "@components/Alerts";
+import OrderListSkeleton from "@components/loaders/OrderListSkeleton";
+import OrderDetailSkeleton from "@components/loaders/OrderDetailSkeleton";
+import PageLoader from "@/components/loaders/PageLoader";
 
 function OrderHistoryPage() {
-  const [hoveredTab, setHoveredTab] = useState(null);
+  // const [hoveredTab, setHoveredTab] = useState(null);
   const [activeTab, setActiveTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   // modal 控制
@@ -335,15 +330,11 @@ function OrderHistoryPage() {
 
   return (
     <>
+      <PageLoader loading={isLoading} text="正在載入訂單資訊…" />
       <H4Primary className="mb-5 py-2 mb-md-0">訂單資訊</H4Primary>
 
       {isLoading ? (
-        <div className="text-center py-5">
-          <div className="spinner-border text-secondary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-          <TextMedium className="mt-2 text-muted">載入中...</TextMedium>
-        </div>
+        <OrderListSkeleton />
       ) : (
         <>
           {/* 切換按鈕區 */}
@@ -519,7 +510,7 @@ function OrderHistoryPage() {
               </div>
               <div className="modal-body">
                 {isFetchingOrder ? (
-                  <TextMedium>載入中...</TextMedium>
+                  <OrderDetailSkeleton />
                 ) : (
                   (() => {
                     const order = selectedOrderData?.order;
@@ -853,7 +844,7 @@ function OrderHistoryPage() {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .hover-text:hover {
           color: #4a6465;
         }
