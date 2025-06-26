@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Skeleton from "react-loading-skeleton";
 
 import { BtnPrimary } from "@components/Buttons";
 import { H3Primary, H5Primary } from "@components/Headings";
@@ -190,11 +191,12 @@ function CheckoutPage() {
     }
   };
 
-  if (isLoading && isGetCartDataLoading && !userInfo)
-    return <PageLoader text={"載入結帳資料中，請稍候..."} />;
-
   return (
     <>
+      <PageLoader
+        loading={isLoading || isGetCartDataLoading || !userInfo}
+        text={"載入結帳資料中，請稍候..."}
+      />
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
           <section className="container d-flex flex-column gap-10">
@@ -283,7 +285,16 @@ function CheckoutPage() {
                         </div>
                         <div className="col-12 col-lg-7">
                           <div className="d-flex flex-column gap-1">
-                            <div className="text-gray-500 fw-bold">{userInfo?.name}</div>
+                            <div className="text-gray-500 fw-bold">
+                              {userInfo?.name || (
+                                <Skeleton
+                                  height={20}
+                                  width={60}
+                                  baseColor="#e0e0e0"
+                                  highlightColor="#f5f5f5"
+                                />
+                              )}
+                            </div>
                             {/* <div className="text-gray-500">
                               地址：{userInfo.address_zipcode}
                               {userInfo.address_district}
@@ -358,13 +369,41 @@ function CheckoutPage() {
                                 className={`form-check-label d-flex flex-column gap-1 ${errors.recipient ? "is-invalid" : "text-gray-500"}`}
                                 htmlFor="recipient-default"
                               >
-                                <div className="fw-bold">{userInfo?.name}</div>
+                                <div className="fw-bold">
+                                  收件者：
+                                  {userInfo?.name || (
+                                    <Skeleton
+                                      height={20}
+                                      width={60}
+                                      baseColor="#e0e0e0"
+                                      highlightColor="#f5f5f5"
+                                    />
+                                  )}
+                                </div>
                                 <div>
-                                  收件地址：{userInfo?.address_zipcode}
+                                  收件地址：
+                                  {userInfo?.address_zipcode || (
+                                    <Skeleton
+                                      height={20}
+                                      width={180}
+                                      baseColor="#e0e0e0"
+                                      highlightColor="#f5f5f5"
+                                    />
+                                  )}
                                   {userInfo?.address_district}
                                   {userInfo?.address_detail}
                                 </div>
-                                <div>電話：{userInfo?.phone}</div>
+                                <div>
+                                  電話：
+                                  {userInfo?.phone || (
+                                    <Skeleton
+                                      height={20}
+                                      width={100}
+                                      baseColor="#e0e0e0"
+                                      highlightColor="#f5f5f5"
+                                    />
+                                  )}
+                                </div>
 
                                 <span
                                   className="text-gray-500 text-decoration-underline"

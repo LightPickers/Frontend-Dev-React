@@ -5,11 +5,13 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import { useGetUserProfileQuery, useUpdateUserMutation } from "@features/users/userApi";
-import UserProfileForSettingPage from "@/features/users/UserProfileForSettingPage";
+import UserProfileForSettingPage from "@features/users/UserProfileForSettingPage";
+import PageLoader from "@components/loaders/PageLoader";
+import UserProfileSkeleton from "@components/loaders/UserProfileSkeleton";
 
 function AccountSettingsPage() {
   const navigate = useNavigate();
-  const { user, token, isAuthenticated } = useSelector(state => state.auth);
+  const { token, isAuthenticated } = useSelector(state => state.auth);
   const { data, isLoading, error, refetch } = useGetUserProfileQuery(undefined, {
     skip: !isAuthenticated || !token,
   });
@@ -154,9 +156,10 @@ function AccountSettingsPage() {
     return <div className="text-center py-4">請先登入</div>;
   }
 
-  if (isLoading) {
-    return <div className="text-center py-4">資料載入中...</div>;
-  }
+  // if (isLoading) {
+  //   return <div className="text-center py-4">資料載入中...</div>;
+  // }
+  const userData = data?.data?.user || {};
 
   if (error) {
     return (
@@ -166,11 +169,9 @@ function AccountSettingsPage() {
     );
   }
 
-  if (!data || !data.data || !data.data.user) {
-    return <div className="text-center py-4">無法獲取用戶資料</div>;
-  }
-
-  const userData = data.data.user;
+  // if (!data || !data.data || !data.data.user) {
+  //   return <div className="text-center py-4">無法獲取用戶資料</div>;
+  // }
 
   // 決定顯示的照片：預覽照片 > 原始照片 > 預設照片
   const displayPhoto =
@@ -260,6 +261,7 @@ function AccountSettingsPage() {
 
   return (
     <>
+      <PageLoader loading={isLoading} />
       <h4 className="mb-5 py-2 mb-md-0">我的帳戶</h4>
 
       {/* 手機版大頭貼 - 顯示在最上方 */}
@@ -275,13 +277,17 @@ function AccountSettingsPage() {
 
           {/* 確保表單內容對齊 */}
           <div className="w-100">
-            <UserProfileForSettingPage
-              isEdit={true}
-              userData={userData}
-              onSubmit={handleUpdateProfile}
-              isSubmitting={isUpdating}
-              hasPhotoChange={!!previewPhoto} // 傳遞照片變更狀態
-            />
+            {isLoading || !userData ? (
+              <UserProfileSkeleton />
+            ) : (
+              <UserProfileForSettingPage
+                isEdit={true}
+                userData={userData}
+                onSubmit={handleUpdateProfile}
+                isSubmitting={isUpdating}
+                hasPhotoChange={!!previewPhoto} // 傳遞照片變更狀態
+              />
+            )}
           </div>
         </div>
 

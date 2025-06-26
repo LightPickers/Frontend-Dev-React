@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { showLoading } from "@features/loading/loadingSlice";
 
+import { showLoading } from "@features/loading/loadingSlice";
 import { H5Secondary } from "@components/Headings";
 import { TextSmall, TextMedium, TextLarge, LabelText } from "@components/TextTypography";
 import { SearchIcon, CartIcon, FavoriteFilledIcon } from "@components/icons";
@@ -17,7 +17,6 @@ import { getApiErrorMessage } from "@utils/getApiErrorMessage";
 
 function WishlistCard({ product }) {
   const { id, name, condition, primary_image, original_price, selling_price } = product;
-  console.log(product);
 
   const [deleteWishlistProduct, { isLoading: isRemovingFromWishlist }] =
     useDeleteWishlistProductMutation();
