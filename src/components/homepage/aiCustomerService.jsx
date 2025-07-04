@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 import { usePostAiMessageMutation } from "@/features/aiCustomerService/aiCustomerServiceApi";
 
@@ -21,7 +22,7 @@ function AiCustomerService() {
     e.preventDefault();
     if (!message.trim()) return;
 
-    setMessage(""); // 送出後立即清空輸入
+    setMessage("");
     setConversation(prev => [...prev, { type: "user", text: message }]);
 
     try {
@@ -45,15 +46,24 @@ function AiCustomerService() {
             <button className="btn-close" onClick={toggleChat}></button>
           </div>
           <div className="ai-chat-body">
-            <p className="system-msg">
-              您好，我是 拾光堂 小幫手，
-              <br />
-              有什麼可以幫忙的嗎？
-            </p>
+            <p className="system-msg">您好，我是 拾光堂 小幫手，需要幫你推薦商品嗎？</p>
+            <div className="ai-suggested-tags">
+              {["推薦單眼相機", "推薦底片相機", "推薦全片幅相機"].map((tag, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => {
+                    setMessage(tag);
+                  }}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
             {conversation.map((msg, index) => (
-              <p key={index} className={msg.type === "user" ? "user-msg" : "ai-response"}>
-                {msg.text}
-              </p>
+              <div key={index} className={msg.type === "user" ? "user-msg" : "ai-response"}>
+                <ReactMarkdown>{msg.text}</ReactMarkdown>
+              </div>
             ))}
             <div ref={bottomRef} />
             {isLoading && (
