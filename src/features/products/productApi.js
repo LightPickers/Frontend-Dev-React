@@ -17,7 +17,7 @@ export const productApi = createApi({
             searchParams.set(key, value);
           }
         });
-        return `products?${searchParams.toString()}`;
+        return `/products?${searchParams.toString()}`;
       },
       providesTags: ["Product"],
     }),

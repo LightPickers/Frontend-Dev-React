@@ -16,3 +16,11 @@ export { default as HeadingToArrowIcon } from "@components/icons/HeadingToArrowI
 export { default as ArrowDownIcon } from "@components/icons/ArrowDownIcon";
 export { default as ChevronLeftIcon } from "@components/icons/ChevronLeftIcon";
 export { default as ChevronRightIcon } from "@components/icons/ChevronRightIcon";
+export { default as ArrowUpRightIcon } from "@components/icons/ArrowUpRightIcon";
+
+export { default as StarIcon } from "@components/icons/StarIcon";
+export { default as StarFilledIcon } from "@components/icons/StarFilledIcon";
+
+export { default as CalendarCheckIcon } from "@components/icons/CalendarCheckIcon";
+export { default as ThumbsUpIcon } from "@components/icons/ThumbsUpIcon";
+export { default as ThumbsUpFilledIcon } from "@components/icons/ThumbsUpFilledIcon";

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { ConfirmDialogue } from "@/components/Alerts";
+import { ConfirmDialogue } from "@components/Alerts";
 
 function useRequireAuth() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);

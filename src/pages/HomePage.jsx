@@ -5,7 +5,8 @@ import ProductSection from "@components/homepage/ProductSection";
 import FeaturedCategories from "@components/homepage/FeaturedCategories";
 import WhyUsSection from "@components/homepage/WhyUsSection";
 import BeSalerSection from "@components/homepage/BeSalerSection";
-import AiCustomerService from "@/components/homepage/aiCustomerService";
+import AiCustomerService from "@components/homepage/aiCustomerService";
+import ReviewDisplaySection from "@components/homepage/ReviewDisplaySection";
 
 function HomePage() {
   return (
@@ -21,6 +22,9 @@ function HomePage() {
 
       {/* 為什麼選擇我們 */}
       <WhyUsSection />
+
+      {/* 顧客評論 */}
+      <ReviewDisplaySection />
 
       {/* CTA */}
       <BeSalerSection />
