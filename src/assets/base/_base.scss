@@ -257,6 +257,16 @@ h6 {
   box-orient: vertical;
   overflow: hidden;
 }
+// 五行截斷
+.line-clamp-5 {
+  display: -webkit-box;
+  display: box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  overflow: hidden;
+}
 
 // 刪除按鈕
 .delete-btn {
