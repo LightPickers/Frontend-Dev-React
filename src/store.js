@@ -17,6 +17,7 @@ import { wishlistApi } from "@features/wishlist/wishlistApi";
 import { couponApi } from "@features/coupons/couponApi";
 import { uploadApi } from "@features/upload/uploadApi";
 import { aiCustomerServiceApi } from "@features/aiCustomerService/aiCustomerServiceApi";
+import { reviewApi } from "@features/review/reviewApi";
 
 // API reducers 配置
 const apiReducers = {
@@ -25,6 +26,7 @@ const apiReducers = {
   [cartApi.reducerPath]: cartApi.reducer,
   [couponApi.reducerPath]: couponApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
+  [reviewApi.reducerPath]: reviewApi.reducer,
   [wishlistApi.reducerPath]: wishlistApi.reducer,
   [uploadApi.reducerPath]: uploadApi.reducer,
   [aiCustomerServiceApi.reducerPath]: aiCustomerServiceApi.reducer,
@@ -37,6 +39,7 @@ const apiMiddleware = [
   cartApi.middleware,
   couponApi.middleware,
   orderApi.middleware,
+  reviewApi.middleware,
   wishlistApi.middleware,
   uploadApi.middleware,
   aiCustomerServiceApi.middleware,
