@@ -13,13 +13,15 @@ function OrderStatusPage() {
   // 取得訂單資料
   const { orderId } = useParams();
   const { data: orderData, isLoading: isOrderLoading, error } = useGetPaidOrderByIdQuery(orderId);
-  const [showLoading, setShowLoading] = useState(false);
 
   const { data: cartData } = useGetCartQuery();
 
   const [deleteCart] = useDeleteCartMutation();
 
   const navigate = useNavigate();
+
+  const status = orderData.data.status;
+  const orderNumber = orderData.data.merchant_order_no;
 
   useEffect(() => {
     // 當訂單狀態為已付款時
@@ -29,34 +31,31 @@ function OrderStatusPage() {
     }
   }, [orderData, cartData, deleteCart]);
 
-  // useEffect(() => {
-  //   let timer;
+  if (isOrderLoading) {
+    return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
+  }
 
-  //   if (isOrderLoading) {
-  //     timer = setTimeout(() => setShowLoading(true), 1000);
-  //   } else {
-  //     setShowLoading(false);
-  //     clearTimeout(timer);
-  //   }
-  //   return () => clearTimeout(timer);
-  // }, [isOrderLoading]);
-
-  // if (isOrderLoading) return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
-  if (error || !orderData?.data)
+  if (error) {
     return (
       <div className="d-flex flex-column align-items-center gap-5 py-20">
-        <TextLarge className="text-danger fs-2">查無訂單資訊</TextLarge>
-
+        <TextLarge className="text-danger fs-2">查詢訂單時發生錯誤</TextLarge>
         <TextLarge>請重新嘗試或聯繫客服</TextLarge>
       </div>
     );
+  }
 
-  const status = orderData.data.status;
-  const orderNumber = orderData.data.merchant_order_no;
+  if (!orderData?.data) {
+    return (
+      <div className="d-flex flex-column align-items-center gap-5 py-20">
+        <TextLarge className="text-danger fs-2">查無訂單資訊</TextLarge>
+        <TextLarge>請確認訂單編號是否正確</TextLarge>
+      </div>
+    );
+  }
 
   return (
     <>
-      <PageLoader loading={isOrderLoading} text="正在確認您的付款狀態，請稍後..." />
+      {/* <PageLoader loading={isOrderLoading} text="正在確認您的付款狀態，請稍後..." /> */}
       <div className="pt-4">
         <div className="bg-gray-100 py-10 py-lg-20">
           <div className="container d-flex flex-column gap-12">
@@ -137,6 +136,11 @@ function OrderStatusPage() {
                 >
                   回到首頁
                 </BtnPrimary>
+              </div>
+            ) : !status ? (
+              <div className="d-flex flex-column align-items-center gap-15">
+                <H2Primary>確認付款中...</H2Primary>
+                <TextLarge>正在確認您的付款狀態，請稍候。</TextLarge>
               </div>
             ) : (
               <div className="d-flex flex-column align-items-center gap-15">
