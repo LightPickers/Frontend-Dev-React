@@ -32,7 +32,7 @@ function OrderStatusPage() {
   }, [orderData, cartData, deleteCart]);
 
   if (isOrderLoading) {
-    return <PageLoader text="正在確認您的付款狀態，請稍後..." />;
+    return <PageLoader loading={isOrderLoading} text="正在確認您的付款狀態，請稍後..." />;
   }
 
   if (error) {
@@ -122,7 +122,7 @@ function OrderStatusPage() {
                 <H1Primary className="fs-1">付款成功！</H1Primary>
                 <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-0 align-items-center justify-content-center">
                   <TextLarge className="text-gray-500 fs-2">感謝您的購買，</TextLarge>
-                  <TextLarge className="text-gray-500 fs-2">敬請再度光臨。</TextLarge>
+                  <TextLarge className="text-gray-500 fs-2">歡迎再度光臨。</TextLarge>
                 </div>
                 <TextMedium as="p" className="text-balance">
                   （訂單編號：{orderNumber}）
