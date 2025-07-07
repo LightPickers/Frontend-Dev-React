@@ -12,7 +12,16 @@ export const ConfirmAlert = ({
   cancelText = "取消",
 }) => {
   return LP_Swal.fire({
-    title: <h3 className="alert-title">{title}</h3>,
+    title: (
+      <p
+        className="fs-2 alert-title"
+        style={{
+          letterSpacing: "0.13em",
+        }}
+      >
+        {title}
+      </p>
+    ),
     text: text,
     icon: icon,
     showCancelButton: true,
