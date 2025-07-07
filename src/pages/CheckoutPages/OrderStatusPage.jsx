@@ -20,8 +20,8 @@ function OrderStatusPage() {
 
   const navigate = useNavigate();
 
-  const status = orderData.data.status;
-  const orderNumber = orderData.data.merchant_order_no;
+  const status = orderData?.data?.status;
+  const orderNumber = orderData?.data?.merchant_order_no;
 
   useEffect(() => {
     // 當訂單狀態為已付款時
