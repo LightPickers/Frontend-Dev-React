@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import { Link } from "react-router-dom";
 
 import { usePostAiMessageMutation } from "@/features/aiCustomerService/aiCustomerServiceApi";
 
@@ -28,7 +29,14 @@ function AiCustomerService() {
     try {
       const result = await postAiMessage(message).unwrap();
       setResponse(result.response);
-      setConversation(prev => [...prev, { type: "ai", text: result.response }]);
+      setConversation(prev => [
+        ...prev,
+        {
+          type: "ai",
+          text: result.data?.aiResponse || "",
+          products: result.data?.productInfo || [],
+        },
+      ]);
     } catch {
       setResponse("客服暫時無法回覆，請稍後再試。");
     }
@@ -48,7 +56,7 @@ function AiCustomerService() {
           <div className="ai-chat-body">
             <p className="system-msg">您好，我是 拾光堂 小幫手，需要幫你推薦商品嗎？</p>
             <div className="ai-suggested-tags">
-              {["推薦單眼相機", "推薦底片相機", "推薦全片幅相機"].map((tag, index) => (
+              {["推薦單眼相機", "推薦隨身相機", "推薦全片幅相機"].map((tag, index) => (
                 <button
                   key={index}
                   type="button"
@@ -63,6 +71,20 @@ function AiCustomerService() {
             {conversation.map((msg, index) => (
               <div key={index} className={msg.type === "user" ? "user-msg" : "ai-response"}>
                 <ReactMarkdown>{msg.text}</ReactMarkdown>
+                {msg.type === "ai" && msg.products?.length > 0 && (
+                  <div className="ai-product-cards">
+                    {msg.products.map(product => (
+                      <Link
+                        key={product.id}
+                        to={`/products/${product.id}`}
+                        className="ai-product-card"
+                      >
+                        <img src={product.primary_image} alt={product.name} />
+                        <p>{product.name}</p>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
             <div ref={bottomRef} />

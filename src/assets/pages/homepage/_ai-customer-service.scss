@@ -110,6 +110,25 @@
   border-radius: 0 16px 16px 16px;
   max-width: 80%;
   word-wrap: break-word;
+
+  ol,
+  ul {
+    margin-left: 1.5em;
+    padding-left: 0;
+    list-style-position: outside;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
 }
 
 .error-msg {
@@ -219,4 +238,40 @@
 
 .ai-suggested-tags button:hover {
   background-color: #ddd;
+}
+
+.ai-product-cards {
+  display: block;
+  margin-top: 8px;
+}
+
+.ai-product-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 12px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  transition: box-shadow 0.2s;
+  background-color: #fff;
+
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 }
